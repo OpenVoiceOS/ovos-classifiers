@@ -1,0 +1,20 @@
+{
+    "corpus": "cess_cat_udep",
+    "corpus_homepage": "https://github.com/OpenJarbas/biblioteca/blob/master/corpora/create_cess.py",
+    "lang": "es",
+    "model_id": "nltk-cess_cat-udep-brill-postag",
+    "tagset": "Universal Dependencies",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "AffixTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "train/test": "80/20",
+    "accuracy": 0.9706107485295302
+}
