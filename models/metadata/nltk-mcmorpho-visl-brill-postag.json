@@ -1,0 +1,22 @@
+{
+    "corpus": "macmorpho",
+    "model_id": "nltk-mcmorpho-visl-brill-postag",
+    "corpus_homepage": "http://www.nilc.icmc.usp.br/macmorpho/",
+    "tagset": "",
+    "tagset_homepage": "http://www.nilc.icmc.usp.br/macmorpho/macmorpho-manual.pdf",
+    "lang": "pt",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9484667982816617
+}

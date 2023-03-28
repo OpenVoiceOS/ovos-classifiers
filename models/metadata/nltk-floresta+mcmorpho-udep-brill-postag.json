@@ -1,0 +1,21 @@
+{
+    "corpus": "floresta + macmorpho",
+    "lang": "pt",
+    "model_id": "nltk-floresta+mcmorpho-udep-brill-postag",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "tagset": "Universal Dependencies",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9598128188520235
+}

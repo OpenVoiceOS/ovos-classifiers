@@ -1,0 +1,20 @@
+{
+    "corpus": "macmorpho",
+    "corpus_homepage": "http://www.nilc.icmc.usp.br/macmorpho/",
+    "model_id": "nltk-mcmorpho-udep-brill-postag",
+    "tagset": "Universal Dependencies",
+    "lang": "pt",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "AffixTagger",
+        "UnigramTagger",
+        "RegexpTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9651770664887018
+}
