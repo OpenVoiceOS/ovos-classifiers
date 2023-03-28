@@ -1,0 +1,21 @@
+{
+    "corpus": "brown",
+    "model_id": "nltk-brown-brown-brill-postag",
+    "tagset": "brown",
+    "corpus_homepage": "http://www.hit.uib.no/icame/brown/bcm.html",
+    "lang": "en",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9426548276633455
+}
