@@ -1,0 +1,12 @@
+{
+    "corpus": "brown",
+    "model_id": "sklearn-brown-brown-percep-postag",
+    "tagset": "brown",
+    "corpus_homepage": "http://www.hit.uib.no/icame/brown/bcm.html",
+    "lang": "en",
+    "algo": "sklearn.linear_model.Perceptron",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.9165
+}

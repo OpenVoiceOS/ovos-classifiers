@@ -1,0 +1,12 @@
+{
+    "corpus": "brown",
+    "model_id": "sklearn-brown-brown-nb-postag",
+    "tagset": "brown",
+    "corpus_homepage": "http://www.hit.uib.no/icame/brown/bcm.html",
+    "lang": "en",
+    "algo": "sklearn.naive_bayes.MultinomialNB",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.8435
+}
