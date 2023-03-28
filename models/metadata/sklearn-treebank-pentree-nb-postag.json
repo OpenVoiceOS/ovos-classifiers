@@ -1,0 +1,12 @@
+{
+    "corpus": "treebank",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "model_id": "sklearn-treebank-pentree-nb-postag",
+    "tagset": "Penn Treebank",
+    "lang": "en",
+    "algo": "sklearn.naive_bayes.MultinomialNB",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.8384
+}
