@@ -1,0 +1,35 @@
+# This workflow will run unit tests
+
+name: (nltk) Postag on Brown Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/nltk_brown_brill.py'
+      - 'scripts/training/postag/nltk_brown_clf_postag.py'
+      - 'scripts/training/postag/nltk_brown_maxent.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train brill postag
+        run: |
+          python scripts/training/postag/nltk_brown_brill.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Brown Corpus auto-train (nltk)
+          add: 'models/* --force'
+          pull: '--rebase --autostash'

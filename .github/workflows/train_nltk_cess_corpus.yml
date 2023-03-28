@@ -1,0 +1,45 @@
+# This workflow will run unit tests
+
+name: (nltk) Postag CESS Spanish/Catalan Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/nltk_brill_tagger_cess_ca.py'
+      - 'scripts/training/postag/nltk_brill_tagger_cess_es.py'
+      - 'scripts/training/postag/nltk_brill_tagger_cess_ca_udep.py'
+      - 'scripts/training/postag/nltk_brill_tagger_cess_es_udep.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train spanish brill postag
+        run: |
+          python scripts/training/postag/nltk_brill_tagger_cess_es.py
+      - name: Train catalan brill postag
+        run: |
+          python scripts/training/postag/nltk_brill_tagger_cess_ca.py
+      - name: Train spanish universal dependencies brill postag
+        run: |
+          python scripts/training/postag/nltk_brill_tagger_cess_es_udep.py
+      - name: Train catalan universal dependencies brill postag
+        run: |
+          python scripts/training/postag/nltk_brill_tagger_cess_ca_udep.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: CESS corpus auto-train (nltk)
+          add: 'models/* --force'
+          pull: '--rebase --autostash'

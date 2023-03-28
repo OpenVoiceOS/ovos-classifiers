@@ -1,0 +1,52 @@
+# This workflow will run unit tests
+
+name: (sklearn) Postag Brown Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/sklearn_brown_dtree.py'
+      - 'scripts/training/postag/sklearn_brown_logreg.py'
+      - 'scripts/training/postag/sklearn_brown_nb.py'
+      - 'scripts/training/postag/sklearn_brown_percep.py'
+      - 'scripts/training/postag/sklearn_brown_pa.py'
+      - 'scripts/training/postag/sklearn_brown_rforest.py'
+      - 'scripts/training/postag/sklearn_brown_sgd.py'
+      - 'scripts/training/postag/sklearn_brown_lsvc.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train brown Decision Tree postag
+        run: |
+          python scripts/training/postag/sklearn_brown_dtree.py
+      - name: Train brown Logistic Regression postag
+        run: |
+          python scripts/training/postag/sklearn_brown_logreg.py
+      - name: Train brown Naive Bayes postag
+        run: |
+          python scripts/training/postag/sklearn_brown_nb.py
+      - name: Train brown Perceptron postag
+        run: |
+          python scripts/training/postag/sklearn_brown_percep.py
+      - name: Train brown SVM postag
+        run: |
+          python scripts/training/postag/sklearn_brown_lsvc.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Brown auto-train (sklearn)
+          add: 'models/ --force'
+          pull: '--rebase --autostash'

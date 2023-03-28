@@ -1,0 +1,48 @@
+# This workflow will run unit tests
+
+name: (nltk) Postag Universal Dependencies Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/nltk_treebank_brown_udep_brill.py'
+      - 'scripts/training/postag/nltk_treebank_udep_brill.py'
+      - 'scripts/training/postag/nltk_brown_udep_brill.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train brown Brill postag
+        run: |
+          python scripts/training/postag/nltk_brown_udep_brill.py
+      - name: Train treebank Brill postag
+        run: |
+          python scripts/training/postag/nltk_treebank_udep_brill.py
+      - name: Train brown+treebank Brill postag
+        run: |
+          python scripts/training/postag/nltk_treebank_brown_udep_brill.py
+      - name: Train nps chat Brill postag
+        run: |
+          python scripts/training/postag/nltk_npschat_brill.py
+
+      - name: Train multext Brill postag
+        run: |
+          python scripts/training/postag/nltk_multext_en_brill.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Universal Dependencies auto-train (nltk)
+          add: 'models/ --force'
+          pull: '--rebase --autostash'

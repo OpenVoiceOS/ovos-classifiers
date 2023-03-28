@@ -1,0 +1,33 @@
+# This workflow will run unit tests
+
+name: (nltk) Postag Treebank Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/nltk_treebank_brill.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train brill postag
+        run: |
+          python scripts/training/postag/nltk_treebank_brill.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Treebank auto-train (nltk)
+          add: 'models/ --force'
+          pull: '--rebase --autostash'

@@ -1,0 +1,52 @@
+# This workflow will run unit tests
+
+name: (sklearn) Postag Treebank Corpus
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'scripts/training/postag/sklearn_treebank_dtree.py'
+      - 'scripts/training/postag/sklearn_treebank_logreg.py'
+      - 'scripts/training/postag/sklearn_treebank_nb.py'
+      - 'scripts/training/postag/sklearn_treebank_percep.py'
+      - 'scripts/training/postag/sklearn_treebank_pa.py'
+      - 'scripts/training/postag/sklearn_treebank_rforest.py'
+      - 'scripts/training/postag/sklearn_treebank_sgd.py'
+      - 'scripts/training/postag/sklearn_treebank_lsvc.py'
+  workflow_dispatch:
+
+jobs:
+  postag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install python3-dev
+          python -m pip install build wheel
+      - name: Install repo
+        run: |
+          pip install .
+      - name: Train treebank Decision Tree postag
+        run: |
+          python scripts/training/postag/sklearn_treebank_dtree.py
+      - name: Train treebank Logistic Regression postag
+        run: |
+          python scripts/training/postag/sklearn_treebank_logreg.py
+      - name: Train treebank Naive Bayes postag
+        run: |
+          python scripts/training/postag/sklearn_treebank_nb.py
+      - name: Train treebank Perceptron postag
+        run: |
+          python scripts/training/postag/sklearn_treebank_percep.py
+      - name: Train treebank SVM postag
+        run: |
+          python scripts/training/postag/sklearn_treebank_lsvc.py
+      - name: Commit models
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: Treebank auto-train (sklearn)
+          add: 'models/ --force'
+          pull: '--rebase --autostash'

@@ -1,0 +1,1188 @@
+tag,utterance
+COMMAND:ACTION,Be careful with that vase
+COMMAND:ACTION,Be quiet
+COMMAND:ACTION,Be sure to double-check your work before submitting
+COMMAND:ACTION,Be sure to wear sunscreen on a sunny day
+COMMAND:ACTION,Be sure to wear sunscreen when you're outside
+COMMAND:ACTION,Boil some water
+COMMAND:ACTION,Bring me a glass of water
+COMMAND:ACTION,Brush your teeth
+COMMAND:ACTION,Call John
+COMMAND:ACTION,Call me back
+COMMAND:ACTION,Call mom
+COMMAND:ACTION,Change the oil
+COMMAND:ACTION,Check the mail
+COMMAND:ACTION,Clean the room
+COMMAND:ACTION,Close the window
+COMMAND:ACTION,Cook breakfast
+COMMAND:ACTION,Cook dinner
+COMMAND:ACTION,Dance to the music
+COMMAND:ACTION,Do some yoga
+COMMAND:ACTION,Do your homework
+COMMAND:ACTION,Don't be late for the meeting
+COMMAND:ACTION,Don't forget to bring your ID to the airport
+COMMAND:ACTION,Don't forget to bring your passport to the airport
+COMMAND:ACTION,Don't forget to lock the door
+COMMAND:ACTION,Don't forget to lock the door when you leave
+COMMAND:ACTION,Don't forget to set your alarm
+COMMAND:ACTION,Don't forget to set your alarm for tomorrow morning
+COMMAND:ACTION,Don't forget to take your medication
+COMMAND:ACTION,Don't forget to turn off the oven when you're done
+COMMAND:ACTION,Don't forget to turn off the stove before leaving
+COMMAND:ACTION,Don't forget to turn off the stove before you leave
+COMMAND:ACTION,Don't forget your keys
+COMMAND:ACTION,Draw a picture
+COMMAND:ACTION,Drive safely
+COMMAND:ACTION,Drive to the store
+COMMAND:ACTION,Eat your dinner
+COMMAND:ACTION,Exercise
+COMMAND:ACTION,Feed the cat
+COMMAND:ACTION,Fill up the gas tank
+COMMAND:ACTION,Fix the leaky faucet
+COMMAND:ACTION,Get a haircut
+COMMAND:ACTION,Go to bed
+COMMAND:ACTION,Go to the gym
+COMMAND:ACTION,Hand me the screwdriver, please
+COMMAND:ACTION,Iron the clothes
+COMMAND:ACTION,Leave the room
+COMMAND:ACTION,Leave the room immediately
+COMMAND:ACTION,Lock the door
+COMMAND:ACTION,Make a left turn
+COMMAND:ACTION,Make the bed
+COMMAND:ACTION,Meditate
+COMMAND:ACTION,Mow the lawn
+COMMAND:ACTION,Open the door
+COMMAND:ACTION,Open the pod bay doors
+COMMAND:ACTION,Order pizza
+COMMAND:ACTION,Pay attention to the road while driving
+COMMAND:ACTION,Pay the bills
+COMMAND:ACTION,Pick up the kids
+COMMAND:ACTION,Play some music
+COMMAND:ACTION,Please be quiet in the library
+COMMAND:ACTION,Please clean up after yourself
+COMMAND:ACTION,Please close the window
+COMMAND:ACTION,Please do not smoke in the building
+COMMAND:ACTION,Please keep the noise level down in the library
+COMMAND:ACTION,Please make sure to lock the door when you leave
+COMMAND:ACTION,Please put your phone on silent during the movie
+COMMAND:ACTION,Please take a seat
+COMMAND:ACTION,Please take off your shoes
+COMMAND:ACTION,Please take your shoes off before entering the house
+COMMAND:ACTION,Please turn down the music
+COMMAND:ACTION,Please turn down the volume
+COMMAND:ACTION,Please turn off the lights
+COMMAND:ACTION,Please turn off your cell phone
+COMMAND:ACTION,Please turn off your cell phone during the movie
+COMMAND:ACTION,Polish the furniture
+COMMAND:ACTION,Put away your toys
+COMMAND:ACTION,Put on some clothes
+COMMAND:ACTION,Put your phone away
+COMMAND:ACTION,Put your phone on silent
+COMMAND:ACTION,Read a book
+COMMAND:ACTION,Say a prayer
+COMMAND:ACTION,Send a text message
+COMMAND:ACTION,Send an email
+COMMAND:ACTION,Set a timer for 10 minutes
+COMMAND:ACTION,Set an alarm for 7am
+COMMAND:ACTION,Set the table
+COMMAND:ACTION,Show me your ID
+COMMAND:ACTION,Sing a song
+COMMAND:ACTION,Stay focused on your goals
+COMMAND:ACTION,Stay here
+COMMAND:ACTION,Stay safe
+COMMAND:ACTION,Stay safe and stay hydrated in the heat
+COMMAND:ACTION,Study for the exam
+COMMAND:ACTION,Sweep the floor
+COMMAND:ACTION,Take a break and stretch your legs
+COMMAND:ACTION,Take a deep breath
+COMMAND:ACTION,Take a deep breath and relax
+COMMAND:ACTION,Take a picture
+COMMAND:ACTION,Take a shower
+COMMAND:ACTION,Take a walk
+COMMAND:ACTION,Take out the trash
+COMMAND:ACTION,Turn down the music
+COMMAND:ACTION,Turn off the TV
+COMMAND:ACTION,Turn off the lights
+COMMAND:ACTION,Turn off the lights when you leave
+COMMAND:ACTION,Turn on the light
+COMMAND:ACTION,Turn up the volume
+COMMAND:ACTION,Unlock the car
+COMMAND:ACTION,Vacuum the carpet
+COMMAND:ACTION,Wait for me outside
+COMMAND:ACTION,Wake up early
+COMMAND:ACTION,Walk the dog
+COMMAND:ACTION,Wash the dishes
+COMMAND:ACTION,Watch a movie
+COMMAND:ACTION,Water the plants
+COMMAND:ACTION,Write a letter
+COMMAND:ACTION,give examples of animals
+COMMAND:ACTION,tell me about evil
+COMMAND:DENIAL,Do not drink and drive
+COMMAND:DENIAL,Do not enter the construction zone
+COMMAND:DENIAL,Do not enter this area
+COMMAND:DENIAL,Do not enter this area without permission
+COMMAND:DENIAL,Do not enter this area, it's dangerous
+COMMAND:DENIAL,Do not enter without permission
+COMMAND:DENIAL,Do not exceed the speed limit on this road
+COMMAND:DENIAL,Do not feed the animals at the zoo
+COMMAND:DENIAL,Do not feed the wild animals
+COMMAND:DENIAL,Do not leave your luggage unattended
+COMMAND:DENIAL,Do not open the emergency exit
+COMMAND:DENIAL,Do not smoke in the building
+COMMAND:DENIAL,Do not smoke in this area
+COMMAND:DENIAL,Do not touch that button
+COMMAND:DENIAL,Do not touch the art
+COMMAND:DENIAL,Do not touch the art pieces in the gallery
+COMMAND:DENIAL,Do not touch the artwork
+COMMAND:DENIAL,Do not touch the electric fence
+COMMAND:DENIAL,Do not touch the exhibits in the museum
+COMMAND:DENIAL,Do not touch the paintings
+COMMAND:DENIAL,Do not touch the thermostat
+COMMAND:DENIAL,Do not trespass
+COMMAND:DENIAL,Do not use fireworks without proper safety measures
+COMMAND:DENIAL,Do not use the elevator during a fire
+COMMAND:DENIAL,Do not use your cell phone while driving
+COMMAND:DENIAL,Do not use your phone while driving
+COMMAND:DENIAL,Don't drink and drive
+COMMAND:DENIAL,Don't eat that, it's spoiled
+COMMAND:DENIAL,Don't leave the stove on
+COMMAND:DENIAL,Don't smoke in this area
+COMMAND:DENIAL,Don't speak to strangers
+COMMAND:DENIAL,Don't touch that
+COMMAND:DENIAL,Don't touch that! It's hot
+COMMAND:DENIAL,Don't touch that, it's fragile
+COMMAND:DENIAL,Don't touch the art
+COMMAND:DENIAL,Don't touch the exhibit
+COMMAND:DENIAL,Don't touch the exhibits in the museum
+COMMAND:DENIAL,Don't touch the fragile objects on the shelf
+COMMAND:DENIAL,Don't touch the hot stove
+COMMAND:DENIAL,Don't touch the stove, it's hot
+COMMAND:DENIAL,Don't use your phone while driving
+COMMAND:DENIAL,Don't walk on the grass
+COMMAND:DENIAL,It is forbidden to run inside the house
+COMMAND:DENIAL,It is not permitted to take pictures in this museum
+COMMAND:DENIAL,It is prohibited to litter
+COMMAND:DENIAL,It is prohibited to smoke in this building
+COMMAND:DENIAL,Smoking is strictly prohibited in this area
+COMMAND:DENIAL,Stay away from the edge
+COMMAND:DENIAL,Stop running right now
+COMMAND:DENIAL,You are not allowed to go outside
+COMMAND:DENIAL,You are not allowed to smoke in this area
+QUESTION:QUERY,How many people are in the room
+QUESTION:QUERY,How much does it cost
+QUESTION:QUERY,What are the office hours
+QUESTION:QUERY,What can we speak
+QUESTION:QUERY,What day is Christmas
+QUESTION:QUERY,What did you buy
+QUESTION:QUERY,What did you eat
+QUESTION:QUERY,What did you have for breakfast
+QUESTION:QUERY,What do you like
+QUESTION:QUERY,What do you study
+QUESTION:QUERY,What does he teach
+QUESTION:QUERY,What does huge mean
+QUESTION:QUERY,What has been ordered
+QUESTION:QUERY,What is Peter doing
+QUESTION:QUERY,What is expensive
+QUESTION:QUERY,What is he playing
+QUESTION:QUERY,What is it
+QUESTION:QUERY,What is she
+QUESTION:QUERY,What is the airspeed velocity of an unladen swallow
+QUESTION:QUERY,What is the average temperature of the human body
+QUESTION:QUERY,What is the biggest ocean in the world
+QUESTION:QUERY,What is the boiling point of water
+QUESTION:QUERY,What is the capital of Argentina
+QUESTION:QUERY,What is the capital of Australia
+QUESTION:QUERY,What is the capital of Brazil
+QUESTION:QUERY,What is the capital of Canada
+QUESTION:QUERY,What is the capital of China
+QUESTION:QUERY,What is the capital of France
+QUESTION:QUERY,What is the capital of India
+QUESTION:QUERY,What is the capital of Mexico
+QUESTION:QUERY,What is the capital of Russia
+QUESTION:QUERY,What is the capital of the United States
+QUESTION:QUERY,What is the currency of Japan
+QUESTION:QUERY,What is the date today
+QUESTION:QUERY,What is the deepest ocean in the world
+QUESTION:QUERY,What is the distance between Earth and Mars
+QUESTION:QUERY,What is the distance between New York and Los Angeles
+QUESTION:QUERY,What is the fastest animal in the world
+QUESTION:QUERY,What is the fastest land animal in the world
+QUESTION:QUERY,What is the highest mountain in the world
+QUESTION:QUERY,What is the highest waterfall in the world
+QUESTION:QUERY,What is the largest amphibian in the world
+QUESTION:QUERY,What is the largest animal in the world
+QUESTION:QUERY,What is the largest bird in the world
+QUESTION:QUERY,What is the largest country in the world
+QUESTION:QUERY,What is the largest desert in the world
+QUESTION:QUERY,What is the largest fish in the world
+QUESTION:QUERY,What is the largest mammal in the world
+QUESTION:QUERY,What is the largest ocean in the world
+QUESTION:QUERY,What is the largest reptile in the world
+QUESTION:QUERY,What is the length of the Nile River
+QUESTION:QUERY,What is the longest river in the world
+QUESTION:QUERY,What is the meaning of life
+QUESTION:QUERY,What is the most popular food in the world
+QUESTION:QUERY,What is the most spoken language in the world
+QUESTION:QUERY,What is the most widely spoken language in the world
+QUESTION:QUERY,What is the national animal of Canada
+QUESTION:QUERY,What is the population of India
+QUESTION:QUERY,What is the population of New York City
+QUESTION:QUERY,What is the slowest animal in the world
+QUESTION:QUERY,What is the smallest amphibian in the world
+QUESTION:QUERY,What is the smallest animal in the world
+QUESTION:QUERY,What is the smallest bird in the world
+QUESTION:QUERY,What is the smallest country in the world
+QUESTION:QUERY,What is the smallest fish in the world
+QUESTION:QUERY,What is the smallest mammal in the world
+QUESTION:QUERY,What is the smallest planet in the solar system
+QUESTION:QUERY,What is the smallest reptile in the world
+QUESTION:QUERY,What is the speed of sound
+QUESTION:QUERY,What is the tallest animal in the world
+QUESTION:QUERY,What is the temperature now
+QUESTION:QUERY,What is the temperature outside
+QUESTION:QUERY,What is the time
+QUESTION:QUERY,What is the time in Tokyo
+QUESTION:QUERY,What is the weather like
+QUESTION:QUERY,What is your name
+QUESTION:QUERY,What kind of dog do you have
+QUESTION:QUERY,What kind of music do you like
+QUESTION:QUERY,What should we buy
+QUESTION:QUERY,What time is it
+QUESTION:QUERY,What was she washing
+QUESTION:QUERY,What will he buy
+QUESTION:QUERY,What's he playing
+QUESTION:QUERY,When can she come
+QUESTION:QUERY,When can we meet
+QUESTION:QUERY,When does the class start
+QUESTION:QUERY,When is Christmas
+QUESTION:QUERY,When is your birthday
+QUESTION:QUERY,Where are you going tomorrow
+QUESTION:QUERY,Where did they go
+QUESTION:QUERY,Where has he visited
+QUESTION:QUERY,Where is Vancouver
+QUESTION:QUERY,Where is the nearest restaurant
+QUESTION:QUERY,Where is your home district
+QUESTION:QUERY,Which newspaper do you read
+QUESTION:QUERY,Who are they
+QUESTION:QUERY,Who can cook well
+QUESTION:QUERY,Who did she call
+QUESTION:QUERY,Who does John like
+QUESTION:QUERY,Who is coming
+QUESTION:QUERY,Who is she
+QUESTION:QUERY,Who is sleeping
+QUESTION:QUERY,Who is your favourite actor
+QUESTION:QUERY,Who knows the answer
+QUESTION:QUERY,Who likes Lisa
+QUESTION:QUERY,Who said that
+QUESTION:QUERY,Who won the 2020 Olympics 100m sprint
+QUESTION:QUERY,Who's coming
+QUESTION:QUERY,Whose bag is on the table
+QUESTION:QUERY,Whose bag's on the table
+QUESTION:QUERY,Whose car is that
+QUESTION:QUERY,Whose website is this
+QUESTION:QUERY,Why did she call you
+QUESTION:QUERY,Why is she crying
+QUESTION:QUERY,Why was she crying
+QUESTION:QUERY,how fast can an elephant run
+QUESTION:QUERY,how long ago was sunrise
+QUESTION:QUERY,how long until world war 3
+QUESTION:QUERY,how much is bitcoin worth
+QUESTION:QUERY,what do dogs and cats have in common
+QUESTION:QUERY,what is a living being
+QUESTION:QUERY,what is the speed of light
+QUESTION:QUERY,what time does the class start/When does the class start
+QUESTION:QUERY,when is your birthday
+QUESTION:QUERY,when were you born
+QUESTION:QUERY,when will the world end
+QUESTION:QUERY,where do you store your data
+QUESTION:QUERY,which city has more people
+QUESTION:QUERY,who made you
+QUESTION:QUERY,whose dog is this
+QUESTION:QUERY,why are fire trucks red
+QUESTION:REQUEST,Can I have a glass of water, please
+QUESTION:REQUEST,Can you give me a glass of water
+QUESTION:REQUEST,Can you hand me a pen, please
+QUESTION:REQUEST,Can you help me find my lost keys
+QUESTION:REQUEST,Can you help me move this table
+QUESTION:REQUEST,Can you lend me a hand with this heavy box
+QUESTION:REQUEST,Can you lend me your phone
+QUESTION:REQUEST,Can you please call me a taxi
+QUESTION:REQUEST,Can you please explain this concept to me again
+QUESTION:REQUEST,Can you please give me a ride to the train station
+QUESTION:REQUEST,Can you please help me carry these boxes
+QUESTION:REQUEST,Can you please lend me a hand
+QUESTION:REQUEST,Can you please lend me some money until payday
+QUESTION:REQUEST,Can you please lend me your book
+QUESTION:REQUEST,Can you please lend me your pen
+QUESTION:REQUEST,Can you please make me a cup of tea
+QUESTION:REQUEST,Can you please pass me the menu
+QUESTION:REQUEST,Can you please pass me the remote
+QUESTION:REQUEST,Can you please pass me the salt
+QUESTION:REQUEST,Can you please pass me the salt and pepper
+QUESTION:REQUEST,Can you please send me that file
+QUESTION:REQUEST,Can you please send me the document
+QUESTION:REQUEST,Can you please send me the document via email
+QUESTION:REQUEST,Can you please show me how to use this software
+QUESTION:REQUEST,Can you recommend a good book to read
+QUESTION:REQUEST,Can you recommend a good place to buy shoes
+QUESTION:REQUEST,Can you recommend a good place to get a haircut
+QUESTION:REQUEST,Can you tell me how to get to the nearest hospital
+QUESTION:REQUEST,Can you tell me where the nearest gas station is
+QUESTION:REQUEST,Could I have that now, please
+QUESTION:REQUEST,Could I have that now, thank you
+QUESTION:REQUEST,Could you pass me the salt please
+QUESTION:REQUEST,Could you please make me a cup of coffee
+QUESTION:REQUEST,Could you please pass me the remote
+QUESTION:REQUEST,Could you please show me how to use this software
+QUESTION:REQUEST,May I borrow your umbrella
+QUESTION:REQUEST,May I have a glass of water
+QUESTION:REQUEST,Would it be possible to borrow your car
+QUESTION:REQUEST,Would it be possible to borrow your umbrella
+QUESTION:REQUEST,Would it be possible to get a glass of water
+QUESTION:REQUEST,Would it be possible to schedule a meeting for next week
+QUESTION:REQUEST,Would you be able to give me a ride to the airport
+QUESTION:REQUEST,Would you be able to lend me a hand with this
+QUESTION:REQUEST,Would you be able to lend me a hand with this project
+QUESTION:REQUEST,Would you be able to pick up some milk from the store
+QUESTION:REQUEST,Would you be able to proofread my essay
+QUESTION:REQUEST,Would you be so kind as to lend me your pen
+QUESTION:REQUEST,Would you feed the dog, please
+QUESTION:REQUEST,Would you mind giving me a ride to the airport
+QUESTION:REQUEST,Would you mind giving me a ride to the train station
+QUESTION:REQUEST,Would you mind helping me with this task
+QUESTION:REQUEST,Would you mind holding the door for me
+QUESTION:REQUEST,Would you mind letting me borrow your phone charger
+QUESTION:REQUEST,Would you mind passing me a napkin
+QUESTION:REQUEST,Would you mind passing me a tissue
+QUESTION:REQUEST,Would you mind passing me the salt
+QUESTION:REQUEST,Would you mind passing me the salt, please
+QUESTION:REQUEST,Would you mind sharing your notes with me
+QUESTION:REQUEST,Would you mind shutting the door
+QUESTION:YESNO,Am I going to die
+QUESTION:YESNO,Am I sick
+QUESTION:YESNO,Are Spanish and German different languages
+QUESTION:YESNO,Are airplanes flown inside
+QUESTION:YESNO,Are all dogs friendly
+QUESTION:YESNO,Are ants strong
+QUESTION:YESNO,Are apples red fruit
+QUESTION:YESNO,Are aspirin and tylenol pain relievers
+QUESTION:YESNO,Are bananas and oranges sweet vegetables
+QUESTION:YESNO,Are bananas yellow
+QUESTION:YESNO,Are band-aids used for healing
+QUESTION:YESNO,Are butterflies attracted to bright colors
+QUESTION:YESNO,Are cars made here
+QUESTION:YESNO,Are cars used to drive on the water
+QUESTION:YESNO,Are cats able to climb trees
+QUESTION:YESNO,Are chips and pretzels salty
+QUESTION:YESNO,Are clocks and bikes used to tell time
+QUESTION:YESNO,Are coffee and hot chocolate cold drinks
+QUESTION:YESNO,Are computers used to brush your teeth with
+QUESTION:YESNO,Are cows and horses mammals
+QUESTION:YESNO,Are cucumbers a type of fruit
+QUESTION:YESNO,Are diamonds a type of gemstone
+QUESTION:YESNO,Are dogs and cats animals that live in the jungle
+QUESTION:YESNO,Are dogs carnivorous animals
+QUESTION:YESNO,Are dogs mammals
+QUESTION:YESNO,Are dolphins friendly
+QUESTION:YESNO,Are dolphins mammals
+QUESTION:YESNO,Are eggs a good source of protein
+QUESTION:YESNO,Are elephants able to climb trees
+QUESTION:YESNO,Are fish able to fly
+QUESTION:YESNO,Are flies and robins small insects
+QUESTION:YESNO,Are football and baseball types of food
+QUESTION:YESNO,Are fruits and vegetables healthy to eat
+QUESTION:YESNO,Are giraffes tall
+QUESTION:YESNO,Are grapes used to make wine
+QUESTION:YESNO,Are houses more than $50 dollars
+QUESTION:YESNO,Are kangaroos able to jump high
+QUESTION:YESNO,Are kangaroos native to Australia
+QUESTION:YESNO,Are kiwis a type of fruit
+QUESTION:YESNO,Are lasagna and spaghetti Chinese dishes
+QUESTION:YESNO,Are lemons sour
+QUESTION:YESNO,Are lions afraid of water
+QUESTION:YESNO,Are lizards small
+QUESTION:YESNO,Are muscles needed to move our body
+QUESTION:YESNO,Are musicians and artists creative
+QUESTION:YESNO,Are oranges a good source of vitamin C
+QUESTION:YESNO,Are ovens used to freeze things
+QUESTION:YESNO,Are owls able to see in the dark
+QUESTION:YESNO,Are paint and syrup used to take a bath in
+QUESTION:YESNO,Are pandas friendly
+QUESTION:YESNO,Are peanuts made into jam
+QUESTION:YESNO,Are pencils and markers used to write on a whiteboard
+QUESTION:YESNO,Are penguins able to fly
+QUESTION:YESNO,Are pillows and mattresses used to sleep on
+QUESTION:YESNO,Are plants capable of photosynthesis
+QUESTION:YESNO,Are potatoes a type of vegetable
+QUESTION:YESNO,Are pumpkins used for carving at Halloween
+QUESTION:YESNO,Are rattlesnakes poisonous
+QUESTION:YESNO,Are rhinoceroses herbivores or carnivores
+QUESTION:YESNO,Are roses tall trees
+QUESTION:YESNO,Are scoops of ice cream sweet
+QUESTION:YESNO,Are seahorses fish
+QUESTION:YESNO,Are sharks dangerous to humans
+QUESTION:YESNO,Are sharks friendly to humans
+QUESTION:YESNO,Are shoes worn over the top of socks
+QUESTION:YESNO,Are shovels something you would use to dig a hole with
+QUESTION:YESNO,Are snakes afraid of humans
+QUESTION:YESNO,Are strawberries red
+QUESTION:YESNO,Are the Arctic and the Antarctic the same
+QUESTION:YESNO,Are the Great Barrier Reef and the Grand Canyon natural wonders
+QUESTION:YESNO,Are the Pyramids of Giza in Egypt
+QUESTION:YESNO,Are the children at school
+QUESTION:YESNO,Are the letters "d" and "s" in the word "dressing"
+QUESTION:YESNO,Are there 50 states in the United States of America
+QUESTION:YESNO,Are there 7 continents on Earth
+QUESTION:YESNO,Are there 80 minutes in an hour
+QUESTION:YESNO,Are they American
+QUESTION:YESNO,Are they sitting in a row
+QUESTION:YESNO,Are they studying hard
+QUESTION:YESNO,Are they visiting Paris
+QUESTION:YESNO,Are tomatoes used to make ketchup
+QUESTION:YESNO,Are tornadoes common in Kansas
+QUESTION:YESNO,Are turtles amphibians
+QUESTION:YESNO,Are turtles reptiles
+QUESTION:YESNO,Are umbrellas used to keep you wet
+QUESTION:YESNO,Are vegetables a good source of nutrition
+QUESTION:YESNO,Are violins and pianos musical instruments
+QUESTION:YESNO,Are we going to try it
+QUESTION:YESNO,Are whales fish
+QUESTION:YESNO,Are whales the largest animals on Earth
+QUESTION:YESNO,Are wild animals dangerous
+QUESTION:YESNO,Are wolves friendly
+QUESTION:YESNO,Are you feeling well
+QUESTION:YESNO,Are you going to try it
+QUESTION:YESNO,Are you happy
+QUESTION:YESNO,Are you hungry
+QUESTION:YESNO,Are you looking for the keys
+QUESTION:YESNO,Are you sick
+QUESTION:YESNO,Are you tired
+QUESTION:YESNO,Can John read
+QUESTION:YESNO,Can a backpack get a cold
+QUESTION:YESNO,Can a car run without fuel
+QUESTION:YESNO,Can a chair fly
+QUESTION:YESNO,Can a cheetah run faster than a car
+QUESTION:YESNO,Can a circle have corners
+QUESTION:YESNO,Can a computer think for itself
+QUESTION:YESNO,Can a fish live out of water
+QUESTION:YESNO,Can a giraffe swim
+QUESTION:YESNO,Can a kangaroo jump higher than a house
+QUESTION:YESNO,Can a person be allergic to water
+QUESTION:YESNO,Can a person breathe in outer space
+QUESTION:YESNO,Can a person fly without any assistance
+QUESTION:YESNO,Can a person fly without wings
+QUESTION:YESNO,Can a person learn a new language quickly
+QUESTION:YESNO,Can a person learn to play a musical instrument without lessons
+QUESTION:YESNO,Can a person lift a house
+QUESTION:YESNO,Can a person live without water
+QUESTION:YESNO,Can a person run faster than a car
+QUESTION:YESNO,Can a person see through walls
+QUESTION:YESNO,Can a person sneeze with their eyes open
+QUESTION:YESNO,Can a person survive without food for a long period of time
+QUESTION:YESNO,Can a person survive without food for a long time
+QUESTION:YESNO,Can a person survive without sleep
+QUESTION:YESNO,Can a person touch their nose with their tongue
+QUESTION:YESNO,Can a person travel to the future
+QUESTION:YESNO,Can a plant grow without water
+QUESTION:YESNO,Can a snake hear
+QUESTION:YESNO,Can a tiger be your pet
+QUESTION:YESNO,Can an elephant fly
+QUESTION:YESNO,Can bats see in the dark
+QUESTION:YESNO,Can birds swim
+QUESTION:YESNO,Can camels store water in their humps
+QUESTION:YESNO,Can cheetahs run fast
+QUESTION:YESNO,Can crocodiles climb trees
+QUESTION:YESNO,Can eagles fly
+QUESTION:YESNO,Can flamingos fly backwards
+QUESTION:YESNO,Can horses run fast
+QUESTION:YESNO,Can humans breathe underwater
+QUESTION:YESNO,Can ostriches fly
+QUESTION:YESNO,Can penguins fly
+QUESTION:YESNO,Can penguins live in warm climates
+QUESTION:YESNO,Can pigs walk on two feet
+QUESTION:YESNO,Can sharks breathe out of water
+QUESTION:YESNO,Can snakes fly
+QUESTION:YESNO,Can spiders climb walls
+QUESTION:YESNO,Can you brush your teeth with a shoe
+QUESTION:YESNO,Can you buy eggs by the dozen
+QUESTION:YESNO,Can you drive a car wearing a blindfold
+QUESTION:YESNO,Can you drive a car without wearing a seatbelt
+QUESTION:YESNO,Can you eat tomato soup with a fork
+QUESTION:YESNO,Can you eat without a mouth
+QUESTION:YESNO,Can you find the Great Wall of China in Asia
+QUESTION:YESNO,Can you freeze orange juice
+QUESTION:YESNO,Can you fry vegetables in a pan
+QUESTION:YESNO,Can you grow a mustache on your foot
+QUESTION:YESNO,Can you jump over a puddle
+QUESTION:YESNO,Can you keep a horse inside your house
+QUESTION:YESNO,Can you make bread without using flour
+QUESTION:YESNO,Can you play an instrument
+QUESTION:YESNO,Can you rake leaves with a hammer
+QUESTION:YESNO,Can you ride a bike without a helmet
+QUESTION:YESNO,Can you ride a camel
+QUESTION:YESNO,Can you rip concrete
+QUESTION:YESNO,Can you run a marathon
+QUESTION:YESNO,Can you see in the dark without a flashlight
+QUESTION:YESNO,Can you see the Northern Lights in Norway
+QUESTION:YESNO,Can you sleep in the day time
+QUESTION:YESNO,Can you speak Russian
+QUESTION:YESNO,Can you stir something with a spoon
+QUESTION:YESNO,Can you stretch a rock
+QUESTION:YESNO,Can you swim
+QUESTION:YESNO,Can you teach a cat to talk
+QUESTION:YESNO,Can you touch your elbow with your nose
+QUESTION:YESNO,Can you use a shovel at the beach
+QUESTION:YESNO,Can you wear a tie
+QUESTION:YESNO,Can you wear pajama's to school / work
+QUESTION:YESNO,Could he have said that
+QUESTION:YESNO,Did she have a smile on her face
+QUESTION:YESNO,Did she have her camera
+QUESTION:YESNO,Did the boss notice the mistake
+QUESTION:YESNO,Did the printer break
+QUESTION:YESNO,Did they dance well
+QUESTION:YESNO,Did they find the answer
+QUESTION:YESNO,Did they forget their tickets
+QUESTION:YESNO,Did you feel sick
+QUESTION:YESNO,Did you go to the park
+QUESTION:YESNO,Did you see John yesterday
+QUESTION:YESNO,Do all birds fly
+QUESTION:YESNO,Do all birds lay eggs
+QUESTION:YESNO,Do all flowers have a fragrance
+QUESTION:YESNO,Do all mammals have fur
+QUESTION:YESNO,Do all snakes have venom
+QUESTION:YESNO,Do all trees lose their leaves in the fall
+QUESTION:YESNO,Do animals need water to stay alive
+QUESTION:YESNO,Do ants have wings
+QUESTION:YESNO,Do astronauts wear suits in space
+QUESTION:YESNO,Do astronauts work in grocery stores
+QUESTION:YESNO,Do babies need their diapers changed
+QUESTION:YESNO,Do baby birds get fed by their mother
+QUESTION:YESNO,Do bears hibernate
+QUESTION:YESNO,Do bees make honey
+QUESTION:YESNO,Do bicycles have engines
+QUESTION:YESNO,Do birds have teeth
+QUESTION:YESNO,Do birds have wings
+QUESTION:YESNO,Do butterflies run fast
+QUESTION:YESNO,Do camels live in the desert
+QUESTION:YESNO,Do cars have engines
+QUESTION:YESNO,Do cats climb trees
+QUESTION:YESNO,Do children play with toys
+QUESTION:YESNO,Do computers help us find information
+QUESTION:YESNO,Do cows drink milk
+QUESTION:YESNO,Do cows give milk
+QUESTION:YESNO,Do dogs bark
+QUESTION:YESNO,Do dogs have four legs
+QUESTION:YESNO,Do dogs have wings
+QUESTION:YESNO,Do dolphins live in the ocean
+QUESTION:YESNO,Do elephants have a good memory
+QUESTION:YESNO,Do elephants have long trunks
+QUESTION:YESNO,Do elephants live in the ocean
+QUESTION:YESNO,Do erasers remove pencil marks
+QUESTION:YESNO,Do fire extinguishers help fireman
+QUESTION:YESNO,Do fish breathe underwater
+QUESTION:YESNO,Do fish live on land
+QUESTION:YESNO,Do flowers bloom in the winter
+QUESTION:YESNO,Do football players use sticks
+QUESTION:YESNO,Do horses wear socks
+QUESTION:YESNO,Do kangaroos carry their babies in their pouches
+QUESTION:YESNO,Do kangaroos carry their young in pouches
+QUESTION:YESNO,Do kangaroos live in South America
+QUESTION:YESNO,Do koalas live in trees
+QUESTION:YESNO,Do lemons taste sour
+QUESTION:YESNO,Do lions live in the jungle
+QUESTION:YESNO,Do monkeys eat bananas
+QUESTION:YESNO,Do monkeys have tails
+QUESTION:YESNO,Do monkeys live in groups
+QUESTION:YESNO,Do mosquitos bite humans
+QUESTION:YESNO,Do new clothes get dirty
+QUESTION:YESNO,Do octopuses have eight legs
+QUESTION:YESNO,Do penguins live in the Arctic
+QUESTION:YESNO,Do people have more than two arms
+QUESTION:YESNO,Do pilots fly paper planes
+QUESTION:YESNO,Do plants need sunlight to grow
+QUESTION:YESNO,Do plants need sunlight to survive
+QUESTION:YESNO,Do plants wear glasses
+QUESTION:YESNO,Do polar bears hibernate
+QUESTION:YESNO,Do rabbits have long ears
+QUESTION:YESNO,Do snakes have legs
+QUESTION:YESNO,Do spiders have eight eyes
+QUESTION:YESNO,Do spiders have eight legs
+QUESTION:YESNO,Do storms damage homes
+QUESTION:YESNO,Do sunflowers face the sun
+QUESTION:YESNO,Do teachers help you learn
+QUESTION:YESNO,Do tigers have stripes
+QUESTION:YESNO,Do turtles have shells
+QUESTION:YESNO,Do turtles lay eggs
+QUESTION:YESNO,Do we call a school if we have an emergency
+QUESTION:YESNO,Do we eat beef
+QUESTION:YESNO,Do we need our hands to play a musical instrument
+QUESTION:YESNO,Do we want more money
+QUESTION:YESNO,Do whales communicate with each other
+QUESTION:YESNO,Do whales live in the ocean
+QUESTION:YESNO,Do windows need to be cleaned
+QUESTION:YESNO,Do you agree
+QUESTION:YESNO,Do you believe me
+QUESTION:YESNO,Do you chew soup
+QUESTION:YESNO,Do you do yoga
+QUESTION:YESNO,Do you eat beef
+QUESTION:YESNO,Do you get wet when you go swimming
+QUESTION:YESNO,Do you have a car
+QUESTION:YESNO,Do you have a dog
+QUESTION:YESNO,Do you have a problem
+QUESTION:YESNO,Do you know how to code
+QUESTION:YESNO,Do you like Paris
+QUESTION:YESNO,Do you like coffee
+QUESTION:YESNO,Do you need to go home
+QUESTION:YESNO,Do you own a car
+QUESTION:YESNO,Do you prefer sweet or savory foods
+QUESTION:YESNO,Do you speak Spanish
+QUESTION:YESNO,Do you throw things in the garbage that are broken
+QUESTION:YESNO,Do you use roller skates on the grass
+QUESTION:YESNO,Do you want a drink
+QUESTION:YESNO,Do you want more money
+QUESTION:YESNO,Does a circle have sides
+QUESTION:YESNO,Does a koala eat eucalyptus leaves
+QUESTION:YESNO,Does a lion roar
+QUESTION:YESNO,Does a square have three sides
+QUESTION:YESNO,Does a zebra have stripes
+QUESTION:YESNO,Does an alligator live in water or on land
+QUESTION:YESNO,Does an octopus have eight legs
+QUESTION:YESNO,Does an orange have more juice than a banana
+QUESTION:YESNO,Does an ostrich bury its head in the sand
+QUESTION:YESNO,Does he read every day
+QUESTION:YESNO,Does it snow during the summer
+QUESTION:YESNO,Does my dog bark loudly
+QUESTION:YESNO,Does she have a job
+QUESTION:YESNO,Does she love tennis
+QUESTION:YESNO,Does the Amazon rainforest span multiple countries
+QUESTION:YESNO,Does the Earth have an atmosphere
+QUESTION:YESNO,Does the Nile River flow through Egypt
+QUESTION:YESNO,Does the earth revolve around the sun
+QUESTION:YESNO,Does the moon have an atmosphere
+QUESTION:YESNO,Does the moon orbit the Earth
+QUESTION:YESNO,Does the moon revolve around the earth
+QUESTION:YESNO,Does the sun make things hot
+QUESTION:YESNO,Does the sun rise in the east
+QUESTION:YESNO,Does the sun rise in the east and set in the west
+QUESTION:YESNO,Does water freeze at 0 degrees Celsius
+QUESTION:YESNO,Does yogurt go bad if it isn't refrigerated
+QUESTION:YESNO,Does your birthday always happen on the same day
+QUESTION:YESNO,Does your dog bark loudly
+QUESTION:YESNO,Has John been fired
+QUESTION:YESNO,Has he been working here
+QUESTION:YESNO,Has he had surgery
+QUESTION:YESNO,Has she done the housework
+QUESTION:YESNO,Has she had a job
+QUESTION:YESNO,Has the mail been delivered
+QUESTION:YESNO,Has the order been approved
+QUESTION:YESNO,Has the restaurant closed
+QUESTION:YESNO,Has the train arrived
+QUESTION:YESNO,Have they finished
+QUESTION:YESNO,Have you bought groceries today
+QUESTION:YESNO,Have you eaten breakfast today
+QUESTION:YESNO,Have you finished your homework
+QUESTION:YESNO,Have you got a car
+QUESTION:YESNO,Have you got a pen
+QUESTION:YESNO,Have you seen Michael
+QUESTION:YESNO,Have you visited Paris before
+QUESTION:YESNO,If it is June, is it hot in the North Pole
+QUESTION:YESNO,If someone cries, are they sad
+QUESTION:YESNO,If someone smiles, are they sad
+QUESTION:YESNO,If something is light, would it sink
+QUESTION:YESNO,If something is tasty, is it bad
+QUESTION:YESNO,If something smells, does it stink
+QUESTION:YESNO,If there are laves on the ground, is it winter
+QUESTION:YESNO,If there is snow on the ground, is it summer
+QUESTION:YESNO,If you break an egg, can you fix it
+QUESTION:YESNO,If you cut yourself really bad, should you go to the dentist
+QUESTION:YESNO,If you have a ball, can you play catch
+QUESTION:YESNO,If you have a bracelet, do you own jewelry
+QUESTION:YESNO,If you have a pen and paper, can you write your name
+QUESTION:YESNO,If you have boiling water, is it hot
+QUESTION:YESNO,If you rip your shirt, would you staple it back together
+QUESTION:YESNO,If you want to watch a movie, would you go to a bank
+QUESTION:YESNO,If you wanted to get warm, would you drink hot chocolate
+QUESTION:YESNO,If you went to a restaurant, would you see clowns
+QUESTION:YESNO,If you were a bee, could you sing
+QUESTION:YESNO,If you were a bird, would you have fins
+QUESTION:YESNO,If you were a builder, would you use a hammer
+QUESTION:YESNO,If you were a cat, would you have three legs
+QUESTION:YESNO,If you were a caterpillar, would you have legs
+QUESTION:YESNO,If you were a chair, could you swim
+QUESTION:YESNO,If you were a computer, would you be alive
+QUESTION:YESNO,If you were a fish, could you jump
+QUESTION:YESNO,If you were a horse, could you gallup
+QUESTION:YESNO,If you were a shark, would you eat fish
+QUESTION:YESNO,If you were an ant, would you live in dirt
+QUESTION:YESNO,If you were an owner, would you have a pet
+QUESTION:YESNO,If you were rotten, would you smell nice
+QUESTION:YESNO,If your bike has a flat tire, should you ride it
+QUESTION:YESNO,Is 50% higher than 48%
+QUESTION:YESNO,Is 9:30 p.m. later than 3:30 p.m
+QUESTION:YESNO,Is Africa the largest continent
+QUESTION:YESNO,Is Africa the second-largest continent in the world
+QUESTION:YESNO,Is Antarctica the coldest continent
+QUESTION:YESNO,Is Australia a country or a continent
+QUESTION:YESNO,Is Australia the smallest continent in the world
+QUESTION:YESNO,Is English the official language of China
+QUESTION:YESNO,Is English the official language of the United States
+QUESTION:YESNO,Is John a doctor
+QUESTION:YESNO,Is Luan going to be hired
+QUESTION:YESNO,Is Mount Everest the highest mountain in the world
+QUESTION:YESNO,Is Mount Everest the tallest mountain in the world
+QUESTION:YESNO,Is New York City small
+QUESTION:YESNO,Is Peter going to go
+QUESTION:YESNO,Is a banana a type of fruit
+QUESTION:YESNO,Is a brick heavier than a feather
+QUESTION:YESNO,Is a butterfly an insect
+QUESTION:YESNO,Is a car bigger than a person
+QUESTION:YESNO,Is a car faster than a bicycle
+QUESTION:YESNO,Is a carrot a type of vegetable
+QUESTION:YESNO,Is a carrot a vegetable
+QUESTION:YESNO,Is a clown funnier than a doctor
+QUESTION:YESNO,Is a computer an electronic device
+QUESTION:YESNO,Is a cow bigger than an elephant
+QUESTION:YESNO,Is a crocodile a reptile
+QUESTION:YESNO,Is a day longer than a week
+QUESTION:YESNO,Is a dolphin a mammal
+QUESTION:YESNO,Is a father older than his son
+QUESTION:YESNO,Is a gallon less than a cup
+QUESTION:YESNO,Is a giraffe taller than an elephant
+QUESTION:YESNO,Is a hurricane dangerous
+QUESTION:YESNO,Is a koala a bear
+QUESTION:YESNO,Is a lion the king of the jungle
+QUESTION:YESNO,Is a mile longer than a football field
+QUESTION:YESNO,Is a month longer than an hour
+QUESTION:YESNO,Is a pair of shoes more than one shoe
+QUESTION:YESNO,Is a pair of socks less than three pairs
+QUESTION:YESNO,Is a panda a bear
+QUESTION:YESNO,Is a penguin a bird
+QUESTION:YESNO,Is a piano a type of percussion instrument
+QUESTION:YESNO,Is a rhinoceros a mammal
+QUESTION:YESNO,Is a screwdriver a tool
+QUESTION:YESNO,Is a spider an insect
+QUESTION:YESNO,Is a square a type of rectangle
+QUESTION:YESNO,Is a square also a rectangle
+QUESTION:YESNO,Is a state bigger than a city
+QUESTION:YESNO,Is a tiger a carnivore
+QUESTION:YESNO,Is a tomato a fruit
+QUESTION:YESNO,Is a tomato a fruit or a vegetable
+QUESTION:YESNO,Is a triangle a shape with three sides
+QUESTION:YESNO,Is a turtle a reptile
+QUESTION:YESNO,Is a violin a stringed instrument
+QUESTION:YESNO,Is a whale a fish
+QUESTION:YESNO,Is a whale a mammal or a fish
+QUESTION:YESNO,Is a year longer than six months
+QUESTION:YESNO,Is a zebra black and white
+QUESTION:YESNO,Is an egg a dairy product
+QUESTION:YESNO,Is an elephant bigger than a mouse
+QUESTION:YESNO,Is baking soda the same as baking powder
+QUESTION:YESNO,Is basketball played with a ball
+QUESTION:YESNO,Is basketball played with a bat
+QUESTION:YESNO,Is building a house hard work
+QUESTION:YESNO,Is chocolate a type of candy
+QUESTION:YESNO,Is chocolate a type of vegetable
+QUESTION:YESNO,Is chocolate made from cocoa beans
+QUESTION:YESNO,Is chocolate sweet
+QUESTION:YESNO,Is coffee made from coffee beans
+QUESTION:YESNO,Is coral a type of plant
+QUESTION:YESNO,Is electricity a form of energy
+QUESTION:YESNO,Is fire hot
+QUESTION:YESNO,Is fire hot or cold
+QUESTION:YESNO,Is five dollars more than one hundred
+QUESTION:YESNO,Is glass a type of solid
+QUESTION:YESNO,Is gold a metal
+QUESTION:YESNO,Is gold a type of metal
+QUESTION:YESNO,Is half an apple less than one apple
+QUESTION:YESNO,Is he a bad person
+QUESTION:YESNO,Is he a good person
+QUESTION:YESNO,Is he being interviewed now
+QUESTION:YESNO,Is he fat
+QUESTION:YESNO,Is he tall
+QUESTION:YESNO,Is helium a gas
+QUESTION:YESNO,Is honey made by bees
+QUESTION:YESNO,Is ice cream cold
+QUESTION:YESNO,Is iron a metal
+QUESTION:YESNO,Is it 4 o'clock
+QUESTION:YESNO,Is it a doctor's job to save people
+QUESTION:YESNO,Is it cold outside
+QUESTION:YESNO,Is it going to rain tomorrow
+QUESTION:YESNO,Is it possible to live without water
+QUESTION:YESNO,Is it possible to walk on water
+QUESTION:YESNO,Is it raining outside
+QUESTION:YESNO,Is it sunny outside
+QUESTION:YESNO,Is my name being called
+QUESTION:YESNO,Is nitrogen a gas
+QUESTION:YESNO,Is one million a big number
+QUESTION:YESNO,Is oxygen a gas
+QUESTION:YESNO,Is paper used to wash clothes
+QUESTION:YESNO,Is pizza Italian
+QUESTION:YESNO,Is she a bad person
+QUESTION:YESNO,Is she a good person
+QUESTION:YESNO,Is she being interviewed now
+QUESTION:YESNO,Is she fat
+QUESTION:YESNO,Is she tall
+QUESTION:YESNO,Is snow cold
+QUESTION:YESNO,Is soccer played with a ball
+QUESTION:YESNO,Is tea a type of drink
+QUESTION:YESNO,Is tea made from tea leaves
+QUESTION:YESNO,Is the Acropolis located in Athens
+QUESTION:YESNO,Is the Amazon River the longest river in the world
+QUESTION:YESNO,Is the Atlantic Ocean larger than the Indian Ocean
+QUESTION:YESNO,Is the Colosseum located in Rome
+QUESTION:YESNO,Is the Dead Sea the lowest point on Earth
+QUESTION:YESNO,Is the Earth flat
+QUESTION:YESNO,Is the Earth round
+QUESTION:YESNO,Is the Earth's atmosphere made up of oxygen and nitrogen
+QUESTION:YESNO,Is the Eiffel Tower in France
+QUESTION:YESNO,Is the Eiffel Tower in Paris
+QUESTION:YESNO,Is the Eiffel Tower located in France
+QUESTION:YESNO,Is the Eiffel Tower located in Paris
+QUESTION:YESNO,Is the Grand Canyon in Arizona
+QUESTION:YESNO,Is the Grand Canyon the largest canyon in the world
+QUESTION:YESNO,Is the Great Barrier Reef the largest coral reef in the world
+QUESTION:YESNO,Is the Great Wall of China the longest wall in the world
+QUESTION:YESNO,Is the Great Wall of China visible from space
+QUESTION:YESNO,Is the Leaning Tower of Pisa located in Italy
+QUESTION:YESNO,Is the Mona Lisa a painting
+QUESTION:YESNO,Is the Mona Lisa painting by Leonardo da Vinci
+QUESTION:YESNO,Is the Mona Lisa painting located in the Louvre Museum
+QUESTION:YESNO,Is the Nile River in Egypt
+QUESTION:YESNO,Is the Nile River the longest river in Africa
+QUESTION:YESNO,Is the Nile River the longest river in the world
+QUESTION:YESNO,Is the North Pole colder than the South Pole
+QUESTION:YESNO,Is the Pacific Ocean the largest ocean in the world
+QUESTION:YESNO,Is the Pacific Ocean the largest ocean on Earth
+QUESTION:YESNO,Is the Sahara Desert the largest hot desert in the world
+QUESTION:YESNO,Is the Sistine Chapel located in Vatican City
+QUESTION:YESNO,Is the Statue of Liberty in New York City
+QUESTION:YESNO,Is the Statue of Liberty located in New York
+QUESTION:YESNO,Is the Statue of Liberty located in New York City
+QUESTION:YESNO,Is the Taj Mahal located in India
+QUESTION:YESNO,Is the Titanic still intact on the ocean floor
+QUESTION:YESNO,Is the United States a country
+QUESTION:YESNO,Is the United States the largest country in the world
+QUESTION:YESNO,Is the White House the home of the President of the United States
+QUESTION:YESNO,Is the band Led Zeppelin from England
+QUESTION:YESNO,Is the book "The Catcher in the Rye" written by J.D. Salinger
+QUESTION:YESNO,Is the city of Rio de Janeiro located in Brazil
+QUESTION:YESNO,Is the city of Tokyo located in Japan
+QUESTION:YESNO,Is the clarinet a woodwind instrument
+QUESTION:YESNO,Is the color blue warm
+QUESTION:YESNO,Is the currency used in Australia the Australian dollar
+QUESTION:YESNO,Is the currency used in Canada the Canadian dollar
+QUESTION:YESNO,Is the currency used in China the Chinese yuan
+QUESTION:YESNO,Is the currency used in France the euro
+QUESTION:YESNO,Is the currency used in India the Indian rupee
+QUESTION:YESNO,Is the currency used in Japan the yen
+QUESTION:YESNO,Is the currency used in Mexico the Mexican peso
+QUESTION:YESNO,Is the currency used in Russia the Russian ruble
+QUESTION:YESNO,Is the currency used in the United Kingdom the pound sterling
+QUESTION:YESNO,Is the currency used in the United States the US dollar
+QUESTION:YESNO,Is the earth closer to the sun in summer
+QUESTION:YESNO,Is the earth flat
+QUESTION:YESNO,Is the earth older than the sun
+QUESTION:YESNO,Is the earth round
+QUESTION:YESNO,Is the film "The Godfather" directed by Francis Ford Coppola
+QUESTION:YESNO,Is the grass green
+QUESTION:YESNO,Is the guitar a wind instrument
+QUESTION:YESNO,Is the human heart located in the abdomen
+QUESTION:YESNO,Is the human heart located on the left side of the chest
+QUESTION:YESNO,Is the moon a natural satellite of Earth
+QUESTION:YESNO,Is the moon a planet
+QUESTION:YESNO,Is the moon bigger than Earth
+QUESTION:YESNO,Is the moon bigger than the earth
+QUESTION:YESNO,Is the moon hotter than the sun
+QUESTION:YESNO,Is the moon larger than the earth
+QUESTION:YESNO,Is the moon made of cheese
+QUESTION:YESNO,Is the moon round
+QUESTION:YESNO,Is the ocean salty
+QUESTION:YESNO,Is the painting "The Starry Night" by Vincent van Gogh
+QUESTION:YESNO,Is the piano a percussion instrument
+QUESTION:YESNO,Is the school open
+QUESTION:YESNO,Is the singer Beyoncé from the United States
+QUESTION:YESNO,Is the sky black at night
+QUESTION:YESNO,Is the sky blue
+QUESTION:YESNO,Is the sky green
+QUESTION:YESNO,Is the song "Bohemian Rhapsody" by Queen
+QUESTION:YESNO,Is the speed of light faster than sound
+QUESTION:YESNO,Is the speed of light faster than the speed of sound
+QUESTION:YESNO,Is the speed of sound constant
+QUESTION:YESNO,Is the sun a planet
+QUESTION:YESNO,Is the sun a star
+QUESTION:YESNO,Is the sun a star or a planet
+QUESTION:YESNO,Is the sun hot
+QUESTION:YESNO,Is the train going to arrive
+QUESTION:YESNO,Is the trumpet a brass instrument
+QUESTION:YESNO,Is the universe infinite
+QUESTION:YESNO,Is the violin a string instrument
+QUESTION:YESNO,Is the world flat
+QUESTION:YESNO,Is thirty minutes shorter than one hour
+QUESTION:YESNO,Is today Monday
+QUESTION:YESNO,Is today my birthday
+QUESTION:YESNO,Is today your birthday
+QUESTION:YESNO,Is twenty more than fifty
+QUESTION:YESNO,Is water wet
+QUESTION:YESNO,Is watermelon a type of melon
+QUESTION:YESNO,Is whole less than a half
+QUESTION:YESNO,Is winter colder than summer
+QUESTION:YESNO,Is yoga popular
+QUESTION:YESNO,Is your arm bigger than your thigh
+QUESTION:YESNO,Might it be broken
+QUESTION:YESNO,Must a visa be obtained first
+QUESTION:YESNO,Shall we attend
+QUESTION:YESNO,Should I take an umbrella
+QUESTION:YESNO,Should I wear a jacket
+QUESTION:YESNO,Should he practice more
+QUESTION:YESNO,Should she practice more
+QUESTION:YESNO,Should you always tell the truth
+QUESTION:YESNO,Should you brush your teeth twice a day
+QUESTION:YESNO,Should you drink enough water every day
+QUESTION:YESNO,Should you eat breakfast every morning
+QUESTION:YESNO,Should you exercise regularly
+QUESTION:YESNO,Should you floss your teeth every day
+QUESTION:YESNO,Should you get enough sleep every night
+QUESTION:YESNO,Should you get vaccinated against diseases
+QUESTION:YESNO,Should you help others when they need it
+QUESTION:YESNO,Should you recycle
+QUESTION:YESNO,Should you stay away from drugs and alcohol
+QUESTION:YESNO,Should you wash your hands before eating
+QUESTION:YESNO,Should you wash your hands with soap
+QUESTION:YESNO,Should you wear a helmet while riding a bike
+QUESTION:YESNO,Should you wear a seatbelt while driving a car
+QUESTION:YESNO,Should you wear sunscreen outside
+QUESTION:YESNO,Was Albert Einstein a famous scientist
+QUESTION:YESNO,Was Isaac Newton known for his laws of motion
+QUESTION:YESNO,Was Leonardo da Vinci a famous artist
+QUESTION:YESNO,Was Martin Luther King Jr. a civil rights activist
+QUESTION:YESNO,Was New York expensive
+QUESTION:YESNO,Was Sarah his teacher
+QUESTION:YESNO,Was he going to visit
+QUESTION:YESNO,Was it nice
+QUESTION:YESNO,Was she going to visit
+QUESTION:YESNO,Was the book sold
+QUESTION:YESNO,Was the price the same
+QUESTION:YESNO,Was the printer being repaired
+QUESTION:YESNO,Was the waiter rude
+QUESTION:YESNO,Were the Vikings known for their seafaring skills
+QUESTION:YESNO,Were the ancient Greeks known for their philosophy and mathematics
+QUESTION:YESNO,Were they waiting long
+QUESTION:YESNO,Were we late
+QUESTION:YESNO,Were you rich
+QUESTION:YESNO,Were you there
+QUESTION:YESNO,Were you tired
+QUESTION:YESNO,Will he come
+QUESTION:YESNO,Will she come
+QUESTION:YESNO,Will the sun eventually run out of fuel
+QUESTION:YESNO,Will they be happy
+QUESTION:YESNO,Will they be hired
+QUESTION:YESNO,Will we join them
+QUESTION:YESNO,Will you go to the park
+QUESTION:YESNO,Will you join them
+QUESTION:YESNO,Will you marry me
+QUESTION:YESNO,Would he have been angry
+QUESTION:YESNO,Would she have been angry
+QUESTION:YESNO,can you die
+QUESTION:YESNO,did you know that dogs are animals
+QUESTION:YESNO,do you agree that life is beautiful
+QUESTION:YESNO,have you finished booting up
+QUESTION:YESNO,should i program artificial stupidity
+QUESTION:YESNO,will you live forever
+SENTENCE:EXCLAMATION,How amazing is that sunset
+SENTENCE:EXCLAMATION,How amazing is this dish
+SENTENCE:EXCLAMATION,How amazing that sunset is
+SENTENCE:EXCLAMATION,How awesome is that
+SENTENCE:EXCLAMATION,How beautiful is that artwork
+SENTENCE:EXCLAMATION,How beautiful is this artwork
+SENTENCE:EXCLAMATION,How beautiful is this flower
+SENTENCE:EXCLAMATION,How beautiful that flower is
+SENTENCE:EXCLAMATION,How beautiful this flower is
+SENTENCE:EXCLAMATION,How breathtaking is the view from here
+SENTENCE:EXCLAMATION,How clever you are
+SENTENCE:EXCLAMATION,How delicious does this food smell
+SENTENCE:EXCLAMATION,How exciting is this news
+SENTENCE:EXCLAMATION,How fascinating
+SENTENCE:EXCLAMATION,How gorgeous is that dress
+SENTENCE:EXCLAMATION,How incredible is that achievement
+SENTENCE:EXCLAMATION,How incredible is this artwork
+SENTENCE:EXCLAMATION,How incredible is this experience
+SENTENCE:EXCLAMATION,How incredible is this view
+SENTENCE:EXCLAMATION,How incredible that sunset looks
+SENTENCE:EXCLAMATION,How stunning is that sunset
+SENTENCE:EXCLAMATION,How stunning is that view
+SENTENCE:EXCLAMATION,How stunning is this view
+SENTENCE:EXCLAMATION,How wonderful is that
+SENTENCE:EXCLAMATION,How wonderful that is
+SENTENCE:EXCLAMATION,How,adorable is that baby
+SENTENCE:EXCLAMATION,How,amazing is that movie
+SENTENCE:EXCLAMATION,How,beautiful is that sunset
+SENTENCE:EXCLAMATION,How,brilliant is that idea
+SENTENCE:EXCLAMATION,How,charming is that person
+SENTENCE:EXCLAMATION,How,comfortable are those shoes
+SENTENCE:EXCLAMATION,How,cool is that car
+SENTENCE:EXCLAMATION,How,cute is that puppy
+SENTENCE:EXCLAMATION,How,entertaining is that show
+SENTENCE:EXCLAMATION,How,exciting is that game
+SENTENCE:EXCLAMATION,How,fantastic is this book
+SENTENCE:EXCLAMATION,How,fascinating is that book
+SENTENCE:EXCLAMATION,How,funny is that joke
+SENTENCE:EXCLAMATION,How,impressive is that building
+SENTENCE:EXCLAMATION,How,impressive is that performance
+SENTENCE:EXCLAMATION,How,incredible is that performance
+SENTENCE:EXCLAMATION,How,lovely is that flower
+SENTENCE:EXCLAMATION,How,magnificent is that building
+SENTENCE:EXCLAMATION,How,refreshing is that drink
+SENTENCE:EXCLAMATION,How,relaxing is that massage
+SENTENCE:EXCLAMATION,How,stunning is that dress
+SENTENCE:EXCLAMATION,How,stunning is that outfit
+SENTENCE:EXCLAMATION,How,stylish is that outfit
+SENTENCE:EXCLAMATION,How,tasty is that dish
+SENTENCE:EXCLAMATION,How,wonderful is that song
+SENTENCE:EXCLAMATION,That's a great accomplishment
+SENTENCE:EXCLAMATION,That's amazing
+SENTENCE:EXCLAMATION,That's amazing news
+SENTENCE:EXCLAMATION,That's an amazing idea
+SENTENCE:EXCLAMATION,That's fantastic
+SENTENCE:EXCLAMATION,That's fantastic news
+SENTENCE:EXCLAMATION,That's incredible
+SENTENCE:EXCLAMATION,That's incredible news
+SENTENCE:EXCLAMATION,This is a dream come true
+SENTENCE:EXCLAMATION,This is amazing news
+SENTENCE:EXCLAMATION,This is fantastic
+SENTENCE:EXCLAMATION,This is incredible news
+SENTENCE:EXCLAMATION,This is phenomenal news
+SENTENCE:EXCLAMATION,This is the best day ever
+SENTENCE:EXCLAMATION,This is the best news I've heard all day
+SENTENCE:EXCLAMATION,This is the best news ever
+SENTENCE:EXCLAMATION,This is the happiest I've felt in a long time
+SENTENCE:EXCLAMATION,This is unbelievable
+SENTENCE:EXCLAMATION,What a beautiful day
+SENTENCE:EXCLAMATION,What a beautiful painting
+SENTENCE:EXCLAMATION,What a beautiful view
+SENTENCE:EXCLAMATION,What a delicious meal
+SENTENCE:EXCLAMATION,What a gorgeous dress
+SENTENCE:EXCLAMATION,What a great performance
+SENTENCE:EXCLAMATION,What a nice person you are
+SENTENCE:EXCLAMATION,What a stunning performance
+SENTENCE:EXCLAMATION,What a stunning sunset
+SENTENCE:EXCLAMATION,What a stunning view
+SENTENCE:EXCLAMATION,What a wonderful surprise
+SENTENCE:EXCLAMATION,What an amazing experience
+SENTENCE:EXCLAMATION,What an impressive accomplishment
+SENTENCE:EXCLAMATION,What an impressive performance by the dancers
+SENTENCE:EXCLAMATION,What an incredible view from up here
+SENTENCE:EXCLAMATION,Wow, what an amazing performance
+SENTENCE:EXCLAMATION,Wow, what an incredible performance
+SENTENCE:SOCIAL,Cheers to a great evening
+SENTENCE:SOCIAL,Cheers to a great night
+SENTENCE:SOCIAL,Congratulations on your graduation
+SENTENCE:SOCIAL,Congratulations on your new baby
+SENTENCE:SOCIAL,Congratulations on your new job
+SENTENCE:SOCIAL,Congratulations on your promotion
+SENTENCE:SOCIAL,Enjoy your weekend
+SENTENCE:SOCIAL,Get well soon
+SENTENCE:SOCIAL,Good luck on your exam
+SENTENCE:SOCIAL,Good luck with your interview
+SENTENCE:SOCIAL,Good morning
+SENTENCE:SOCIAL,Happy Mother's Day
+SENTENCE:SOCIAL,Happy New Year
+SENTENCE:SOCIAL,Happy Thanksgiving
+SENTENCE:SOCIAL,Happy Valentine's Day
+SENTENCE:SOCIAL,Happy anniversary
+SENTENCE:SOCIAL,Happy birthday
+SENTENCE:SOCIAL,Happy holidays
+SENTENCE:SOCIAL,Have a great day
+SENTENCE:SOCIAL,Have a great day ahead
+SENTENCE:SOCIAL,Have a great day at work
+SENTENCE:SOCIAL,Have a great weekend
+SENTENCE:SOCIAL,Have a nice day
+SENTENCE:SOCIAL,Have a safe trip
+SENTENCE:SOCIAL,Have a wonderful day
+SENTENCE:SOCIAL,Help yourselves to coffee
+SENTENCE:SOCIAL,Hope to see you again soon
+SENTENCE:SOCIAL,It was great meeting you
+SENTENCE:SOCIAL,It was great seeing you again
+SENTENCE:SOCIAL,It was nice meeting you
+SENTENCE:SOCIAL,It was nice to meet your family
+SENTENCE:SOCIAL,Let's grab coffee sometime
+SENTENCE:SOCIAL,Let's plan a trip together
+SENTENCE:SOCIAL,Stay safe and take care
+SENTENCE:SOCIAL,Take care and stay safe
+SENTENCE:SOCIAL,Take care of yourself
+SENTENCE:SOCIAL,Thank you for being there for me
+SENTENCE:SOCIAL,Thank you for coming to my party
+SENTENCE:SOCIAL,Thank you for inviting me
+SENTENCE:SOCIAL,Thank you for inviting me over
+SENTENCE:SOCIAL,Thank you for your help
+SENTENCE:SOCIAL,Thank you for your kind words
+SENTENCE:SOCIAL,Thank you for your kindness and generosity
+SENTENCE:SOCIAL,Thank you for your time
+SENTENCE:SOCIAL,Welcome to the team
+SENTENCE:STATEMENT,Cooking at home is often healthier than eating out at a restaurant
+SENTENCE:STATEMENT,Education is important for personal and societal growth
+SENTENCE:STATEMENT,Education is the key to success
+SENTENCE:STATEMENT,Exercise can improve both physical and mental health
+SENTENCE:STATEMENT,Exercise can improve your mood and reduce stress
+SENTENCE:STATEMENT,Hard work pays off in the end
+SENTENCE:STATEMENT,Having a positive attitude can make a big difference in your life
+SENTENCE:STATEMENT,I believe in the power of positive thinking
+SENTENCE:STATEMENT,I believe in treating others with kindness
+SENTENCE:STATEMENT,I believe that exercise is important for a healthy lifestyle
+SENTENCE:STATEMENT,I don't like spicy food
+SENTENCE:STATEMENT,I have been learning to play the guitar for a year now
+SENTENCE:STATEMENT,I like Mycroft
+SENTENCE:STATEMENT,I like pizza
+SENTENCE:STATEMENT,I prefer tea over coffee
+SENTENCE:STATEMENT,I think learning a new language is very rewarding
+SENTENCE:STATEMENT,I think that music is a universal language
+SENTENCE:STATEMENT,I want you to buy bitcoin
+SENTENCE:STATEMENT,In my opinion, this restaurant has the best pizza in town
+SENTENCE:STATEMENT,Jimmy loves his dog
+SENTENCE:STATEMENT,Laughter is the best medicine
+SENTENCE:STATEMENT,Money cannot buy happiness
+SENTENCE:STATEMENT,Music has a profound impact on human emotions
+SENTENCE:STATEMENT,People should be treated equally regardless of their race gender or sexuality
+SENTENCE:STATEMENT,Playing sports is good for your health
+SENTENCE:STATEMENT,Reading books before bed helps me fall asleep
+SENTENCE:STATEMENT,Reading books is a great way to expand your knowledge
+SENTENCE:STATEMENT,Reading can improve your vocabulary and critical thinking skills
+SENTENCE:STATEMENT,Reading is an important part of learning
+SENTENCE:STATEMENT,Reading is my favorite hobby
+SENTENCE:STATEMENT,She is an excellent cook
+SENTENCE:STATEMENT,She reads two newspapers every day
+SENTENCE:STATEMENT,The Amazon Rainforest is the largest rainforest in the world
+SENTENCE:STATEMENT,The Declaration of Independence was signed on July 4, 1776
+SENTENCE:STATEMENT,The Earth is round
+SENTENCE:STATEMENT,The Earth revolves around the sun
+SENTENCE:STATEMENT,The Great Barrier Reef is the largest coral reef system in the world
+SENTENCE:STATEMENT,The Great Barrier Reef is the world's largest coral reef system
+SENTENCE:STATEMENT,The Mona Lisa is a famous painting by Leonardo da Vinci
+SENTENCE:STATEMENT,The Mona Lisa is a painting by Leonardo da Vinci
+SENTENCE:STATEMENT,The Mona Lisa was painted by Leonardo da Vinci
+SENTENCE:STATEMENT,The Statue of Liberty was a gift from France to the United States
+SENTENCE:STATEMENT,The Titanic was a British passenger ship that famously sank in 1912
+SENTENCE:STATEMENT,The United States is the third-largest country in the world by area
+SENTENCE:STATEMENT,The arts are an important aspect of human culture
+SENTENCE:STATEMENT,The beach is my happy place
+SENTENCE:STATEMENT,The company's profits have been steadily increasing
+SENTENCE:STATEMENT,The early bird catches the worm
+SENTENCE:STATEMENT,The earth is round
+SENTENCE:STATEMENT,The economy is improving
+SENTENCE:STATEMENT,The environment is suffering from pollution and climate change
+SENTENCE:STATEMENT,The first iPhone was released in 2007
+SENTENCE:STATEMENT,The government will make an announcement at noon
+SENTENCE:STATEMENT,The human body is made up of approximately 60% water
+SENTENCE:STATEMENT,The human brain weighs approximately three pounds
+SENTENCE:STATEMENT,The internet has changed the way we communicate
+SENTENCE:STATEMENT,The internet has revolutionized the way we communicate
+SENTENCE:STATEMENT,The movie was very suspenseful
+SENTENCE:STATEMENT,The sky is so blue today
+SENTENCE:STATEMENT,The sun is a star that is located at the center of our solar system
+SENTENCE:STATEMENT,The sun rises in the east and sets in the west
+SENTENCE:STATEMENT,The world is facing a climate crisis
+SENTENCE:STATEMENT,Travel broadens the mind
+SENTENCE:STATEMENT,Traveling alone can be a great experience
+SENTENCE:STATEMENT,Watching movies is my favorite pastime
+SENTENCE:STATEMENT,Water boils at 100 degrees Celsius
+SENTENCE:STATEMENT,We should all strive to be more environmentally conscious in our daily lives
+SENTENCE:STATEMENT,not a question
