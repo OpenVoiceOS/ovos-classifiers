@@ -6,7 +6,8 @@ from os.path import join, dirname, isfile
 import nltk
 from nltk.corpus import brown, treebank, nps_chat, multext_east
 
-from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger, OVOSClassifierTagger
+from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger, SklearnOVOSVotingClassifierTagger
 
 META = join(dirname(dirname(dirname(__file__))), "models", "metadata")
 MODEL_BASE = join(dirname(dirname(dirname(__file__))), "models", "postag")
@@ -57,7 +58,7 @@ for m in listdir(META):
         t = OVOSBrillTagger.from_file(model)
         acc = t.score(corpus)
     else:
-        t = OVOSClassifierTagger.from_file(model)
+        t = SklearnOVOSClassifierTagger.from_file(model)
         X_test, y_test = transform_to_dataset(corpus)
 
         # HACK - avoid run out of memory

@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import brown, treebank
 from sklearn.tree import DecisionTreeClassifier
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "udep"
 CORPUS = "brown+treebank"
@@ -57,7 +57,7 @@ X, y = transform_to_dataset(train_data)
 X = X[:10000]
 y = y[:10000]
 
-clf = OVOSClassifierTagger(DecisionTreeClassifier(criterion='entropy'))
+clf = SklearnOVOSClassifierTagger(DecisionTreeClassifier(criterion='entropy'))
 clf.train(X, y)
 
 print('Training completed')

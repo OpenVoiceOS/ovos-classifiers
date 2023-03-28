@@ -3,7 +3,7 @@ from os import makedirs, listdir
 from os.path import join, dirname, isfile
 
 from ovos_classifiers.datasets import get_utterance_tags_dataset
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 META = join(dirname(dirname(dirname(__file__))), "models", "metadata")
 MODEL_BASE = join(dirname(dirname(dirname(__file__))), "models", "utttags")
@@ -24,7 +24,7 @@ for m in listdir(META):
     if not isfile(model):
         continue
 
-    t = OVOSClassifierTagger.from_file(model)
+    t = SklearnOVOSClassifierTagger.from_file(model)
     acc = t.score(X, y)
 
     model_accs.append((data['model_id'], data['accuracy'], acc))

@@ -19,7 +19,7 @@ jobs:
           python -m pip install build wheel
       - name: Install repo
         run: |
-          pip install .
+          pip install .[sklearn]
       - name: Benchmark dataset
         run: |
           python scripts/benchmarks/utttags.py

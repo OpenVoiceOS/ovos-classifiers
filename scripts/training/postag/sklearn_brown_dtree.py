@@ -5,7 +5,7 @@ from os.path import join, dirname
 from sklearn.tree import DecisionTreeClassifier
 
 from ovos_classifiers.datasets import get_brown_trainset
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "brown"
 CORPUS = "brown"
@@ -34,7 +34,7 @@ y = y[:10000]
 X_test = X_test[:10000]
 y_test = y_test[:10000]
 
-clf = OVOSClassifierTagger(DecisionTreeClassifier(criterion='entropy'))
+clf = SklearnOVOSClassifierTagger(DecisionTreeClassifier(criterion='entropy'))
 clf.train(X, y)
 
 print('Training completed')

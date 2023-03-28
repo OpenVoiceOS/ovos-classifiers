@@ -8,7 +8,7 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.svm import LinearSVC
 
 from ovos_classifiers.datasets import get_coref_iob_trainset
-from ovos_classifiers.tasks.tagger import OVOSVotingClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
 
 TAGSET = "corefiob"
 CORPUS = "corefiob_v0.1"
@@ -45,7 +45,7 @@ clf3 = Perceptron()
 clf4 = MultinomialNB()
 
 estimators = [clf1, clf2, clf3, clf4]
-clf = OVOSVotingClassifierTagger(estimators, pipeline_id="pronouns_en")
+clf = SklearnOVOSVotingClassifierTagger(estimators, pipeline_id="pronouns_en")
 
 clf.train(X, y)
 

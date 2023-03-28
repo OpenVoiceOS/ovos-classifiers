@@ -6,7 +6,7 @@ from os.path import join, dirname
 from ovos_classifiers.datasets import get_coref_iob_trainset
 from sklearn.linear_model import Perceptron
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "corefiob"
 CORPUS = "corefiob_v0.1"
@@ -32,7 +32,7 @@ makedirs(META, exist_ok=True)
 (X, y), (X_test, y_test) = get_coref_iob_trainset()
 
 
-clf = OVOSClassifierTagger(Perceptron(), pipeline_id="pronouns_en")
+clf = SklearnOVOSClassifierTagger(Perceptron(), pipeline_id="pronouns_en")
 clf.train(X, y)
 
 print('Training completed')

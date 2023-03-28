@@ -8,7 +8,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import Perceptron
 
 from ovos_classifiers.datasets import get_treebank_trainset
-from ovos_classifiers.tasks.tagger import OVOSVotingClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
 
 TAGSET = "udep"
 CORPUS = "treebank"
@@ -45,7 +45,7 @@ clf2 = KNeighborsClassifier(n_neighbors=4)
 estimators = [clf1, clf2]
 weights = [1, 2]
 
-clf = OVOSVotingClassifierTagger(estimators, weights=weights, voting="soft")
+clf = SklearnOVOSVotingClassifierTagger(estimators, weights=weights, voting="soft")
 clf.train(X, y)
 
 print('Training completed')

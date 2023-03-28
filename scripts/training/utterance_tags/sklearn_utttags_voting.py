@@ -8,7 +8,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 
 from ovos_classifiers.datasets import get_utterance_tags_trainset
-from ovos_classifiers.tasks.tagger import OVOSVotingClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
 
 TAGSET = "utttags"
 CORPUS = "utterance_tags_v0.1"
@@ -43,7 +43,7 @@ clf3 = Perceptron()
 clf4 = MultinomialNB()
 
 estimators = [clf1, clf2, clf3, clf4]
-clf = OVOSVotingClassifierTagger(estimators, PIPELINE)
+clf = SklearnOVOSVotingClassifierTagger(estimators, PIPELINE)
 
 clf.train(X, y)
 

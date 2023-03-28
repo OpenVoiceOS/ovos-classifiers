@@ -23,7 +23,7 @@ jobs:
           python -m pip install build wheel
       - name: Install repo
         run: |
-          pip install .
+          pip install .[sklearn]
       - name: Train mcmorpho (UDEP) SVM postag
         run: |
           python scripts/training/postag/sklearn_macmorpho_udep_lsvc.py

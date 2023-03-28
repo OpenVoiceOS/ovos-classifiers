@@ -8,7 +8,7 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.svm import LinearSVC
 
 from ovos_classifiers.datasets import get_treebank_trainset
-from ovos_classifiers.tasks.tagger import OVOSVotingClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
 
 TAGSET = "udep"
 CORPUS = "treebank"
@@ -48,7 +48,7 @@ clf3 = Perceptron()
 clf4 = MultinomialNB()
 
 estimators = [clf1, clf2, clf3, clf4]
-clf = OVOSVotingClassifierTagger(estimators)
+clf = SklearnOVOSVotingClassifierTagger(estimators)
 
 clf.train(X, y)
 

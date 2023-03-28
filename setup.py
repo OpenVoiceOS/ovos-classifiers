@@ -22,13 +22,17 @@ setup(
     packages=['ovos_classifiers',
               'ovos_classifiers.datasets',
               'ovos_classifiers.heuristics',
-              'ovos_classifiers.features',
-              'ovos_classifiers.features.extractors',
-              "ovos_classifiers.tasks"],
+              'ovos_classifiers.skovos',
+              'ovos_classifiers.skovos.features',
+              "ovos_classifiers.tasks",
+              "ovos_classifiers.utils"],
     url='https://github.com/OpenVoiceOS/ovos-classifiers',
     license='apache-2.0',
     author='jarbasai',
     include_package_data=True,
+    extras_require={
+        "sklearn": ["scikit-learn"]
+    },
     install_requires=required("requirements.txt"),
     author_email='jarbasai@mailfence.com'
 )

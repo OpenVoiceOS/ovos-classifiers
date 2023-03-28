@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import treebank
 from sklearn.linear_model import SGDClassifier
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "pentree"
 CORPUS = "treebank"
@@ -54,7 +54,7 @@ X, y = transform_to_dataset(train_data)
 X = X[:10000]
 y = y[:10000]
 
-clf = OVOSClassifierTagger(SGDClassifier(loss='hinge', penalty='l1', alpha=1e-3))
+clf = SklearnOVOSClassifierTagger(SGDClassifier(loss='hinge', penalty='l1', alpha=1e-3))
 clf.train(X, y)
 
 print('Training completed')

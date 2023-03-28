@@ -7,7 +7,7 @@ from string import punctuation
 import nltk
 from sklearn.svm import LinearSVC
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "udep"
 CORPUS = "floresta"
@@ -116,7 +116,7 @@ X, y = transform_to_dataset(train_data)
 X = X[:10000]
 y = y[:10000]
 
-clf = OVOSClassifierTagger(LinearSVC())
+clf = SklearnOVOSClassifierTagger(LinearSVC())
 clf.train(X, y)
 
 print('Training completed')

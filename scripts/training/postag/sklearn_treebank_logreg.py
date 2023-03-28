@@ -5,7 +5,7 @@ from os.path import join, dirname
 from sklearn.linear_model import LogisticRegression
 
 from ovos_classifiers.datasets import get_treebank_trainset
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "pentree"
 CORPUS = "treebank"
@@ -34,7 +34,7 @@ y = y[:10000]
 X_test = X_test[:10000]
 y_test = y_test[:10000]
 
-clf = OVOSClassifierTagger(LogisticRegression(multi_class="multinomial",
+clf = SklearnOVOSClassifierTagger(LogisticRegression(multi_class="multinomial",
                                               solver="lbfgs"))
 clf.train(X, y)
 

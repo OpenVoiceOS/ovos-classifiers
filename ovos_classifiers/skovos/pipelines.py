@@ -1,9 +1,9 @@
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.pipeline import Pipeline, FeatureUnion
 
-from ovos_classifiers.features.extractors import WordFeaturesVectorizer, POSTaggerVectorizer, \
+from ovos_classifiers.skovos.features import WordFeaturesVectorizer, POSTaggerVectorizer, \
     PronounTaggerVectorizer, CorefIOBTaggerVectorizer
-from ovos_classifiers.features.extractors.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
+from ovos_classifiers.skovos.features.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
 
 """
 DEFAULT_PIPELINES = {

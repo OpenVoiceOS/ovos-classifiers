@@ -13,7 +13,7 @@ _LANGDEFAULTS = {
     "pt": "nltk-floresta+mcmorpho-udep-brill-postag",
     "es": "nltk-cess_esp-udep-brill-postag",
     "ca": "nltk-cess_cat-udep-brill-postag",
-    "en": "sklearn-brown+treebank-udep-percep-postag"
+    "en": "nltk"
 }
 
 
@@ -74,7 +74,16 @@ class OVOSPostag:
             clf = OVOSNgramTagger.from_file(model_path)
         elif data["algo"] == "nltk.brill.fntbl37":
             clf = OVOSBrillTagger.from_file(model_path)
+        elif data["algo"] == "sklearn.ensemble.VotingClassifier":
+            from ovos_classifiers.skovos.classifier import SklearnOVOSVotingClassifier
+            # TODO - parse args/kwargs used to init SklearnOVOSVotingClassifier
+            clf = SklearnOVOSVotingClassifier.from_file(model_path)
+        elif "sklearn." in data["algo"]:
+            from ovos_classifiers.skovos.classifier import SklearnOVOSClassifier
+            # TODO - parse args/kwargs used to init SklearnOVOSClassifier
+            clf = SklearnOVOSClassifier.from_file(model_path)
         else:
+            # TODO - parse args/kwargs used to init OVOSClassifierTagger
             clf = OVOSClassifierTagger.from_file(model_path)
         return data, clf
 

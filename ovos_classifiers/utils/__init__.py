@@ -62,7 +62,7 @@ def get_word_shape(word):
 def extract_iob_features(tokens, index, history, stemmer=None, memory=2):
     """
     `tokens`  = a POS-tagged postagged_tokens [(w1, t1), ...]
-    `index`   = the index of the token we want to extract features for
+    `index`   = the index of the token we want to extract utils for
     `history` = the previous predicted IOB tags
     """
     feat_dict = extract_postag_features(tokens, index, stemmer=stemmer,
@@ -77,7 +77,7 @@ def extract_iob_features(tokens, index, history, stemmer=None, memory=2):
     for i in range(1, memory + 1):
         k = "prev-" * i
         previob = tokens[index - i]
-        # update with IOB features
+        # update with IOB utils
         feat_dict[k + "iob"] = previob
 
     return feat_dict
@@ -86,10 +86,10 @@ def extract_iob_features(tokens, index, history, stemmer=None, memory=2):
 def extract_postag_features(tokens, index, stemmer=None, memory=2):
     """
     `tokens`  = a POS-tagged postagged_tokens [(w1, t1), ...]
-    `index`   = the index of the token we want to extract features for
+    `index`   = the index of the token we want to extract utils for
     """
     original_toks = list(tokens)
-    # word features
+    # word utils
     feat_dict = extract_word_features([t[0] for t in tokens],
                                       index, stemmer, memory=memory)
 
@@ -106,7 +106,7 @@ def extract_postag_features(tokens, index, stemmer=None, memory=2):
 
     word, pos = tokens[index]
 
-    # update with postag features
+    # update with postag utils
     feat_dict["pos"] = pos
 
     # look ahead N words
@@ -127,7 +127,7 @@ def extract_postag_features(tokens, index, stemmer=None, memory=2):
 def extract_word_features(tokens, index=0, stemmer=None, memory=2):
     """
     `tokens`  = a tokenized postagged_tokens [w1, w2, ...]
-    `index`   = the index of the token we want to extract features for
+    `index`   = the index of the token we want to extract utils for
     """
     stemmer = stemmer or get_stemmer()
     if isinstance(tokens, str):

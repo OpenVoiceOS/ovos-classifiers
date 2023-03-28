@@ -3,23 +3,14 @@ from nltk import AffixTagger
 from nltk import word_tokenize
 from nltk.tag import UnigramTagger, BigramTagger, TrigramTagger, DefaultTagger, RegexpTagger
 
-from ovos_classifiers.tasks.classifier import OVOSClassifier, OVOSVotingClassifier
+from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 
 
-class OVOSClassifierTagger(OVOSClassifier):
+class OVOSClassifierTagger(OVOSAbstractClassifier):
     def __init__(self, pipeline_clf=None, pipeline_id="naive"):
         super().__init__(pipeline_clf=pipeline_clf, pipeline_id=pipeline_id)
         self._pipeline_clf = pipeline_clf
         self._retrainable = True
-
-    @staticmethod
-    def from_file(path):
-        clf = OVOSClassifierTagger()
-        clf.load_from_file(path)
-        # TODO - self._pipeline_clf is None
-        # TODO - self._pipeline_id is "naive"
-        clf._retrainable = False
-        return clf
 
     def train(self, train_data, target_data):
         if not self._retrainable or self._pipeline_clf is None or not self.pipeline:
@@ -38,12 +29,6 @@ class OVOSClassifierTagger(OVOSClassifier):
         return list(zip(words, tags))
 
 
-class OVOSVotingClassifierTagger(OVOSVotingClassifier, OVOSClassifierTagger):
-    def __init__(self, voter_clfs, pipeline_id="naive", voting='hard', weights=None):
-        super().__init__(voter_clfs, pipeline_id, voting, weights)
-
-    def score(self, X_test, y_test):
-        return self.clf.score(X_test, y_test)
 
 
 class OVOSNgramTagger(OVOSClassifierTagger):

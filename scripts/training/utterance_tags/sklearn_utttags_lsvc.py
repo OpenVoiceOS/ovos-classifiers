@@ -5,7 +5,7 @@ from os.path import join, dirname
 from sklearn.svm import LinearSVC
 
 from ovos_classifiers.datasets import get_utterance_tags_trainset
-from ovos_classifiers.tasks.classifier import OVOSClassifier
+from ovos_classifiers.skovos.classifier import SklearnOVOSClassifier
 
 TAGSET = "utttags"
 CORPUS = "utterance_tags_v0.1"
@@ -29,7 +29,7 @@ makedirs(META, exist_ok=True)
 
 (X, y), (X_test, y_test) = get_utterance_tags_trainset()
 
-clf = OVOSClassifier(PIPELINE, LinearSVC())
+clf = OVOSAbstractClassifier(PIPELINE, LinearSVC())
 clf.train(X, y)
 
 print('Training completed')

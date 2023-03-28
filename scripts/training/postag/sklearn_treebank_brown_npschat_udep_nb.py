@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import brown, treebank, nps_chat
 from sklearn.naive_bayes import MultinomialNB
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "udep"
 CORPUS = "brown+treebank+nps_chat"
@@ -60,7 +60,7 @@ X, y = transform_to_dataset(train_data)
 X = X[:10000]
 y = y[:10000]
 
-clf = OVOSClassifierTagger(MultinomialNB())
+clf = SklearnOVOSClassifierTagger(MultinomialNB())
 clf.train(X, y)
 
 print('Training completed')

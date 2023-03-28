@@ -5,7 +5,7 @@ from os.path import join, dirname
 from sklearn.ensemble import RandomForestClassifier
 
 from ovos_classifiers.datasets import get_treebank_trainset
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "pentree"
 CORPUS = "treebank"
@@ -35,7 +35,7 @@ y = y[:10000]
 X_test = X_test[:10000]
 y_test = y_test[:10000]
 
-clf = OVOSClassifierTagger(RandomForestClassifier(n_estimators=10, max_depth=None, min_samples_split=2))
+clf = SklearnOVOSClassifierTagger(RandomForestClassifier(n_estimators=10, max_depth=None, min_samples_split=2))
 clf.train(X, y)
 
 print('Training completed')

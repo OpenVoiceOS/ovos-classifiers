@@ -3,7 +3,7 @@ import re
 import nltk
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from ovos_classifiers.features.utils import normalize
+from ovos_classifiers.utils import normalize
 
 
 def word_tokenize_pt(sentence):

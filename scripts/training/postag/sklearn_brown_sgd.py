@@ -6,7 +6,7 @@ from os.path import join, dirname
 from ovos_classifiers.datasets import get_brown_trainset
 from sklearn.linear_model import SGDClassifier
 
-from ovos_classifiers.tasks.tagger import OVOSClassifierTagger
+from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
 
 TAGSET = "brown"
 CORPUS = "brown"
@@ -36,7 +36,7 @@ y = y[:10000]
 X_test = X_test[:10000]
 y_test = y_test[:10000]
 
-clf = OVOSClassifierTagger(SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3))
+clf = SklearnOVOSClassifierTagger(SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3))
 clf.train(X, y)
 
 print('Training completed')

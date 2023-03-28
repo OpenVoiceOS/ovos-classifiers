@@ -25,7 +25,7 @@ jobs:
           python -m pip install build wheel
       - name: Install repo
         run: |
-          pip install .
+          pip install .[sklearn]
       - name: Train Decision Tree postag
         run: |
           python scripts/training/postag/sklearn_treebank_brown_udep_dtree.py

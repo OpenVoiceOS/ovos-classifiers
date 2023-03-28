@@ -4,7 +4,7 @@ import nltk
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
 
-from ovos_classifiers.features.utils import normalize
+from ovos_classifiers.utils import normalize
 
 
 class WordNetLemmatizerTransformer(BaseEstimator, TransformerMixin):

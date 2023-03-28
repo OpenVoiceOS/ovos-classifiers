@@ -6,7 +6,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
-from ovos_classifiers.features.utils import DummyStemmer, extract_postag_features, \
+from ovos_classifiers.utils import DummyStemmer, extract_postag_features, \
     extract_word_features, normalize, get_stemmer
 from ovos_classifiers.postag import OVOSPostag
 
@@ -110,7 +110,7 @@ class CorefIOBTaggerTransformer(BaseEstimator, TransformerMixin):
     def extract_corefiob_features(tokens, index, coreftagger=None, stemmer=None, memory=2):
         """
         `tokens`  = a POS-tagged postagged_tokens [(w1, t1), ...]
-        `index`   = the index of the token we want to extract features for
+        `index`   = the index of the token we want to extract utils for
         `history` = the previous predicted IOB tags
         """
         coreftagger = coreftagger or OVOSCorefIOBTagger("heuristic")
@@ -120,7 +120,7 @@ class CorefIOBTaggerTransformer(BaseEstimator, TransformerMixin):
 
         word, ciob = coref_tags[index]
 
-        # update with CorefIOB features
+        # update with CorefIOB utils
         feat_dict["ciob"] = ciob
 
         # look ahead N words
@@ -179,7 +179,7 @@ class PronounTaggerTransformer(BaseEstimator, TransformerMixin):
     def extract_pronoun_features(tokens, index, stemmer=None, memory=2):
         """
         `tokens`  = a POS-tagged postagged_tokens [(w1, t1), ...]
-        `index`   = the index of the token we want to extract features for
+        `index`   = the index of the token we want to extract utils for
         """
         word = tokens[index][0].lower().rstrip("s")
         sent = tokens[:index]

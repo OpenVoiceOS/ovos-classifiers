@@ -19,7 +19,7 @@ jobs:
           python -m pip install build wheel
       - name: Install repo
         run: |
-          pip install .
+          pip install .[sklearn]
       - name: Benchmark brown postag dataset
         run: |
           python scripts/benchmarks/brown.py
