@@ -1,0 +1,20 @@
+{
+    "corpus": "nps_chat",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "model_id": "nltk-nps_chat-udep-brill-postag",
+    "tagset": "Universal Dependencies",
+    "lang": "en",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.8870742385195765
+}

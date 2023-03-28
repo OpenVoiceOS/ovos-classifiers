@@ -1,0 +1,21 @@
+{
+    "corpus": "brown",
+    "model_id": "nltk-brown-udep-ngram-postag",
+    "tagset": "Universal Dependencies",
+    "corpus_homepage": "http://www.hit.uib.no/icame/brown/bcm.html",
+    "lang": "en",
+    "algo": "TrigramTagger",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9483806285689377
+}

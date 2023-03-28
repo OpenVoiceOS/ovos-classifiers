@@ -1,0 +1,21 @@
+{
+    "corpus": "treebank",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "model_id": "nltk-brown+treebank-udep-ngram-postag",
+    "tagset": "Universal Dependencies",
+    "lang": "en",
+    "algo": "TrigramTagger",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.914857689371472
+}
