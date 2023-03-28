@@ -1,0 +1,12 @@
+{
+    "corpus": "floresta",
+    "corpus_homepage": "http://www.linguateca.pt/Floresta",
+    "tagset": "Universal Dependencies",
+    "lang": "pt",
+    "model_id": "sklearn-floresta-udep-lsvc-postag",
+    "algo": "sklearn.svm.LinearSVC",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.933
+}

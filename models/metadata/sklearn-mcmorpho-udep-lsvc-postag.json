@@ -1,0 +1,12 @@
+{
+    "corpus": "macmorpho",
+    "corpus_homepage": "http://www.nilc.icmc.usp.br/macmorpho/",
+    "tagset": "Universal Dependencies",
+    "lang": "pt",
+    "model_id": "sklearn-mcmorpho-udep-lsvc-postag",
+    "algo": "sklearn.svm.LinearSVC",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.9249
+}

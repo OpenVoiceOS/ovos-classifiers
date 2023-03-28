@@ -1,0 +1,13 @@
+{
+    "corpus": "floresta",
+    "corpus_homepage": "http://www.linguateca.pt/Floresta",
+    "tagset": "VISL (Portuguese)",
+    "tagset_homepage": "https://visl.sdu.dk/visl/pt/symbolset-floresta.html",
+    "lang": "pt",
+    "model_id": "sklearn-floresta-visl-lsvc-postag",
+    "algo": "sklearn.svm.LinearSVC",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.9245
+}
