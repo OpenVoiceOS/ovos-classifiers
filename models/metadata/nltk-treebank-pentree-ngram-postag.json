@@ -1,0 +1,21 @@
+{
+    "corpus": "treebank",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "model_id": "nltk-treebank-pentree-ngram-postag",
+    "tagset": "Penn Treebank",
+    "lang": "en",
+    "algo": "TrigramTagger",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9273848261688645
+}

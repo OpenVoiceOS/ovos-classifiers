@@ -1,0 +1,21 @@
+{
+    "corpus": "treebank",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "model_id": "nltk-treebank-pentree-brill-postag",
+    "tagset": "Penn Treebank",
+    "lang": "en",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "DefaultTagger",
+        "RegexpTagger",
+        "AffixTagger",
+        "RegexpTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.9287121082377119
+}
