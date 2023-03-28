@@ -1,0 +1,12 @@
+{
+    "corpus": "brown+treebank",
+    "model_id": "sklearn-brown+treebank-udep-percep-postag",
+    "tagset": "Universal Dependencies",
+    "corpus_homepage": "https://www.nltk.org/nltk_data",
+    "lang": "en",
+    "algo": "sklearn.linear_model.Perceptron",
+    "required_packages": [
+        "scikit-learn"
+    ],
+    "accuracy": 0.914
+}
