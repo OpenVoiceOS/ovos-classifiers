@@ -5,15 +5,24 @@ from os.path import isfile
 import requests
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
-from ovos_classifiers.utils import load_classifier
+
 from ovos_classifiers.heuristics.utttags import HeuristicUtteranceTagger
+from ovos_classifiers.utils import load_classifier
 
 # TODO - benchmark and choose based on performance/model size
 # TODO - ensure all langs have 1 model
 _LANGDEFAULTS = {
     "en": "heuristic",
     "es": "heuristic",
-    "pt": "heuristic"
+    "pt": "heuristic",
+    "uk": "heuristic",
+    "de": "heuristic",
+    "nl": "heuristic",
+    "fr": "heuristic",
+    "it": "heuristic",
+    "sv": "heuristic",
+    "no": "heuristic"
+
 }
 
 
@@ -92,4 +101,3 @@ if __name__ == "__main__":
     print(p.predict(sentences))
     # ['SENTENCE:STATEMENT' 'COMMAND:ACTION' 'COMMAND:ACTION'
     #  'SENTENCE:EXCLAMATION' 'QUESTION:QUERY' 'COMMAND:ACTION']
-
