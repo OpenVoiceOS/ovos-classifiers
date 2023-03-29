@@ -1,0 +1,66 @@
+{
+  "command": [
+    "doe",
+    "maak",
+    "uitvoeren",
+    "uitvoer",
+    "uitvoering",
+    "bereiden",
+    "koken",
+    "brengen",
+    "bel",
+    "aanzetten",
+    "uitzetten"
+  ],
+  "denial": [
+    "niet doen",
+    "verboden",
+    "absoluut verboden",
+    "wegblijven",
+    "stop",
+    "niet toegestaan"
+  ],
+  "query": [
+    "hoe",
+    "wat",
+    "waar",
+    "wanneer",
+    "welke",
+    "wie",
+    "waarom",
+    "vertel me over"
+  ],
+  "yesno": [
+    "is",
+    "zijn",
+    "doen",
+    "maakt",
+    "zal",
+    "kan",
+    "kunnen",
+    "mogen",
+    "zou",
+    "moeten"
+  ],
+  "request": [
+    "zou je",
+    "kun je",
+    "kan je",
+    "graag"
+  ],
+  "social": [
+    "gefeliciteerd",
+    "genieten",
+    "beterschap",
+    "veel succes",
+    "goedemorgen",
+    "goed werk",
+    "fijne verjaardag"
+  ],
+  "exclamation": [
+    "wat",
+    "hoe",
+    "geweldig",
+    "indrukwekkend"
+  ]
+}

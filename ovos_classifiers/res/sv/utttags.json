@@ -1,0 +1,63 @@
+{
+  "command": [
+    "gör",
+    "utför",
+    "genomför",
+    "koka",
+    "ta med",
+    "borsta",
+    "ring",
+    "starta",
+    "stoppa"
+  ],
+  "denial": [
+    "gör inte",
+    "förbjudet",
+    "strikst förbjudet",
+    "håll dig borta",
+    "stoppa",
+    "inte tillåtet"
+  ],
+  "query": [
+    "hur",
+    "vad",
+    "var",
+    "när",
+    "vilken",
+    "vem",
+    "varför",
+    "berätta för mig om"
+  ],
+  "yesno": [
+    "är",
+    "är det",
+    "är de",
+    "gör",
+    "gör det",
+    "gör de",
+    "vill",
+    "kan",
+    "kunde",
+    "borde",
+    "skulle"
+  ],
+  "request": [
+    "skulle du vilja",
+    "kan du",
+    "kan du snälla",
+    "snälla"
+  ],
+  "social": [
+    "grattis",
+    "njut av",
+    "krya på dig",
+    "lycka till",
+    "god morgon"
+  ],
+  "exclamation": [
+    "vad",
+    "hur",
+    "fantastiskt",
+    "imponerande"
+  ]
+}

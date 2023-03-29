@@ -1,0 +1,72 @@
+{
+  "command": [
+    "machen",
+    "ausführen",
+    "erledigen",
+    "kochen",
+    "bringen",
+    "anrufen",
+    "einschalten",
+    "ausschalten",
+    "tu",
+    "mach",
+    "geh",
+    "bringe"
+  ],
+  "denial": [
+    "nicht machen",
+    "verboten",
+    "streng verboten",
+    "fernbleiben",
+    "stopp",
+    "nicht erlaubt",
+    "vermeiden"
+  ],
+  "query": [
+    "wie",
+    "was",
+    "wo",
+    "wann",
+    "welche",
+    "wer",
+    "warum",
+    "erzähl mir von"
+  ],
+  "yesno": [
+    "ist",
+    "sind",
+    "macht",
+    "machen",
+    "wird",
+    "kann",
+    "könnte",
+    "sollte",
+    "würde",
+    "bist",
+    "du bist"
+  ],
+  "request": [
+    "würdest du",
+    "könntest du",
+    "kannst du",
+    "bitte",
+    "bring mir",
+    "gib mir"
+  ],
+  "social": [
+    "herzlichen glückwunsch",
+    "genieße es",
+    "gute besserung",
+    "viel glück",
+    "guten morgen",
+    "gute arbeit",
+    "alles gute zum geburtstag"
+  ],
+  "exclamation": [
+    "was",
+    "wie",
+    "unglaublich",
+    "fantastisch",
+    "beeindruckend"
+  ]
+}

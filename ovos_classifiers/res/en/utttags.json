@@ -1,0 +1,68 @@
+{
+  "command": [
+    "do",
+    "make",
+    "perform",
+    "carry out",
+    "execute",
+    "accomplish",
+    "achieve",
+    "boil",
+    "bring",
+    "brush",
+    "call",
+    "turn on",
+    "turn off"
+  ],
+  "denial": [
+    "don't",
+    "do not",
+    "prohibited",
+    "strictly prohibited",
+    "stay away",
+    "stop",
+    "not allowed"
+  ],
+  "query": [
+    "how",
+    "what",
+    "where",
+    "when",
+    "which",
+    "who",
+    "why",
+    "tell me about"
+  ],
+  "yesno": [
+    "is",
+    "are",
+    "do",
+    "does",
+    "will",
+    "can",
+    "could",
+    "may",
+    "might",
+    "should",
+    "would"
+  ],
+  "request": [
+    "would you mind",
+    "could you",
+    "can you",
+    "please"
+  ],
+  "social": [
+    "congratulations",
+    "enjoy",
+    "get well soon",
+    "good luck",
+    "good morning"
+  ],
+  "exclamation": [
+    "what",
+    "how",
+    "amazing",
+    "impressive"
+  ]
+}

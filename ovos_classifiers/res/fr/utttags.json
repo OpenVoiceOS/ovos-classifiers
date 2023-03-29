@@ -1,0 +1,80 @@
+{
+  "command": [
+    "faire",
+    "réaliser",
+    "accomplir",
+    "cuisiner",
+    "bouillir",
+    "amener",
+    "appeler",
+    "allumer",
+    "éteindre"
+  ],
+  "denial": [
+    "ne fais pas",
+    "prohibé",
+    "strictement interdit",
+    "éloigne-toi",
+    "arrête",
+    "pas autorisé",
+    "évite"
+  ],
+  "query": [
+    "comment",
+    "quoi",
+    "où",
+    "quand",
+    "quel",
+    "qui",
+    "pourquoi",
+    "parle-moi de"
+  ],
+  "yesno": [
+    "est-ce que",
+    "suis-je",
+    "suis-je en train",
+    "sont-ils",
+    "est-ce que tu es",
+    "es-tu",
+    "seras-tu",
+    "peux-tu",
+    "pourrais-tu",
+    "devrais-je",
+    "voudrais-tu",
+    "as-tu",
+    "as-tu besoin",
+    "y a-t-il",
+    "y a-t-il des",
+    "c'est",
+    "ce sont",
+    "ça va",
+    "ça ne va pas",
+    "est-ce grave"
+  ],
+  "request": [
+    "pourrais-tu",
+    "peux-tu",
+    "s'il te plaît",
+    "pourrais-je",
+    "pourrais-je avoir",
+    "apporte-moi",
+    "donne-moi"
+  ],
+  "social": [
+    "félicitations",
+    "profites-en",
+    "rétablis-toi vite",
+    "bonne chance",
+    "bonjour",
+    "bon travail",
+    "joyeux anniversaire"
+  ],
+  "exclamation": [
+    "quoi",
+    "comment",
+    "incroyable",
+    "fantastique",
+    "impressionnant",
+    "merveilleux"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "command": [
+    "fai",
+    "esegui",
+    "realizza",
+    "cuoci",
+    "porta",
+    "chiamare",
+    "accendere",
+    "spegnere",
+    "fa",
+    "esegui",
+    "vai",
+    "porta"
+  ],
+  "denial": [
+    "non fare",
+    "proibito",
+    "strettamente proibito",
+    "stai lontano",
+    "fermati",
+    "non permesso",
+    "evita"
+  ],
+  "query": [
+    "come",
+    "cosa",
+    "dove",
+    "quando",
+    "quale",
+    "chi",
+    "perché",
+    "dimmi di"
+  ],
+  "yesno": [
+    "è",
+    "sono",
+    "fai",
+    "fanno",
+    "andrai",
+    "puoi",
+    "potresti",
+    "dovresti",
+    "vorresti",
+    "sei",
+    "hai",
+    "c'è",
+    "tu sei",
+    "tu stai"
+  ],
+  "request": [
+    "ti dispiacerebbe",
+    "potresti",
+    "puoi",
+    "per favore",
+    "potrebbe",
+    "per piacere",
+    "dammi",
+    "portami"
+  ],
+  "social": [
+    "complimenti",
+    "goditi",
+    "mi raccomando",
+    "in bocca al lupo",
+    "buongiorno",
+    "buon lavoro",
+    "buon compleanno"
+  ],
+  "exclamation": [
+    "che",
+    "come",
+    "incredibile",
+    "fantastico",
+    "impressionante",
+    "meraviglioso"
+  ]
+}

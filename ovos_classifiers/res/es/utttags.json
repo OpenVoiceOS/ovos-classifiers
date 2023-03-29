@@ -1,0 +1,71 @@
+{
+  "command": [
+    "hacer",
+    "realizar",
+    "ejecutar",
+    "cocinar",
+    "hervir",
+    "traer",
+    "llamar",
+    "encender",
+    "apagar"
+  ],
+  "denial": [
+    "no",
+    "prohibido",
+    "estrictamente prohibido",
+    "mantenerse alejado",
+    "parar",
+    "no permitido"
+  ],
+  "query": [
+    "cómo",
+    "qué",
+    "dónde",
+    "cuándo",
+    "cuál",
+    "quién",
+    "por qué",
+    "háblame de"
+  ],
+  "yesno": [
+    "es",
+    "son",
+    "hace",
+    "hacen",
+    "irá",
+    "puede",
+    "podría",
+    "debería",
+    "gustaría",
+    "está",
+    "tiene",
+    "hay",
+    "eres",
+    "estás"
+  ],
+  "request": [
+    "te importaría",
+    "podrías",
+    "puedes",
+    "por favor",
+    "dame",
+    "tráeme"
+  ],
+  "social": [
+    "felicidades",
+    "disfruta",
+    "mejórate pronto",
+    "buena suerte",
+    "buenos días",
+    "buen trabajo",
+    "feliz cumpleaños"
+  ],
+  "exclamation": [
+    "qué",
+    "cómo",
+    "increíble",
+    "impresionante",
+    "maravilloso"
+  ]
+}

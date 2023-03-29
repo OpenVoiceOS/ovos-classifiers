@@ -1,0 +1,66 @@
+{
+  "command": [
+    "gjør",
+    "lage",
+    "utføre",
+    "koke",
+    "ta med",
+    "ring",
+    "skru på",
+    "skru av"
+  ],
+  "denial": [
+    "ikke gjør",
+    "forbudt",
+    "strengt forbudt",
+    "hold deg unna",
+    "stopp",
+    "ikke tillatt"
+  ],
+  "query": [
+    "hvordan",
+    "hva",
+    "hvor",
+    "når",
+    "hvilken",
+    "hvem",
+    "hvorfor",
+    "fortell meg om"
+  ],
+  "yesno": [
+    "er",
+    "er det",
+    "er det noen",
+    "er det mulig",
+    "gjør",
+    "vil",
+    "kan",
+    "kunne",
+    "skal",
+    "bør",
+    "må",
+    "skulle",
+    "ville"
+  ],
+  "request": [
+    "ville du kunne",
+    "kan du",
+    "kunne du",
+    "vær så snill",
+    "gi meg",
+    "ta med"
+  ],
+  "social": [
+    "gratulerer",
+    "kos deg",
+    "god bedring",
+    "lykke til",
+    "god morgen"
+  ],
+  "exclamation": [
+    "hva",
+    "så flott",
+    "fantastisk",
+    "imponerende"
+  ]
+}
