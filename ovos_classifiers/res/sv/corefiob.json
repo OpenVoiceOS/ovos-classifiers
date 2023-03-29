@@ -1,0 +1,75 @@
+{
+  "joiner": [
+    "och"
+  ],
+  "prev": [
+    "min",
+    "den"
+  ],
+  "male": [
+    "pojke",
+    "man",
+    "män",
+    "hane",
+    "pappa",
+    "farfar",
+    "bror",
+    "farbror",
+    "son",
+    "pappa"
+  ],
+  "female": [
+    "flicka",
+    "kvinna",
+    "kvinnor",
+    "hon",
+    "mamma",
+    "mormor",
+    "syster",
+    "moster",
+    "dotter",
+    "mamma"
+  ],
+  "inanimate": [
+    "katt",
+    "hund",
+    "fågel",
+    "ödla",
+    "sköldpadda",
+    "spindel",
+    "orm",
+    "fisk",
+    "ljus",
+    "tv",
+    "dator",
+    "dörr",
+    "fönster",
+    "musik"
+  ],
+  "human": [
+    "kusin",
+    "familj",
+    "vän",
+    "granne",
+    "person"
+  ],
+  "neutral_coref": [
+    "de",
+    "dem",
+    "deras"
+  ],
+  "male_coref": [
+    "han",
+    "honom",
+    "hans"
+  ],
+  "female_coref": [
+    "hon",
+    "henne",
+    "hennes"
+  ],
+  "inanimate_coref": [
+    "den",
+    "det"
+  ]
+}

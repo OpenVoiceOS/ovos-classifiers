@@ -1,0 +1,76 @@
+{
+  "joiner": [
+    "and"
+  ],
+  "prev": [
+    "my",
+    "the"
+  ],
+  "male": [
+    "boy",
+    "man",
+    "men",
+    "male",
+    "father",
+    "grandfather",
+    "brother",
+    "uncle",
+    "son",
+    "dad"
+  ],
+  "female": [
+    "girl",
+    "woman",
+    "women",
+    "female",
+    "mother",
+    "grandmother",
+    "sister",
+    "aunt",
+    "daughter",
+    "mom"
+  ],
+  "inanimate": [
+    "cat",
+    "dog",
+    "bird",
+    "lizard",
+    "turtle",
+    "spider",
+    "snake",
+    "fish",
+    "light",
+    "tv",
+    "computer",
+    "door",
+    "window",
+    "music"
+  ],
+  "human": [
+    "cousin",
+    "family",
+    "friend",
+    "neighbour",
+    "person"
+  ],
+  "neutral_coref": [
+    "they",
+    "them",
+    "their",
+    "theirs"
+  ],
+  "male_coref": [
+    "he",
+    "him",
+    "his"
+  ],
+  "female_coref": [
+    "she",
+    "her",
+    "hers"
+  ],
+  "inanimate_coref": [
+    "it",
+    "them"
+  ]
+}

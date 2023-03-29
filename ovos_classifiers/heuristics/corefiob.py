@@ -1,4 +1,6 @@
 import enum
+import json
+from os.path import isfile, dirname
 
 
 # different langs may use different subsets only
@@ -32,53 +34,25 @@ class CorefIOBTags(str, enum.Enum):
 
 class CorefIOBHeuristicTagger:
     """a simple heuristic tagger for usage as a baseline"""
-    # TODO - json resource files per lang under new /res dir
-    PLURAL_ENDINGS = {"en": ["s"],
-                      "pt": ["s"]}
-    JOINER_TOKENS = {"en": ["and"],
-                     "pt": ["e"]}
-    PREV_TOKENS = {"en": ["my", "the"],
-                   "pt": ["o", "a", "os", "as"]}
-
-    MALE_COREF_TOKENS = {"en": ["he", "him", "his"]}
-    FEMALE_COREF_TOKENS = {"en": ["she", "her", "hers"]}
-    INANIMATE_COREF_TOKENS = {"en": ["it", "them"]}
-    NEUTRAL_COREF_TOKENS = {"en": ["they", "them", "their", "theirs"]}
-    PLURAL_COREF_TOKENS = {"en": ["they", "them", "their", "theirs"]}
-    PLURAL_MALE_COREF_TOKENS = {"en": [],
-                                "pt": ["eles"]}
-    PLURAL_FEMALE_COREF_TOKENS = {"en": [],
-                                  "pt": ["elas"]}
-
-    HUMAN_TOKENS = {
-        "en": ["cousin", "family", "friend", "neighbour", "person"]
-    }
-    MALE_TOKENS = {
-        "en": ["boy", "man", "men", "male",
-               "father", "grandfather", "brother", "uncle", "son", "dad"]
-    }
-    FEMALE_TOKENS = {
-        "en": ["girl", "woman", "women", "female",
-               "mother", "grandmother", "sister", "aunt", "daughter", "mom"]
-    }
-    INANIMATE_TOKENS = {
-        "en": ["cat", "dog", "bird", "lizard", "turtle", "spider", "snake", "fish",
-               "light", "tv", "computer", "door", "window", "music"]
-    }
 
     def __init__(self, config):
         lang = config.get("lang", "en-us").split("-")[0]
         self.lang = lang
-        self.joiner_tokens = self.JOINER_TOKENS.get(lang, [])
-        self.prev_toks = self.PREV_TOKENS.get(lang, [])
-        self.male_toks = self.MALE_TOKENS.get(lang, [])
-        self.female_toks = self.FEMALE_TOKENS.get(lang, [])
-        self.inanimate_toks = self.INANIMATE_TOKENS.get(lang, [])
-        self.neutral_coref_toks = self.NEUTRAL_COREF_TOKENS.get(lang, [])
-        self.male_coref_toks = self.MALE_COREF_TOKENS.get(lang, [])
-        self.female_coref_toks = self.FEMALE_COREF_TOKENS.get(lang, [])
-        self.inanimate_coref_toks = self.INANIMATE_COREF_TOKENS.get(lang, [])
-        self.human_tokens = self.HUMAN_TOKENS.get(lang, [])
+        res = f"{dirname(dirname(__file__))}/res/{self.lang}/corefiob.json"
+        if not isfile(res):
+            raise ValueError(f"unsupported language: {self.lang}")
+        with open(res, "r") as f:
+            data = json.load(f)
+        self.joiner_tokens = data["joiner"]
+        self.prev_toks = data["prev"]
+        self.male_toks = data["male"]
+        self.female_toks = data["female"]
+        self.inanimate_toks = data["inanimate"]
+        self.human_tokens = data["human"]
+        self.neutral_coref_toks = data["neutral_coref"]
+        self.male_coref_toks = data["male_coref"]
+        self.female_coref_toks = data["female_coref"]
+        self.inanimate_coref_toks = data["inanimate_coref"]
 
     def _tag_entities(self, iob):
         ents = {}
@@ -417,3 +391,4 @@ class CorefIOBHeuristicTagger:
         iob, ents = self._filter_coref_mismatches(iob, ents, prons)
         iob = self._fix_iob_seqs(iob)
         return iob
+

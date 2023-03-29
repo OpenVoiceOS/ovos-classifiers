@@ -1,0 +1,19 @@
+{
+  "joiner": [
+    "e"
+  ],
+  "prev": [
+    "o",
+    "a",
+    "os",
+    "as"
+  ],
+  "male": [],
+  "female": [],
+  "inanimate": [],
+  "human": [],
+  "neutral_coref": [],
+  "male_coref": [],
+  "female_coref": [],
+  "inanimate_coref": []
+}

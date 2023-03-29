@@ -1,0 +1,78 @@
+{
+  "joiner": [
+    "e"
+  ],
+  "prev": [
+    "il",
+    "la",
+    "i",
+    "le"
+  ],
+  "male": [
+    "ragazzo",
+    "uomo",
+    "maschio",
+    "padre",
+    "nonno",
+    "fratello",
+    "zio",
+    "figlio",
+    "papà"
+  ],
+  "female": [
+    "ragazza",
+    "donna",
+    "femmina",
+    "madre",
+    "nonna",
+    "sorella",
+    "zia",
+    "figlia",
+    "mamma"
+  ],
+  "inanimate": [
+    "gatto",
+    "cane",
+    "uccello",
+    "lucertola",
+    "tartaruga",
+    "ragno",
+    "serpente",
+    "pesce",
+    "luce",
+    "tv",
+    "computer",
+    "porta",
+    "finestra",
+    "musica"
+  ],
+  "human": [
+    "cugino",
+    "famiglia",
+    "amico",
+    "vicino",
+    "persona"
+  ],
+  "neutral_coref": [
+    "loro",
+    "essi",
+    "esse",
+    "loro"
+  ],
+  "male_coref": [
+    "lui",
+    "lo",
+    "gli"
+  ],
+  "female_coref": [
+    "lei",
+    "la",
+    "le"
+  ],
+  "inanimate_coref": [
+    "esso",
+    "essa",
+    "essi",
+    "esse"
+  ]
+}

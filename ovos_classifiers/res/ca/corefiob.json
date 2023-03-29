@@ -1,0 +1,75 @@
+{
+  "joiner": [
+    "i"
+  ],
+  "prev": [
+    "el",
+    "la",
+    "els",
+    "les"
+  ],
+  "male": [
+    "noi",
+    "home",
+    "homes",
+    "masculí",
+    "pare",
+    "avi",
+    "germà",
+    "oncle",
+    "fill",
+    "papà"
+  ],
+  "female": [
+    "noia",
+    "dona",
+    "dones",
+    "femení",
+    "mare",
+    "àvia",
+    "germana",
+    "tia",
+    "filla",
+    "mare"
+  ],
+  "inanimate": [
+    "gat",
+    "gos",
+    "ocell",
+    "llargarto",
+    "tortuga",
+    "aranha",
+    "serp",
+    "peix",
+    "llum",
+    "televisor",
+    "ordinador",
+    "porta",
+    "finestra",
+    "música"
+  ],
+  "human": [
+    "cosí",
+    "família",
+    "amic",
+    "veí",
+    "persona"
+  ],
+  "neutral_coref": [
+    "ells",
+    "elles",
+    "seus",
+    "seves"
+  ],
+  "male_coref": [
+    "ell",
+    "seu"
+  ],
+  "female_coref": [
+    "ella",
+    "seva"
+  ],
+  "inanimate_coref": [
+    "ho"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "joiner": [
+    "en"
+  ],
+  "prev": [
+    "de",
+    "het",
+    "een"
+  ],
+  "male": [
+    "jongen",
+    "man",
+    "mannen",
+    "mannelijk",
+    "vader",
+    "opa",
+    "broer",
+    "oom",
+    "zoon",
+    "papa"
+  ],
+  "female": [
+    "meisje",
+    "vrouw",
+    "vrouwen",
+    "vrouwelijk",
+    "moeder",
+    "oma",
+    "zus",
+    "tante",
+    "dochter",
+    "mama"
+  ],
+  "inanimate": [
+    "kat",
+    "hond",
+    "vogel",
+    "hagedis",
+    "schildpad",
+    "spin",
+    "slang",
+    "vis",
+    "licht",
+    "tv",
+    "computer",
+    "deur",
+    "raam",
+    "muziek"
+  ],
+  "human": [
+    "familielid",
+    "vriend",
+    "buurman",
+    "persoon"
+  ],
+  "neutral_coref": [
+    "ze",
+    "hun",
+    "hen"
+  ],
+  "male_coref": [
+    "hij",
+    "hem",
+    "zijn"
+  ],
+  "female_coref": [
+    "zij",
+    "haar",
+    "haar"
+  ],
+  "inanimate_coref": [
+    "het",
+    "ze"
+  ]
+}
