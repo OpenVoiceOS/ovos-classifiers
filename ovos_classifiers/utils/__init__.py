@@ -4,6 +4,45 @@ import nltk
 from nltk.stem.snowball import SnowballStemmer
 
 
+def load_tagger(data, model_path):
+    from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger, OVOSClassifierTagger
+
+    if data["algo"] == "heuristic":
+        clazz = model_path
+        clf = clazz(data)
+    elif data["algo"] == "TrigramTagger":
+        clf = OVOSNgramTagger.from_file(model_path)
+    elif data["algo"] == "nltk.brill.fntbl37":
+        clf = OVOSBrillTagger.from_file(model_path)
+    elif data["algo"] == "sklearn.ensemble.VotingClassifier":
+        from ovos_classifiers.skovos.tagger import SklearnOVOSClassifierTagger
+        clf = SklearnOVOSClassifierTagger.from_file(model_path)
+    elif "sklearn." in data["algo"]:
+        from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
+        clf = SklearnOVOSVotingClassifierTagger.from_file(model_path)
+    else:
+        clf = OVOSClassifierTagger.from_file(model_path)
+    return data, clf
+
+
+def load_classifier(data, model_path):
+    if data["algo"] == "heuristic":
+        try:
+            clazz = model_path
+            clf = clazz(data)
+        except:
+            clf = None
+    elif data["algo"] == "sklearn.ensemble.VotingClassifier":
+        from ovos_classifiers.skovos.classifier import SklearnOVOSClassifier
+        clf = SklearnOVOSClassifier.from_file(model_path)
+    elif "sklearn." in data["algo"]:
+        from ovos_classifiers.skovos.classifier import SklearnOVOSVotingClassifier
+        clf = SklearnOVOSVotingClassifier.from_file(model_path)
+    else:
+        raise ValueError(f"unknown model format: {data['algo']}")
+    return data, clf
+
+
 def get_stemmer(lang="porter"):
     languages = {
         "ar": "arabic",

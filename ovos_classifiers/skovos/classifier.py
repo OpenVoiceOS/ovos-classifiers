@@ -26,7 +26,6 @@ class SklearnOVOSClassifier(OVOSAbstractClassifier):
         return self.clf.predict(text)
 
 
-
 class SklearnOVOSVotingClassifier(SklearnOVOSClassifier):
     def __init__(self, voter_clfs, pipeline_id, voting='soft', weights=None):
 

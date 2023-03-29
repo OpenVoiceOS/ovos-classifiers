@@ -25,10 +25,7 @@ class OVOSClassifierTagger(OVOSAbstractClassifier):
             words = word_tokenize(sentence)
         else:
             words = sentence
-        tags = self.predict(words)
-        return list(zip(words, tags))
-
-
+        return self.predict(words)
 
 
 class OVOSNgramTagger(OVOSClassifierTagger):
@@ -37,11 +34,9 @@ class OVOSNgramTagger(OVOSClassifierTagger):
         self.default_tag = default_tag
         super().__init__(pipeline_id=pipeline_id, pipeline_clf=self.pipeline)
 
-    @staticmethod
-    def from_file(path):
-        clf = OVOSNgramTagger()
-        clf.load_from_file(path)
-        return clf
+    @classmethod
+    def from_file(cls, path, *args, **kwargs):
+        return cls().load_from_file(path)
 
     @property
     def pipeline(self):
@@ -83,12 +78,6 @@ class OVOSBrillTagger(OVOSNgramTagger):
         super().__init__(regex_patterns=regex_patterns,
                          default_tag=default_tag,
                          pipeline_id=pipeline_id)
-
-    @staticmethod
-    def from_file(path):
-        clf = OVOSBrillTagger()
-        clf.load_from_file(path)
-        return clf
 
     @property
     def pipeline(self):

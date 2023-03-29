@@ -7,6 +7,7 @@ from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
 
 from ovos_classifiers.heuristics.corefiob import CorefIOBTags, CorefIOBHeuristicTagger
+from ovos_classifiers.utils import load_tagger
 
 # TODO - benchmark and choose based on performance/model size
 # TODO - ensure all langs have 1 model
@@ -29,12 +30,7 @@ class OVOSCorefIOBTagger:
         if model_id in _LANGDEFAULTS:
             model_id = _LANGDEFAULTS.get(model_id)
         self.model_id = model_id
-        if model_id == "corefiob_heuristic":
-            self.meta = {"model_id": "corefiob_heuristic", "tagset": "CorefIOBTags",
-                         "algo": "heuristic", "lang": config_core.get("lang", "en-us")}
-            self.clf = CorefIOBHeuristicTagger(self.meta)
-        else:
-            self.meta, self.clf = self.load_model(self.model_id)
+        self.meta, self.clf = self.load_model(self.model_id)
 
     @property
     def tagset(self):
@@ -42,11 +38,15 @@ class OVOSCorefIOBTagger:
 
     @classmethod
     def get_model(cls, model_id):
-        if model_id == "corefiob_heuristic":
-            return {"model_id": "corefiob_heuristic", "tagset": "CorefIOBTags",
-                    "algo": "heuristic"}, CorefIOBHeuristicTagger
         if model_id in _LANGDEFAULTS:
             model_id = _LANGDEFAULTS.get(model_id)
+
+        if model_id == "corefiob_heuristic":
+            return {"model_id": "corefiob_heuristic",
+                    "tagset": "CorefIOBTags",
+                    "lang": Configuration().get("lang", "en-us"),
+                    "algo": "heuristic"}, CorefIOBHeuristicTagger
+
         meta_path = f"{cls._XDG_PATH}/{model_id}.json"
         if isfile(meta_path):
             with open(meta_path) as f:
@@ -68,19 +68,8 @@ class OVOSCorefIOBTagger:
 
     @classmethod
     def load_model(cls, model_id):
-        from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger, OVOSClassifierTagger
-
         data, model_path = cls.get_model(model_id)
-        if data["algo"] == "heuristic":
-            clazz = model_path
-            clf = clazz(data)
-        elif data["algo"] == "TrigramTagger":
-            clf = OVOSNgramTagger.from_file(model_path)
-        elif data["algo"] == "nltk.brill.fntbl37":
-            clf = OVOSBrillTagger.from_file(model_path)
-        else:
-            clf = OVOSClassifierTagger.from_file(model_path)
-        return data, clf
+        return load_tagger(data, model_path)
 
     def iob_tag(self, postagged_tokens):
         return self.clf.tag(postagged_tokens)
