@@ -9,8 +9,8 @@ dataset len: 3914
 |-------|----------|----------|
 | nltk-treebank-pentree-brill-postag | 0.9287121082377119  | 0.9799455679605864 |
 | nltk-treebank-pentree-ngram-postag | 0.9273848261688645  | 0.9777802058087329 |
-| sklearn-treebank-pentree-lsvc-postag | 0.9327  | 0.9414 |
-| sklearn-treebank-pentree-logreg-postag | 0.923  | 0.9344 |
-| sklearn-treebank-pentree-percep-postag | 0.9216  | 0.9295 |
-| sklearn-treebank-pentree-dtree-postag | 0.8913  | 0.9049 |
-| sklearn-treebank-pentree-nb-postag | 0.8384  | 0.8515 |
+| sklearn-treebank-pentree-lsvc-postag | 0.9327  | 0.9462 |
+| sklearn-treebank-pentree-percep-postag | 0.9216  | 0.9338 |
+| sklearn-treebank-pentree-logreg-postag | 0.923  | 0.9332 |
+| sklearn-treebank-pentree-dtree-postag | 0.8913  | 0.9111 |
+| sklearn-treebank-pentree-nb-postag | 0.8384  | 0.8522 |
