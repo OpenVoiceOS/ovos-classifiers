@@ -6,7 +6,7 @@ from nltk.tag import UnigramTagger, BigramTagger, TrigramTagger, DefaultTagger, 
 from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 
 
-class OVOSClassifierTagger(OVOSAbstractClassifier):
+class OVOSAbstractClassifierTagger(OVOSAbstractClassifier):
     def __init__(self, pipeline_clf=None, pipeline_id="naive"):
         super().__init__(pipeline_clf=pipeline_clf, pipeline_id=pipeline_id)
         self._pipeline_clf = pipeline_clf
@@ -28,7 +28,7 @@ class OVOSClassifierTagger(OVOSAbstractClassifier):
         return self.predict(words)
 
 
-class OVOSNgramTagger(OVOSClassifierTagger):
+class OVOSNgramTagger(OVOSAbstractClassifierTagger):
     def __init__(self, regex_patterns=None, default_tag=None, pipeline_id="ngram"):
         self.patterns = regex_patterns
         self.default_tag = default_tag

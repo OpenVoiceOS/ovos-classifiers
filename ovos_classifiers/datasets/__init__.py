@@ -56,12 +56,48 @@ def get_coref_iob_trainset():
     return (X, y), (X_test, y_test)
 
 
+# world_names_v0.2.csv
+def get_world_names_tagged_words():
+    base_path = f"{xdg_data_home()}/OpenVoiceOS/datasets"
+    makedirs(base_path, exist_ok=True)
+    path = f"{base_path}/world_names_v0.2.csv"
+    url = "https://github.com/OpenVoiceOS/ovos-datasets/raw/master/text/world_names_v0.2.csv"
+    if not isfile(path):
+        data = requests.get(url).text
+        with open(path, "w") as f:
+            f.write(data)
+
+    corpus = []
+    with open(path) as f:
+        for l in f.read().split("\n")[1:]:
+            tag, name, lang = l.split(",", 2)
+            corpus.append((name, tag))
+
+    return corpus
+
+
+def get_world_names_dataset():
+    tagged = get_world_names_tagged_words()
+    return _tagged_to_dataset([tagged])
+
+
+def get_world_names_trainset():
+    utts, tags = get_world_names_dataset()
+    t = int(len(utts) * 0.8)
+    X = utts[:t]
+    y = tags[:t]
+    X_test = utts[t:]
+    y_test = tags[t:]
+    return (X, y), (X_test, y_test)
+
+
+
 # utterance_tags_v0.1
 def get_utterance_tags_tagged_sents():
     base_path = f"{xdg_data_home()}/OpenVoiceOS/datasets"
     makedirs(base_path, exist_ok=True)
     path = f"{base_path}/utterance_tags_v0.1.csv"
-    url = "https://github.com/OpenVoiceOS/ovos-datasets/raw/master/text/core_intents_v0.1.csv"
+    url = "https://github.com/OpenVoiceOS/ovos-datasets/raw/master/text/utterance_tags_v0.1.csv"
     if not isfile(path):
         data = requests.get(url).text
         with open(path, "w") as f:

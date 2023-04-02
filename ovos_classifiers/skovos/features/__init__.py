@@ -7,7 +7,7 @@ from sklearn.feature_extraction import DictVectorizer
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.utils import DummyStemmer, extract_postag_features, \
-    extract_word_features, normalize, get_stemmer
+    extract_word_features, normalize, get_stemmer, extract_single_word_features
 from ovos_classifiers.postag import OVOSPostag
 
 
@@ -23,6 +23,35 @@ class SnowballStemmerTransformer(BaseEstimator, TransformerMixin):
         return normalize(X, stemmer=self.stemmer, **transform_params)
 
 
+class SingleWordFeaturesTransformer(BaseEstimator, TransformerMixin):
+
+    def fit(self, *args, **kwargs):
+        return self
+
+    def transform(self, X, **transform_params):
+        feats = [extract_single_word_features(w) for w in X]
+        return feats
+
+
+class SingleWordFeaturesVectorizer(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self._transformer = SingleWordFeaturesTransformer()
+        self._vectorizer = DictVectorizer(sparse=False)
+        super().__init__()
+
+    def get_feature_names(self):
+        return self._vectorizer.get_feature_names()
+
+    def fit(self, X, y=None, **kwargs):
+        X = self._transformer.transform(X)
+        self._vectorizer.fit(X)
+        return self
+
+    def transform(self, X, **transform_params):
+        X = self._transformer.transform(X, **transform_params)
+        return self._vectorizer.transform(X)
+
+
 class WordFeaturesTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, lang=None, stemmer=None, memory=2):
         super().__init__()
@@ -30,14 +59,14 @@ class WordFeaturesTransformer(BaseEstimator, TransformerMixin):
         lang = lang.split("-")[0]
         self.stemmer = stemmer or get_stemmer(lang)
         self.memory = memory
-        self.tagger = OVOSPostag(lang)
 
     def fit(self, *args, **kwargs):
         return self
 
     def transform(self, X, **transform_params):
         feats = [
-            extract_word_features(X, index)
+            extract_word_features(X, index, stemmer=self.stemmer,
+                                  memory=self.memory)
             for index in range(len(X))]
         return feats
 

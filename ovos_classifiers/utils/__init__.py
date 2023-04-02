@@ -5,7 +5,7 @@ from nltk.stem.snowball import SnowballStemmer
 
 
 def load_tagger(data, model_path):
-    from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger, OVOSClassifierTagger
+    from ovos_classifiers.tasks.tagger import OVOSBrillTagger, OVOSNgramTagger
 
     if data["algo"] == "heuristic":
         clazz = model_path
@@ -21,7 +21,7 @@ def load_tagger(data, model_path):
         from ovos_classifiers.skovos.tagger import SklearnOVOSVotingClassifierTagger
         clf = SklearnOVOSVotingClassifierTagger.from_file(model_path)
     else:
-        clf = OVOSClassifierTagger.from_file(model_path)
+        raise ValueError(f"unknown model format: {data['algo']}")
     return data, clf
 
 
@@ -209,7 +209,9 @@ def extract_word_features(tokens, index=0, stemmer=None, memory=2):
     return feat_dict
 
 
-def extract_single_word_features(word):
+def extract_single_word_features(word, lowercase=True):
+    if lowercase:
+        word = word.lower()
     feat_dict = {
         'suffix1': word[-1:],
         'suffix2': word[-2:],

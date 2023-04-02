@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.pipeline import Pipeline, FeatureUnion
 
 from ovos_classifiers.skovos.features import WordFeaturesVectorizer, POSTaggerVectorizer, \
-    PronounTaggerVectorizer, CorefIOBTaggerVectorizer
+    PronounTaggerVectorizer, CorefIOBTaggerVectorizer, SingleWordFeaturesVectorizer
 from ovos_classifiers.skovos.features.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
 
 """
@@ -88,6 +88,9 @@ def get_features_pipeline(pipeline_id="default"):
     DEFAULT_PIPELINES = {
         "naive": FeatureUnion([
             ("word_feats", WordFeaturesVectorizer())
+        ]),
+        "words": FeatureUnion([
+            ("word_feats", SingleWordFeaturesVectorizer())
         ]),
         "postag_en": FeatureUnion([
             ("postag", POSTaggerVectorizer(lang="en"))
