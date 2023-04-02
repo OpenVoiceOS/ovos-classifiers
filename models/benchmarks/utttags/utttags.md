@@ -2,7 +2,7 @@
 
 ## Benchmark - Utterance Tags V0.1 corpus
 
-dataset len: 8750
+dataset len: 2374
 
 
 | Model | Training Accuracy | Accuracy 	|
