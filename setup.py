@@ -4,6 +4,14 @@ from setuptools import setup
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
+def package_files(directory):
+    paths = []
+    for (path, _, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join('..', path, filename))
+    return paths
+
+extra_files = package_files('ovos_classifiers/res')
 
 def required(requirements_file):
     """ Read requirements file and remove comments and empty lines. """
@@ -30,6 +38,7 @@ setup(
     license='apache-2.0',
     author='jarbasai',
     include_package_data=True,
+    package_data={"": extra_files},
     extras_require={
         "sklearn": ["scikit-learn"]
     },
