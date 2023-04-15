@@ -43,14 +43,41 @@ class PluralAmount(str, enum.Enum):
     OTHER = "other"
 
 
+class GrammaticalGender(str, enum.Enum):
+    """
+    Gender in European languages:
+    - Light blue: no gender system.
+    - common/neuter.
+    - masculine/feminine.
+    - animate/inanimate.
+    - masculine/feminine/neuter.
+
+    For more details:
+    https://en.wikipedia.org/wiki/Grammatical_gender
+    """
+    NONE = "none"  # langs without grammatical gender
+    COMMON = "common"
+    NEUTER = "neuter"
+    MASCULINE = "masculine"
+    FEMININE = "feminine"
+    ANIMATE = "animate"
+    INANIMATE = "inanimate"
+
+
 class Inflection:
     def __int__(self, lang):
-        # TODO - word gender and such for lang support
         self.lang = lang
-        if self.lang == "en":
-            self.PLURALS, self.SINGULARS, self.UNCOUNTABLES = self._get_en_data()
-        else:
-            raise NotImplementedError
+
+    def ordinal(self, number: int, gender=GrammaticalGender.NONE) -> str:
+        """
+        Return the suffix that should be added to a number to denote the position
+        in an ordered sequence such as 1st, 2nd, 3rd, 4th.
+        """
+        if self.lang.startswith("en"):
+            return self.ordinal_en(number, gender)
+        elif self.lang.startswith("pt"):
+            return self.ordinal_pt(number, gender)
+        raise NotImplementedError
 
     def get_plural_category(self, amount, ptype=PluralCategory.CARDINAL):
         """
@@ -94,15 +121,6 @@ class Inflection:
             return self.get_plural_form_en(word, amount, ptype)
         if self.lang.startswith("pt"):
             return self.get_plural_form_pt(word, amount, ptype)
-        raise NotImplementedError
-
-    def ordinal(self, number: int) -> str:
-        """
-        Return the suffix that should be added to a number to denote the position
-        in an ordered sequence such as 1st, 2nd, 3rd, 4th.
-        """
-        if self.lang.startswith("en"):
-            return self._ordinal_en(number)
         raise NotImplementedError
 
     # generic lang agnostic helpers
@@ -412,6 +430,17 @@ class Inflection:
                 return word + "s"
         return word
 
+    @staticmethod
+    def ordinal_pt(number: int, gender: GrammaticalGender.MASCULINE) -> str:
+        """
+        Return the suffix that should be added to a number to denote the position
+        in an ordered sequence such as 1st, 2nd, 3rd, 4th.
+        """
+        if gender == GrammaticalGender.FEMININE:
+            return "ª"
+        else:
+            return "º"
+
     def get_plural_form_pt(self, word, amount, ptype=PluralCategory.CARDINAL):
         """
             Get plural form of the specified word for the specified amount.
@@ -586,10 +615,11 @@ class Inflection:
             'CamelOctopi'
 
         """
-        if not word or word.lower() in self.UNCOUNTABLES:
+        PLURALS, SINGULARS, UNCOUNTABLES = self._get_en_data()
+        if not word or word.lower() in UNCOUNTABLES:
             return word
         else:
-            for rule, replacement in self.PLURALS:
+            for rule, replacement in PLURALS:
                 if re.search(rule, word):
                     return re.sub(rule, replacement, word)
             return word
@@ -612,17 +642,18 @@ class Inflection:
             'CamelOctopus'
 
         """
-        for inflection in self.UNCOUNTABLES:
+        PLURALS, SINGULARS, UNCOUNTABLES = self._get_en_data()
+        for inflection in UNCOUNTABLES:
             if re.search(r'(?i)\b(%s)\Z' % inflection, word):
                 return word
 
-        for rule, replacement in self.SINGULARS:
+        for rule, replacement in SINGULARS:
             if re.search(rule, word):
                 return re.sub(rule, replacement, word)
         return word
 
     @staticmethod
-    def _ordinal_en(number: int) -> str:
+    def ordinal_en(number: int, gender: GrammaticalGender.NONE) -> str:
         """
         Return the suffix that should be added to a number to denote the position
         in an ordered sequence such as 1st, 2nd, 3rd, 4th.
