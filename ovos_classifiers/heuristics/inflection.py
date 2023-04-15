@@ -1,21 +1,46 @@
 # -*- coding: utf-8 -*-
 """
-    inflection
-    ~~~~~~~~~~~~
+English implementation taken from
+~~~~~~~~~~~~
+inflection __version__ = '0.5.1'
 
-    A port of Ruby on Rails' inflector to Python.
+A port of Ruby on Rails' inflector to Python.
 
-    :copyright: (c) 2012-2020 by Janne Vanhala
+:copyright: (c) 2012-2020 by Janne Vanhala
 
-    :license: MIT, see LICENSE for more details.
+:license: MIT, see LICENSE for more details.
 """
+import enum
 import re
 import typing
 import unicodedata
 
-__version__ = '0.5.1'
 
-RegexReplaceList = typing.List[typing.Tuple[str, str]]
+class PluralCategory(str, enum.Enum):
+    """
+    plural category for the specified amount. Category can be one of
+    the categories specified by Unicode CLDR Plural Rules.
+    For more details:
+    http://cldr.unicode.org/index/cldr-spec/plural-rules
+    https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+    """
+    CARDINAL = "cardinal"
+    ORDINAL = "ordinal"
+    RANGE = "range"
+
+
+class PluralAmount(str, enum.Enum):
+    """
+    For more details:
+    http://cldr.unicode.org/index/cldr-spec/plural-rules
+    https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+    """
+    ZERO = "zero"
+    ONE = "one"
+    TWO = "two"
+    FEW = "few"
+    MANY = "many"
+    OTHER = "other"
 
 
 class Inflection:
@@ -27,8 +52,379 @@ class Inflection:
         else:
             raise NotImplementedError
 
+    def get_plural_category(self, amount, ptype=PluralCategory.CARDINAL):
+        """
+        Get plural category for the specified amount. Category can be one of
+        the categories specified by Unicode CLDR Plural Rules.
+        For more details:
+        http://cldr.unicode.org/index/cldr-spec/plural-rules
+        https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+        Args:
+            amount(int or float or pair or list): The amount that is used to
+                determine the category. If type is range, it must contain
+                the start and end numbers.
+            ptype(str): Either cardinal (default), ordinal or range.
+        Returns:
+            (str): The plural category. Either zero, one, two, few, many or other.
+        """
+        if ptype == PluralCategory.CARDINAL:
+            if amount == 1:
+                return PluralAmount.ONE
+            else:
+                return PluralAmount.OTHER
+        raise NotImplementedError
+
+    def get_plural_form(self, word, amount, ptype=PluralCategory.CARDINAL):
+        """
+        Get plural form of the specified word for the specified amount.
+        Args:
+            word(str): Word to be pluralized.
+            amount(int or float or pair or list): The amount that is used to
+                determine the category. If type is range, it must contain
+                the start and end numbers.
+            ptype(str): Either cardinal (default), ordinal or range.
+        Returns:
+            (str): Pluralized word.
+        """
+        raise NotImplementedError
+
+    def ordinal(self, number: int) -> str:
+        """
+        Return the suffix that should be added to a number to denote the position
+        in an ordered sequence such as 1st, 2nd, 3rd, 4th.
+        """
+        if self.lang.startswith("en"):
+            return self._ordinal_en(number)
+        raise NotImplementedError
+
+    # generic lang agnostic helpers
+    def ordinalize(self, number: int) -> str:
+        """
+        Turn a number into an ordinal string used to denote the position in an
+        ordered sequence such as 1st, 2nd, 3rd, 4th.
+
+        Examples::
+
+            >>> ordinalize(1)
+            '1st'
+            >>> ordinalize(2)
+            '2nd'
+            >>> ordinalize(1002)
+            '1002nd'
+            >>> ordinalize(1003)
+            '1003rd'
+            >>> ordinalize(-11)
+            '-11th'
+            >>> ordinalize(-1021)
+            '-1021st'
+
+        """
+        return "{}{}".format(number, self.ordinal(number))
+
+    @staticmethod
+    def parameterize(string: str, separator: str = '-') -> str:
+        """
+        Replace special characters in a string so that it may be used as part of a
+        'pretty' URL.
+
+        Example::
+
+            >>> Inflection.parameterize(u"Donald E. Knuth")
+            'donald-e-knuth'
+
+        """
+        string = Inflection.transliterate(string)
+        # Turn unwanted chars into the separator
+        string = re.sub(r"(?i)[^a-z0-9\-_]+", separator, string)
+        if separator:
+            re_sep = re.escape(separator)
+            # No more than one of the separator in a row.
+            string = re.sub(r'%s{2,}' % re_sep, separator, string)
+            # Remove leading/trailing separator.
+            string = re.sub(r"(?i)^{sep}|{sep}$".format(sep=re_sep), '', string)
+
+        return string.lower()
+
+    def tableize(self, word: str) -> str:
+        """
+        Create the name of a table like Rails does for models to table names. This
+        method uses the :func:`pluralize` method on the last word in the string.
+
+        Examples::
+
+            >>> tableize('RawScaledScorer')
+            'raw_scaled_scorers'
+            >>> tableize('egg_and_ham')
+            'egg_and_hams'
+            >>> tableize('fancyCategory')
+            'fancy_categories'
+        """
+        return self.pluralize(self.underscore(word))
+
+    @staticmethod
+    def camelize(string: str, uppercase_first_letter: bool = True) -> str:
+        """
+        Convert strings to CamelCase.
+
+        Examples::
+
+            >>> Inflection.camelize("device_type")
+            'DeviceType'
+            >>> Inflection.camelize("device_type", False)
+            'deviceType'
+
+        :func:`camelize` can be thought of as a inverse of :func:`underscore`,
+        although there are some cases where that does not hold::
+
+            >>> Inflection.camelize(Inflection.underscore("IOError"))
+            'IoError'
+
+        :param uppercase_first_letter: if set to `True` :func:`camelize` converts
+            strings to UpperCamelCase. If set to `False` :func:`camelize` produces
+            lowerCamelCase. Defaults to `True`.
+        """
+        if uppercase_first_letter:
+            return re.sub(r"(?:^|_)(.)", lambda m: m.group(1).upper(), string)
+        else:
+            return string[0].lower() + Inflection.camelize(string)[1:]
+
+    @staticmethod
+    def dasherize(word: str) -> str:
+        """Replace underscores with dashes in the string.
+
+        Example::
+
+            >>> Inflection.dasherize("puni_puni")
+            'puni-puni'
+
+        """
+        return word.replace('_', '-')
+
+    @staticmethod
+    def humanize(word: str) -> str:
+        """
+        Capitalize the first word and turn underscores into spaces and strip a
+        trailing ``"_id"``, if any. Like :func:`titleize`, this is meant for
+        creating pretty output.
+
+        Examples::
+
+            >>> Inflection.humanize("employee_salary")
+            'Employee salary'
+            >>> Inflection.humanize("author_id")
+            'Author'
+
+        """
+        word = re.sub(r"_id$", "", word)
+        word = word.replace('_', ' ')
+        word = re.sub(r"(?i)([a-z\d]*)", lambda m: m.group(1).lower(), word)
+        word = re.sub(r"^\w", lambda m: m.group(0).upper(), word)
+        return word
+
+    @staticmethod
+    def titleize(word: str) -> str:
+        """
+        Capitalize all the words and replace some characters in the string to
+        create a nicer looking title. :func:`titleize` is meant for creating pretty
+        output.
+
+        Examples::
+
+          >>> Inflection.titleize("man from the boondocks")
+          'Man From The Boondocks'
+          >>> Inflection.titleize("x-men: the last stand")
+          'X Men: The Last Stand'
+          >>> Inflection.titleize("TheManWithoutAPast")
+          'The Man Without A Past'
+          >>> Inflection.titleize("raiders_of_the_lost_ark")
+          'Raiders Of The Lost Ark'
+
+        """
+        return re.sub(
+            r"\b('?\w)",
+            lambda match: match.group(1).capitalize(),
+            Inflection.humanize(Inflection.underscore(word)).title()
+        )
+
+    @staticmethod
+    def transliterate(string: str) -> str:
+        """
+        Replace non-ASCII characters with an ASCII approximation. If no
+        approximation exists, the non-ASCII character is ignored. The string must
+        be ``unicode``.
+
+        Examples::
+
+            >>> Inflection.transliterate('älämölö')
+            'alamolo'
+            >>> Inflection.transliterate('Ærøskøbing')
+            'rskbing'
+
+        """
+        normalized = unicodedata.normalize('NFKD', string)
+        return normalized.encode('ascii', 'ignore').decode('ascii')
+
+    @staticmethod
+    def underscore(word: str) -> str:
+        """
+        Make an underscored, lowercase form from the expression in the string.
+
+        Example::
+
+            >>> Inflection.underscore("DeviceType")
+            'device_type'
+
+        As a rule of thumb you can think of :func:`underscore` as the inverse of
+        :func:`camelize`, though there are cases where that does not hold::
+
+            >>> Inflection.camelize(Inflection.underscore("IOError"))
+            'IoError'
+
+        """
+        word = re.sub(r"([A-Z]+)([A-Z][a-z])", r'\1_\2', word)
+        word = re.sub(r"([a-z\d])([A-Z])", r'\1_\2', word)
+        word = word.replace("-", "_")
+        return word.lower()
+
+    # portuguese specific handlers
+    @staticmethod
+    def _get_pt_data():
+        _VOWELS_PT = ["a", "ã", "á", "à",
+                      "e", "é", "è",
+                      "i", "ì", "í",
+                      "o", "ó", "ò", "õ",
+                      "u", "ú", "ù"]
+
+        _INVARIANTS_PT = ["ontem", "depressa", "ali", "além", "sob", "por", "contra", "desde", "entre",
+                          "até", "perante", "porém", "contudo", "todavia", "entretanto", "senão", "portanto",
+                          "oba", "eba", "exceto", "excepto", "apenas", "menos", "também", "inclusive", "aliás",
+                          "que", "onde", "isto", "isso", "aquilo", "algo", "alguém", "nada", "ninguém", "tudo", "cada",
+                          "outrem", "quem", "mais", "menos", "demais",
+                          # NOTE some words ommited because it depends on POS_TAG
+                          # NOTE these multi word expressions are also invariant
+                          "ou melhor", "isto é", "por exemplo", "a saber", "digo", "ou seja",
+                          "por assim dizer", "com efeito", "ou antes"]
+
+        _PLURAL_EXCEPTIONS_PT = {
+            "cânon": "cânones",
+            "cós": "coses",  # cós (unchanged word) is also valid
+            "cais": "cais",
+            "xis": "xis",
+            "mal": "males",
+            "cônsul": "cônsules",
+            "mel": "méis",  # "meles" also valid
+            "fel": "féis",  # "feles" also valid
+            "cal": "cais",  # "cales" also valid
+            "aval": "avais",  # "avales also valid
+            "mol": "móis",  # "moles also valid
+            "real": "réis",
+            "fax": "faxes",
+            "cálix": "cálices",
+            "índex": "índices",
+            "apêndix": "apêndices",
+            "hélix": "hélices",
+            "hálux": "háluces",
+            "códex": "códices",
+            "fénix": "fénixes",  # "fénix" also valid
+            "til": "tis",  # "tiles" also valid
+            "pão": "pães",
+            "cão": "cães",
+            "alemão": "alemães",
+            "balão": "balões",
+            "anão": "anões",
+            "dez": "dez",
+            "três": "três",
+            "seis": "seis"
+        }
+
+        # in general words that end with "s" in singular form should be added below
+        _SINGULAR_EXCEPTIONS_PT = {v: k for k, v in _PLURAL_EXCEPTIONS_PT.items()}
+
+        return _VOWELS_PT, _INVARIANTS_PT, _PLURAL_EXCEPTIONS_PT, _SINGULAR_EXCEPTIONS_PT
+
+    def _singularize_pt(self, word):
+        _VOWELS_PT, _INVARIANTS_PT, _PLURAL_EXCEPTIONS_PT, _SINGULAR_EXCEPTIONS_PT = self._get_pt_data()
+        if word in _INVARIANTS_PT:
+            return word
+        if word in _SINGULAR_EXCEPTIONS_PT:
+            return _SINGULAR_EXCEPTIONS_PT[word]
+        # TODO implement is_plural helper
+        # can not ensure word is in plural, assuming it is,
+        # if in singular form it might in some cases be wrongly mutated
+        # in general words that end with "s" in singular form should be added to exceptions dict
+        if word.endswith("is"):
+            return word.rstrip("is") + "il"
+        if word.endswith("ões"):
+            return word.replace("ões", "ão")
+        if word.endswith("ães"):
+            return word.replace("ães", "ão")
+        if word.endswith("es"):
+            return word.rstrip("es")
+        if word.endswith("s"):
+            return word.rstrip("s")
+        return word
+
+    def _pluralize_pt(self, word):
+        _VOWELS_PT, _INVARIANTS_PT, _PLURAL_EXCEPTIONS_PT, _SINGULAR_EXCEPTIONS_PT = self._get_pt_data()
+        if word in _INVARIANTS_PT:
+            return word
+        if word in _PLURAL_EXCEPTIONS_PT:
+            return _PLURAL_EXCEPTIONS_PT[word]
+        if word.endswith("x"):
+            return word
+        if word.endswith("s"):
+            # TODO - this will catch too many words, need a better check
+            # if word[-2] in _VOWELS_PT or word[-3] in _VOWELS_PT:
+            # if word is an oxytone, add "es", else word remains unchanged
+            # https://en.wikipedia.org/wiki/Oxytone
+            #    return word + "es"
+            return word
+        if word.endswith("ão"):
+            # crap, can either end with "ãos", "aẽs" or "ões", most times they are all valid
+            # the other times lets hope the word is in exceptions dict
+            # TODO check if numeric, then it's always "ões"
+            return word + "s"
+        if word[-1] in _VOWELS_PT:
+            # if word ends with a vowel add an "s"
+            return word + 's'
+        for ending in ["r", "z", "n"]:
+            if word.endswith(ending):
+                return word + "es"
+        for ending in ["al", "el", "ol", "ul"]:
+            if word.endswith(ending):
+                return word.rstrip("l") + "is"
+        if word.endswith("il"):
+            return word.rstrip("l") + "s"
+        if word.endswith("m"):
+            return word.rstrip("m") + "ns"
+        # foreign words that have been "unportuguesified" have an "s" added
+        # simple check is looking for endings that don't exist in portuguese
+        for ending in ["w", "y", "k", "t"]:
+            if word.endswith(ending):
+                return word + "s"
+        return word
+
+    def get_plural_form_pt(self, word, amount, ptype=PluralCategory.CARDINAL):
+        """
+            Get plural form of the specified word for the specified amount.
+            Args:
+                word(str): Word to be pluralized.
+                amount(int or float or pair or list): The amount that is used to
+                    determine the category. If type is range, it must contain
+                    the start and end numbers.
+                ptype(str): Either cardinal (default), ordinal or range.
+            Returns:
+                (str): Pluralized word.
+            """
+        if amount == 1:
+            return self._singularize_pt(word)
+        return self._pluralize_pt(word)
+
+    # english specific handlers
     @staticmethod
     def _get_en_data():
+        RegexReplaceList = typing.List[typing.Tuple[str, str]]
+
         PLURALS: RegexReplaceList = [
             (r"(?i)(quiz)$", r'\1zes'),
             (r"(?i)^(oxen)$", r'\1'),
@@ -166,74 +562,56 @@ class Inflection:
 
         return PLURALS, SINGULARS, UNCOUNTABLES
 
-    @staticmethod
-    def camelize(string: str, uppercase_first_letter: bool = True) -> str:
+    def _pluralize_en(self, word: str) -> str:
         """
-        Convert strings to CamelCase.
+        Return the plural form of a word.
 
         Examples::
 
-            >>> Inflection.camelize("device_type")
-            'DeviceType'
-            >>> Inflection.camelize("device_type", False)
-            'deviceType'
+            >>> pluralize("posts")
+            'posts'
+            >>> pluralize("octopus")
+            'octopi'
+            >>> pluralize("sheep")
+            'sheep'
+            >>> pluralize("CamelOctopus")
+            'CamelOctopi'
 
-        :func:`camelize` can be thought of as a inverse of :func:`underscore`,
-        although there are some cases where that does not hold::
-
-            >>> Inflection.camelize(Inflection.underscore("IOError"))
-            'IoError'
-
-        :param uppercase_first_letter: if set to `True` :func:`camelize` converts
-            strings to UpperCamelCase. If set to `False` :func:`camelize` produces
-            lowerCamelCase. Defaults to `True`.
         """
-        if uppercase_first_letter:
-            return re.sub(r"(?:^|_)(.)", lambda m: m.group(1).upper(), string)
+        if not word or word.lower() in self.UNCOUNTABLES:
+            return word
         else:
-            return string[0].lower() + Inflection.camelize(string)[1:]
+            for rule, replacement in self.PLURALS:
+                if re.search(rule, word):
+                    return re.sub(rule, replacement, word)
+            return word
 
-    @staticmethod
-    def dasherize(word: str) -> str:
-        """Replace underscores with dashes in the string.
-
-        Example::
-
-            >>> Inflection.dasherize("puni_puni")
-            'puni-puni'
-
+    def _singularize_en(self, word: str) -> str:
         """
-        return word.replace('_', '-')
-
-    @staticmethod
-    def humanize(word: str) -> str:
-        """
-        Capitalize the first word and turn underscores into spaces and strip a
-        trailing ``"_id"``, if any. Like :func:`titleize`, this is meant for
-        creating pretty output.
+        Return the singular form of a word, the reverse of :func:`pluralize`.
 
         Examples::
 
-            >>> Inflection.humanize("employee_salary")
-            'Employee salary'
-            >>> Inflection.humanize("author_id")
-            'Author'
+            >>> singularize("posts")
+            'post'
+            >>> singularize("octopi")
+            'octopus'
+            >>> singularize("sheep")
+            'sheep'
+            >>> singularize("word")
+            'word'
+            >>> singularize("CamelOctopi")
+            'CamelOctopus'
 
         """
-        word = re.sub(r"_id$", "", word)
-        word = word.replace('_', ' ')
-        word = re.sub(r"(?i)([a-z\d]*)", lambda m: m.group(1).lower(), word)
-        word = re.sub(r"^\w", lambda m: m.group(0).upper(), word)
+        for inflection in self.UNCOUNTABLES:
+            if re.search(r'(?i)\b(%s)\Z' % inflection, word):
+                return word
+
+        for rule, replacement in self.SINGULARS:
+            if re.search(rule, word):
+                return re.sub(rule, replacement, word)
         return word
-
-    def ordinal(self, number: int) -> str:
-        """
-        Return the suffix that should be added to a number to denote the position
-        in an ordered sequence such as 1st, 2nd, 3rd, 4th.
-        """
-        if self.lang.startswith("en"):
-            return self._ordinal_en(number)
-        raise NotImplementedError
 
     @staticmethod
     def _ordinal_en(number: int) -> str:
@@ -267,181 +645,76 @@ class Inflection:
                 3: "rd",
             }.get(number % 10, "th")
 
-    def ordinalize(self, number: int) -> str:
-        """
-        Turn a number into an ordinal string used to denote the position in an
-        ordered sequence such as 1st, 2nd, 3rd, 4th.
+    def get_plural_category_en(self, amount, ptype=PluralCategory.CARDINAL):
+        if type == PluralCategory.CARDINAL:
+            if amount == 1:
+                return PluralAmount.ONE
+            else:
+                return PluralAmount.OTHER
 
-        Examples::
+        elif type == PluralCategory.ORDINAL:
+            if amount % 10 == 1 and amount % 100 != 11:
+                return PluralAmount.ONE
+            elif amount % 10 == 2 and amount % 100 != 12:
+                return PluralAmount.TWO
+            elif amount % 10 == 3 and amount % 100 != 13:
+                return PluralAmount.FEW
+            else:
+                return PluralAmount.OTHER
 
-            >>> ordinalize(1)
-            '1st'
-            >>> ordinalize(2)
-            '2nd'
-            >>> ordinalize(1002)
-            '1002nd'
-            >>> ordinalize(1003)
-            '1003rd'
-            >>> ordinalize(-11)
-            '-11th'
-            >>> ordinalize(-1021)
-            '-1021st'
+        elif type == PluralCategory.RANGE:
+            if not (isinstance(amount, tuple) or isinstance(amount, list)) or len(amount) != 2:
+                raise ValueError("Argument \"number\" must be tuple|list type with the start and end numbers")
 
-        """
-        return "{}{}".format(number, self.ordinal(number))
+            return PluralAmount.OTHER
 
-    @staticmethod
-    def parameterize(string: str, separator: str = '-') -> str:
-        """
-        Replace special characters in a string so that it may be used as part of a
-        'pretty' URL.
-
-        Example::
-
-            >>> Inflection.parameterize(u"Donald E. Knuth")
-            'donald-e-knuth'
-
-        """
-        string = Inflection.transliterate(string)
-        # Turn unwanted chars into the separator
-        string = re.sub(r"(?i)[^a-z0-9\-_]+", separator, string)
-        if separator:
-            re_sep = re.escape(separator)
-            # No more than one of the separator in a row.
-            string = re.sub(r'%s{2,}' % re_sep, separator, string)
-            # Remove leading/trailing separator.
-            string = re.sub(r"(?i)^{sep}|{sep}$".format(sep=re_sep), '', string)
-
-        return string.lower()
-
-    def pluralize(self, word: str) -> str:
-        """
-        Return the plural form of a word.
-
-        Examples::
-
-            >>> pluralize("posts")
-            'posts'
-            >>> pluralize("octopus")
-            'octopi'
-            >>> pluralize("sheep")
-            'sheep'
-            >>> pluralize("CamelOctopus")
-            'CamelOctopi'
-
-        """
-        if not word or word.lower() in self.UNCOUNTABLES:
-            return word
         else:
-            for rule, replacement in self.PLURALS:
-                if re.search(rule, word):
-                    return re.sub(rule, replacement, word)
-            return word
+            return ValueError("Argument \"type\" must be cardinal|ordinal|range")
 
-    def singularize(self, word: str) -> str:
+    def get_plural_form_en(self, word, amount, ptype=PluralCategory.CARDINAL):
         """
-        Return the singular form of a word, the reverse of :func:`pluralize`.
-
-        Examples::
-
-            >>> singularize("posts")
-            'post'
-            >>> singularize("octopi")
-            'octopus'
-            >>> singularize("sheep")
-            'sheep'
-            >>> singularize("word")
-            'word'
-            >>> singularize("CamelOctopi")
-            'CamelOctopus'
-
+        Get plural form of the specified word for the specified amount.
+        Args:
+            word(str): Word to be pluralized.
+            amount(int or float or pair or list): The amount that is used to
+                determine the category. If type is range, it must contain
+                the start and end numbers.
+            ptype(str): Either cardinal (default), ordinal or range.
+        Returns:
+            (str): Pluralized word.
         """
-        for inflection in self.UNCOUNTABLES:
-            if re.search(r'(?i)\b(%s)\Z' % inflection, word):
-                return word
+        if amount == 1:
+            return self._singularize_en(word)
+        else:
+            return self._pluralize_en(word)
 
-        for rule, replacement in self.SINGULARS:
-            if re.search(rule, word):
-                return re.sub(rule, replacement, word)
-        return word
+    # sl specific handlers
+    def get_plural_category_sl(self, amount, type=PluralCategory.CARDINAL):
+        if type == PluralCategory.CARDINAL:
+            if amount % 100 == 1 and amount % 1 == 0:
+                return PluralAmount.ONE
+            elif amount % 100 == 2 and amount % 1 == 0:
+                return PluralAmount.TWO
+            elif amount % 100 == 3 or amount % 100 == 4 or amount % 1 != 0:
+                return PluralAmount.FEW
+            else:
+                return PluralAmount.OTHER
 
-    def tableize(self, word: str) -> str:
-        """
-        Create the name of a table like Rails does for models to table names. This
-        method uses the :func:`pluralize` method on the last word in the string.
+        elif type == PluralCategory.ORDINAL:
+            return PluralAmount.OTHER
 
-        Examples::
+        elif type == PluralCategory.RANGE:
+            if not (isinstance(amount, tuple) or isinstance(amount, list)) or len(amount) != 2:
+                raise ValueError("Argument \"number\" must be tuple|list type with the start and end numbers")
 
-            >>> tableize('RawScaledScorer')
-            'raw_scaled_scorers'
-            >>> tableize('egg_and_ham')
-            'egg_and_hams'
-            >>> tableize('fancyCategory')
-            'fancy_categories'
-        """
-        return self.pluralize(self.underscore(word))
+            end = self.get_plural_category_sl(amount[1])
 
-    @staticmethod
-    def titleize(word: str) -> str:
-        """
-        Capitalize all the words and replace some characters in the string to
-        create a nicer looking title. :func:`titleize` is meant for creating pretty
-        output.
+            if end == PluralAmount.ONE or end == PluralAmount.FEW:
+                return PluralAmount.FEW
+            elif end == PluralAmount.TWO:
+                return PluralAmount.TWO
+            elif end == PluralAmount.OTHER:
+                return PluralAmount.OTHER
 
-        Examples::
-
-          >>> Inflection.titleize("man from the boondocks")
-          'Man From The Boondocks'
-          >>> Inflection.titleize("x-men: the last stand")
-          'X Men: The Last Stand'
-          >>> Inflection.titleize("TheManWithoutAPast")
-          'The Man Without A Past'
-          >>> Inflection.titleize("raiders_of_the_lost_ark")
-          'Raiders Of The Lost Ark'
-
-        """
-        return re.sub(
-            r"\b('?\w)",
-            lambda match: match.group(1).capitalize(),
-            Inflection.humanize(Inflection.underscore(word)).title()
-        )
-
-    @staticmethod
-    def transliterate(string: str) -> str:
-        """
-        Replace non-ASCII characters with an ASCII approximation. If no
-        approximation exists, the non-ASCII character is ignored. The string must
-        be ``unicode``.
-
-        Examples::
-
-            >>> Inflection.transliterate('älämölö')
-            'alamolo'
-            >>> Inflection.transliterate('Ærøskøbing')
-            'rskbing'
-
-        """
-        normalized = unicodedata.normalize('NFKD', string)
-        return normalized.encode('ascii', 'ignore').decode('ascii')
-
-    @staticmethod
-    def underscore(word: str) -> str:
-        """
-        Make an underscored, lowercase form from the expression in the string.
-
-        Example::
-
-            >>> Inflection.underscore("DeviceType")
-            'device_type'
-
-        As a rule of thumb you can think of :func:`underscore` as the inverse of
-        :func:`camelize`, though there are cases where that does not hold::
-
-            >>> Inflection.camelize(Inflection.underscore("IOError"))
-            'IoError'
-
-        """
-        word = re.sub(r"([A-Z]+)([A-Z][a-z])", r'\1_\2', word)
-        word = re.sub(r"([a-z\d])([A-Z])", r'\1_\2', word)
-        word = word.replace("-", "_")
-        return word.lower()
+        else:
+            return ValueError("Argument \"type\" must be cardinal|ordinal|range")
