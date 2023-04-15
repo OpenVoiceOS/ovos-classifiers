@@ -67,7 +67,11 @@ class Inflection:
         Returns:
             (str): The plural category. Either zero, one, two, few, many or other.
         """
-        if ptype == PluralCategory.CARDINAL:
+        if self.lang.startswith("en"):
+            return self.get_plural_category_en(amount, ptype)
+        elif self.lang.startswith("sl"):
+            return self.get_plural_category_sl(amount, ptype)
+        elif ptype == PluralCategory.CARDINAL:
             if amount == 1:
                 return PluralAmount.ONE
             else:
@@ -86,6 +90,10 @@ class Inflection:
         Returns:
             (str): Pluralized word.
         """
+        if self.lang.startswith("en"):
+            return self.get_plural_form_en(word, amount, ptype)
+        if self.lang.startswith("pt"):
+            return self.get_plural_form_pt(word, amount, ptype)
         raise NotImplementedError
 
     def ordinal(self, number: int) -> str:
