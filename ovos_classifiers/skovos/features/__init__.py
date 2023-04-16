@@ -1,14 +1,19 @@
 # feature extraction utils
 
+import functools
+
 import nltk
+from nltk.util import skipgrams
 from ovos_config import Configuration
+from quebra_frases import word_tokenize
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
-from ovos_classifiers.utils import DummyStemmer, extract_postag_features, \
-    extract_word_features, normalize, get_stemmer, extract_single_word_features
 from ovos_classifiers.postag import OVOSPostag
+from ovos_classifiers.utils import extract_postag_features, \
+    extract_word_features, normalize, get_stemmer, extract_single_word_features
 
 
 class SnowballStemmerTransformer(BaseEstimator, TransformerMixin):
@@ -335,3 +340,65 @@ class SentenceWordFeaturesVectorizer(BaseEstimator, TransformerMixin):
     def transform(self, X, **transform_params):
         X = self._transformer.transform(X, **transform_params)
         return self._vectorizer.transform(X)
+
+
+class SkipGramVectorizer(BaseEstimator, TransformerMixin):
+
+    def __init__(self, n=2, k=2):
+        skipper = functools.partial(skipgrams, n=n, k=k)
+        self._vectorizer = CountVectorizer(analyzer=skipper)
+
+    def get_feature_names(self):
+        return self._vectorizer.get_feature_names_out()
+
+    def fit(self, X, y=None, **kwargs):
+        X = [word_tokenize(t) for t in X]
+        self._vectorizer.fit(X)
+        return self
+
+    def transform(self, X, **transform_params):
+        X = [word_tokenize(t) for t in X]
+        return self._vectorizer.transform(X)
+
+
+class SkipGramTransformer(BaseEstimator, TransformerMixin):
+
+    def __init__(self, n=2, k=2):
+        self._vectorizer = SkipGramVectorizer(n=n, k=k)
+
+    def fit(self, *args, **kwargs):
+        self._vectorizer.fit(*args, **kwargs)
+        return self
+
+    def transform(self, X, **transform_params):
+        vectorized_text = self._vectorizer.transform(X, **transform_params)
+        feats = dict(zip([tuple(a) for a in self._vectorizer.get_feature_names()],
+                         vectorized_text.toarray().sum(axis=0)))
+        return feats
+
+
+if __name__ == '__main__':
+    s = SkipGramTransformer(2, 2)
+    text = ['Insurgents killed in ongoing fighting.', "i love apple", "i love watermelon"]
+    s.fit(text)
+
+    vectorized_text = s.transform(text)
+
+    print(vectorized_text)
+    # {('Insurgents', 'in'): 1,
+    #  ('Insurgents', 'killed'): 1,
+    #  ('Insurgents', 'ongoing'): 1,
+    #  ('fighting', '.'): 1,
+    #  ('i', 'apple'): 1,
+    #  ('i', 'love'): 2,
+    #  ('i', 'watermelon'): 1,
+    #  ('in', '.'): 1,
+    #  ('in', 'fighting'): 1,
+    #  ('in', 'ongoing'): 1,
+    #  ('killed', 'fighting'): 1,
+    #  ('killed', 'in'): 1,
+    #  ('killed', 'ongoing'): 1,
+    #  ('love', 'apple'): 1,
+    #  ('love', 'watermelon'): 1,
+    #  ('ongoing', '.'): 1,
+    #  ('ongoing', 'fighting'): 1}
