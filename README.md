@@ -1,5 +1,18 @@
 # OVOS Classifiers
 
+WIP - open during construction, **pre-alpha**
+
+built on top of nltk and scikit-learn
+
+- provide baseline feature extraction pipelines suited for each task
+- provide user facing classes for each NLP task needed in the OVOS ecosystem
+  - transparently load different models (model_path or external plugin)
+- provide dataset loaders suited for each of those tasks per language
+- provide baseline heuristic implementation for each task per language
+  - replaces ovos-lingua-franca  
+- provide baseline implementations and benchmarks using classical nltk and scikit-learn algorithms
+  - minimum viable implementation to ensure lang support
+
 ## Usage
 
 see `scripts/training` for training scripts
