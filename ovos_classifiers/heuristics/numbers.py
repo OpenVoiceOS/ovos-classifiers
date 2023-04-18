@@ -1,58 +1,7 @@
 from collections import OrderedDict
-from collections import namedtuple
 
-from ovos_classifiers.heuristics.tokenize import word_tokenize
-
-# Token is intended to be used in the number processing functions in
-# this module. The parsing requires slicing and dividing of the original
-# text. To ensure things parse correctly, we need to know where text came
-# from in the original input, hence this nametuple.
-_Token = namedtuple('Token', 'word index')
-
-
-class _ReplaceableNumber:
-    """
-    Similar to Token, this class is used in number parsing.
-
-    Once we've found a number in a string, this class contains all
-    the info about the value, and where it came from in the original text.
-    In other words, it is the text, and the number that can replace it in
-    the string.
-    """
-
-    def __init__(self, value, tokens):
-        self.value = value
-        self.tokens = tokens
-
-    def __bool__(self):
-        return bool(self.value is not None and self.value is not False)
-
-    @property
-    def start_index(self):
-        return self.tokens[0].index
-
-    @property
-    def end_index(self):
-        return self.tokens[-1].index
-
-    @property
-    def text(self):
-        return ' '.join([t.word for t in self.tokens])
-
-    def __setattr__(self, key, value):
-        try:
-            getattr(self, key)
-        except AttributeError:
-            super().__setattr__(key, value)
-        else:
-            raise Exception("Immutable!")
-
-    def __str__(self):
-        return "({v}, {t})".format(v=self.value, t=self.tokens)
-
-    def __repr__(self):
-        return "{n}({v}, {t})".format(n=self.__class__.__name__, v=self.value,
-                                      t=self.tokens)
+from ovos_classifiers.heuristics.tokenize import word_tokenize, partition_list, \
+    Token, Replaceablenumber
 
 
 def is_numeric(word):
@@ -89,38 +38,8 @@ def look_for_fractions(split_list):
     return False
 
 
-def _partition_list(items, split_on):
-    """
-    Partition a list of items.
-
-    Works similarly to str.partition
-
-    Args:
-        items:
-        split_on callable:
-            Should return a boolean. Each item will be passed to
-            this callable in succession, and partitions will be
-            created any time it returns True.
-
-    Returns:
-        [[any]]
-
-    """
-    splits = []
-    current_split = []
-    for item in items:
-        if split_on(item):
-            splits.append(current_split)
-            splits.append([item])
-            current_split = []
-        else:
-            current_split.append(item)
-    splits.append(current_split)
-    return list(filter(lambda x: len(x) != 0, splits))
-
-
 # TODO - finish adding public user facing methods
-class EnglishNumberTagger:
+class EnglishNumberParser:
     # taken from lingua_franca
 
     # TODO - from json file
@@ -388,8 +307,39 @@ class EnglishNumberTagger:
             return 1.0 / fracts[input_str.lower()]
         return False
 
-    def numbers_to_digits(self, utterance):
-        return self._convert_words_to_numbers_en(utterance)
+    def convert_words_to_numbers(self, utterance, short_scale=True, ordinals=False):
+        """
+        Convert words in a string into their equivalent numbers.
+        Args:
+            text str:
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                              be parsed to their number values (1, 2, 3...)
+
+        Returns:
+            str
+            The original text, with numbers subbed in where appropriate.
+
+        """
+        tokens = [Token(word, index) for index, word in enumerate(word_tokenize(utterance))]
+        numbers_to_replace = \
+            self._extract_numbers_with_text_en(tokens, short_scale, ordinals)
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+
+        results = []
+        for token in tokens:
+            if not numbers_to_replace or \
+                    token.index < numbers_to_replace[0].start_index:
+                results.append(token.word)
+            else:
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].start_index:
+                    results.append(str(numbers_to_replace[0].value))
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].end_index:
+                    numbers_to_replace.pop(0)
+
+        return ' '.join(results)
 
     # helper methods
     def _initialize_number_data_en(self, short_scale, speech=True):
@@ -440,7 +390,7 @@ class EnglishNumberTagger:
 
         """
         for c in self._FRACTION_MARKER_EN:
-            partitions = _partition_list(tokens, lambda t: t.word == c)
+            partitions = partition_list(tokens, lambda t: t.word == c)
 
             if len(partitions) == 3:
                 numbers1 = \
@@ -487,7 +437,7 @@ class EnglishNumberTagger:
 
         """
         for c in self._DECIMAL_MARKER_EN:
-            partitions = _partition_list(tokens, lambda t: t.word == c)
+            partitions = partition_list(tokens, lambda t: t.word == c)
 
             if len(partitions) == 3:
                 numbers1 = \
@@ -529,7 +479,7 @@ class EnglishNumberTagger:
         multiplies, string_num_ordinal, string_num_scale = \
             self._initialize_number_data_en(short_scale, speech=ordinals is not None)
 
-        number_words = []  # type: [_Token]
+        number_words = []  # type: [Token]
         val = False
         prev_val = None
         next_val = None
@@ -558,7 +508,7 @@ class EnglishNumberTagger:
                 # handle nth one
                 if next_word == "one":
                     # would return 1 instead otherwise
-                    tokens[idx + 1] = _Token("", idx)
+                    tokens[idx + 1] = Token("", idx)
                     next_word = ""
 
             # TODO replaces the wall of "and" and "or" with all() or any() as
@@ -805,7 +755,7 @@ class EnglishNumberTagger:
                                                      ordinals, fractional_numbers)
         while tokens and tokens[0].word in self._ARTICLES_EN:
             tokens.pop(0)
-        return _ReplaceableNumber(number, tokens)
+        return Replaceablenumber(number, tokens)
 
     def _extract_numbers_with_text_en(self, tokens, short_scale=True,
                                       ordinals=False, fractional_numbers=True):
@@ -843,47 +793,13 @@ class EnglishNumberTagger:
                 t if not
                 to_replace.start_index <= t.index <= to_replace.end_index
                 else
-                _Token(placeholder, t.index) for t in tokens
+                Token(placeholder, t.index) for t in tokens
             ]
         results.sort(key=lambda n: n.start_index)
         return results
 
-    def _convert_words_to_numbers_en(self, text, short_scale=True, ordinals=False):
-        """
-        Convert words in a string into their equivalent numbers.
-        Args:
-            text str:
-            short_scale boolean: True if short scale numbers should be used.
-            ordinals boolean: True if ordinals (e.g. first, second, third) should
-                              be parsed to their number values (1, 2, 3...)
 
-        Returns:
-            str
-            The original text, with numbers subbed in where appropriate.
-
-        """
-        tokens = [_Token(word, index) for index, word in enumerate(word_tokenize(text))]
-        numbers_to_replace = \
-            self._extract_numbers_with_text_en(tokens, short_scale, ordinals)
-        numbers_to_replace.sort(key=lambda number: number.start_index)
-
-        results = []
-        for token in tokens:
-            if not numbers_to_replace or \
-                    token.index < numbers_to_replace[0].start_index:
-                results.append(token.word)
-            else:
-                if numbers_to_replace and \
-                        token.index == numbers_to_replace[0].start_index:
-                    results.append(str(numbers_to_replace[0].value))
-                if numbers_to_replace and \
-                        token.index == numbers_to_replace[0].end_index:
-                    numbers_to_replace.pop(0)
-
-        return ' '.join(results)
-
-
-class AzerbaijaniNumberTagger:
+class AzerbaijaniNumberParser:
     # taken from lingua_franca
 
     # TODO - from json file
@@ -1056,8 +972,40 @@ class AzerbaijaniNumberTagger:
     _STRING_SHORT_ORDINAL_AZ = {v: k for k, v in _SHORT_ORDINAL_AZ.items()}
     _STRING_LONG_ORDINAL_AZ = {v: k for k, v in _LONG_ORDINAL_AZ.items()}
 
-    def numbers_to_digits(self, utterance):
-        return self._convert_words_to_numbers_az(utterance)
+    def convert_words_to_numbers(self, text, short_scale=True, ordinals=False):
+        """
+        Convert words in a string into their equivalent numbers.
+        Args:
+            text str:
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. birinci, ikinci, üçüncü) should
+                              be parsed to their number values (1, 2, 3...)
+
+        Returns:
+            str
+            The original text, with numbers subbed in where appropriate.
+
+        """
+        tokens = [Token(word, index) for index, word in enumerate(word_tokenize(text))]
+        numbers_to_replace = \
+            self._extract_numbers_with_text_az(tokens, short_scale, ordinals)
+
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+
+        results = []
+        for token in tokens:
+            if not numbers_to_replace or \
+                    token.index < numbers_to_replace[0].start_index:
+                results.append(token.word)
+            else:
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].start_index:
+                    results.append(str(numbers_to_replace[0].value))
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].end_index:
+                    numbers_to_replace.pop(0)
+
+        return ' '.join(results)
 
     def is_fractional(self, input_str, short_scale=True, spoken=True):
         """
@@ -1082,40 +1030,6 @@ class AzerbaijaniNumberTagger:
         return False
 
     # helper methods
-    def _convert_words_to_numbers_az(self, text, short_scale=True, ordinals=False):
-        """
-        Convert words in a string into their equivalent numbers.
-        Args:
-            text str:
-            short_scale boolean: True if short scale numbers should be used.
-            ordinals boolean: True if ordinals (e.g. birinci, ikinci, üçüncü) should
-                              be parsed to their number values (1, 2, 3...)
-
-        Returns:
-            str
-            The original text, with numbers subbed in where appropriate.
-
-        """
-        tokens = [_Token(word, index) for index, word in enumerate(word_tokenize(text))]
-        numbers_to_replace = \
-            self._extract_numbers_with_text_az(tokens, short_scale, ordinals)
-
-        numbers_to_replace.sort(key=lambda number: number.start_index)
-
-        results = []
-        for token in tokens:
-            if not numbers_to_replace or \
-                    token.index < numbers_to_replace[0].start_index:
-                results.append(token.word)
-            else:
-                if numbers_to_replace and \
-                        token.index == numbers_to_replace[0].start_index:
-                    results.append(str(numbers_to_replace[0].value))
-                if numbers_to_replace and \
-                        token.index == numbers_to_replace[0].end_index:
-                    numbers_to_replace.pop(0)
-
-        return ' '.join(results)
 
     def _extract_numbers_with_text_az(self, tokens, short_scale=True,
                                       ordinals=False, fractional_numbers=True):
@@ -1152,7 +1066,7 @@ class AzerbaijaniNumberTagger:
                 t if not
                 to_replace.start_index <= t.index <= to_replace.end_index
                 else
-                _Token(placeholder, t.index) for t in tokens
+                Token(placeholder, t.index) for t in tokens
             ]
         results.sort(key=lambda n: n.start_index)
         return results
@@ -1175,7 +1089,7 @@ class AzerbaijaniNumberTagger:
         number, tokens = \
             self._extract_number_with_text_az_helper(tokens, short_scale,
                                                      ordinals, fractional_numbers)
-        return _ReplaceableNumber(number, tokens)
+        return Replaceablenumber(number, tokens)
 
     def _extract_number_with_text_az_helper(self, tokens,
                                             short_scale=True, ordinals=False,
@@ -1231,7 +1145,7 @@ class AzerbaijaniNumberTagger:
 
         """
         for c in self._FRACTION_MARKER_AZ:
-            partitions = _partition_list(tokens, lambda t: t.word == c)
+            partitions = partition_list(tokens, lambda t: t.word == c)
 
             if len(partitions) == 3:
                 numbers1 = \
@@ -1278,7 +1192,7 @@ class AzerbaijaniNumberTagger:
 
         """
         for c in self._DECIMAL_MARKER_AZ:
-            partitions = _partition_list(tokens, lambda t: t.word == c)
+            partitions = partition_list(tokens, lambda t: t.word == c)
 
             if len(partitions) == 3:
                 numbers1 = \

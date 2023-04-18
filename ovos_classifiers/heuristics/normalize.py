@@ -3,7 +3,7 @@ import re
 from os.path import dirname
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.heuristics.numbers import EnglishNumberTagger, AzerbaijaniNumberTagger
+from ovos_classifiers.heuristics.numbers import EnglishNumberParser, AzerbaijaniNumberParser
 
 
 class Normalizer:
@@ -213,7 +213,7 @@ class EnglishNormalizer(Normalizer):
         _default_config = json.load(f)
 
     def numbers_to_digits(self, utterance):
-        return EnglishNumberTagger().numbers_to_digits(utterance)
+        return EnglishNumberParser().convert_words_to_numbers(utterance)
 
 
 class AzerbaijaniNormalizer(Normalizer):
@@ -221,4 +221,4 @@ class AzerbaijaniNormalizer(Normalizer):
         _default_config = json.load(f)
 
     def numbers_to_digits(self, utterance):
-        return AzerbaijaniNumberTagger().numbers_to_digits(utterance)
+        return AzerbaijaniNumberParser().convert_words_to_numbers(utterance)
