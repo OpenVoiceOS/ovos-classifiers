@@ -1,6 +1,6 @@
 from sklearn.ensemble import VotingClassifier
 from sklearn.pipeline import Pipeline
-
+import numpy as np
 from ovos_classifiers.skovos.pipelines import get_features_pipeline
 from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 
@@ -24,6 +24,9 @@ class SklearnOVOSClassifier(OVOSAbstractClassifier):
 
     def predict(self, text):
         return self.clf.predict(text)
+
+    def predict_proba(self, text):
+        return np.max(self.clf.predict_proba(text), axis=1)
 
 
 class SklearnOVOSVotingClassifier(SklearnOVOSClassifier):
@@ -56,3 +59,7 @@ class SklearnOVOSVotingClassifier(SklearnOVOSClassifier):
             clf.fit(train_data, target_data)
         print("training voting classifier")
         return super().train(train_data, target_data)
+
+    def predict_proba(self, text):
+        return np.max(self.clf.predict_proba(text), axis=1)
+

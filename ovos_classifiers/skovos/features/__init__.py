@@ -14,6 +14,16 @@ from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
+from quebra_frases import word_tokenize
+
+
+class TokenizerTransformer(BaseEstimator, TransformerMixin):
+
+    def fit(self, *args, **kwargs):
+        return self
+
+    def transform(self, X, **transform_params):
+        return [word_tokenize(x) for x in X]
 
 
 class SnowballStemmerTransformer(BaseEstimator, TransformerMixin):
