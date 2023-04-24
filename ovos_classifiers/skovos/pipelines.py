@@ -2,7 +2,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.pipeline import Pipeline, FeatureUnion
 
 from ovos_classifiers.skovos.features import WordFeaturesVectorizer, POSTaggerVectorizer, \
-    PronounTaggerVectorizer, CorefIOBTaggerVectorizer, SingleWordFeaturesVectorizer, TokenizerTransformer
+    PronounTaggerVectorizer, CorefIOBTaggerVectorizer, SingleWordFeaturesVectorizer, TokenizerTransformer, \
+    SkipGramVectorizer, SkipGramTransformer
 from ovos_classifiers.skovos.features.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
 
 """
@@ -100,6 +101,15 @@ def get_features_pipeline(pipeline_id="default"):
         ]),
         "coref_en": FeatureUnion([
             ("corefiob", CorefIOBTaggerVectorizer(lang="en"))
+        ]),
+        "cv2": Pipeline([
+            ("cv2", CountVectorizer(ngram_range=(1, 2)))
+        ]),
+        "tfidf": Pipeline([
+            ('tfidf', TfidfVectorizer(min_df=.05, max_df=.4))
+        ]),
+        "skipgram2": Pipeline([
+            ('skipgram2', SkipGramVectorizer(2, 2))
         ]),
         "tfidf_lemma": Pipeline([
             ("tokenize", TokenizerTransformer()),
