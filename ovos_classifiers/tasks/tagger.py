@@ -1,9 +1,9 @@
 import nltk
 from nltk import AffixTagger
-from nltk import word_tokenize
 from nltk.tag import UnigramTagger, BigramTagger, TrigramTagger, DefaultTagger, RegexpTagger
 
 from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
+from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
 class OVOSAbstractClassifierTagger(OVOSAbstractClassifier):
