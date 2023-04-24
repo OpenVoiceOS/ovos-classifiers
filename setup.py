@@ -1,8 +1,35 @@
+#!/usr/bin/env python3
 import os
 
 from setuptools import setup
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+
+
+def get_version():
+    """ Find the version of the package"""
+    version = None
+    version_file = os.path.join(BASEDIR, 'jurebes', 'version.py')
+    major, minor, build, alpha = (None, None, None, None)
+    with open(version_file) as f:
+        for line in f:
+            if 'VERSION_MAJOR' in line:
+                major = line.split('=')[1].strip()
+            elif 'VERSION_MINOR' in line:
+                minor = line.split('=')[1].strip()
+            elif 'VERSION_BUILD' in line:
+                build = line.split('=')[1].strip()
+            elif 'VERSION_ALPHA' in line:
+                alpha = line.split('=')[1].strip()
+
+            if ((major and minor and build and alpha) or
+                    '# END_VERSION_BLOCK' in line):
+                break
+    version = f"{major}.{minor}.{build}"
+    if alpha and int(alpha) > 0:
+        version += f"a{alpha}"
+    return version
+
 
 def package_files(directory):
     paths = []
@@ -11,7 +38,6 @@ def package_files(directory):
             paths.append(os.path.join('..', path, filename))
     return paths
 
-extra_files = package_files('ovos_classifiers/res')
 
 def required(requirements_file):
     """ Read requirements file and remove comments and empty lines. """
@@ -23,10 +49,15 @@ def required(requirements_file):
         return [pkg for pkg in requirements
                 if pkg.strip() and not pkg.startswith("#")]
 
+extra_files = package_files('ovos_classifiers/res')
 
 setup(
     name='ovos-classifiers',
-    version='0.0.0a1',
+    version=get_version(),
+    author='jarbasai',
+    author_email='jarbasai@mailfence.com',
+    url='https://github.com/OpenVoiceOS/ovos-classifiers',
+    license='apache-2.0',
     packages=['ovos_classifiers',
               'ovos_classifiers.datasets',
               'ovos_classifiers.heuristics',
@@ -34,14 +65,20 @@ setup(
               'ovos_classifiers.skovos.features',
               "ovos_classifiers.tasks",
               "ovos_classifiers.utils"],
-    url='https://github.com/OpenVoiceOS/ovos-classifiers',
-    license='apache-2.0',
-    author='jarbasai',
     include_package_data=True,
     package_data={"": extra_files},
     extras_require={
         "sklearn": ["scikit-learn"]
     },
     install_requires=required("requirements.txt"),
-    author_email='jarbasai@mailfence.com'
+    zip_safe=True,
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Topic :: Text Processing :: Linguistic',
+        'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+    ]
 )
