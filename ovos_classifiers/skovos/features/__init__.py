@@ -88,6 +88,9 @@ class WordFeaturesTransformer(BaseEstimator, TransformerMixin):
 
 class WordFeaturesVectorizer(BaseEstimator, TransformerMixin):
     def __init__(self, lang=None, stemmer=None, memory=2):
+        self.lang = lang
+        self.memory = memory
+        self.stemmer = stemmer
         self._transformer = WordFeaturesTransformer(lang=lang, stemmer=stemmer, memory=memory)
         self._vectorizer = DictVectorizer(sparse=False)
         super().__init__()
