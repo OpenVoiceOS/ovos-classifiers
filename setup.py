@@ -51,6 +51,13 @@ def required(requirements_file):
 
 extra_files = package_files('ovos_classifiers/res')
 
+
+PLUGIN_ENTRY_POINT = (
+    'ovos-utterance-normalizer=ovos_classifiers.opm:UtteranceNormalizer',
+    'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizer'
+)
+
+
 setup(
     name='ovos-classifiers',
     version=get_version(),
@@ -82,6 +89,6 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     entry_points={
-        'neon.plugin.text': 'ovos-utterance-normalizer=ovos_classifiers.opm:UtteranceNormalizer'
+        'neon.plugin.text': PLUGIN_ENTRY_POINT
     }
 )
