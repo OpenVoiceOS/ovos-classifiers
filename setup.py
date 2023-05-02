@@ -80,5 +80,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-    ]
+    ],
+    entry_points={
+        'neon.plugin.text': 'ovos-utterance-normalizer=ovos_classifiers.opm:UtteranceNormalizer'
+    }
 )
