@@ -43,8 +43,6 @@ class CoreferenceNormalizer(UtteranceTransformer):
 
     def __init__(self, name="ovos-utterance-coref-normalizer", priority=3):
         super().__init__(name, priority)
-        self.taggers = {}
-        self.postaggers = {}
 
     @staticmethod
     def get_normalizer(lang: str):
