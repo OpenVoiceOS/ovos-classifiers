@@ -77,6 +77,7 @@ class OVOSPostag:
         if model_id == "nltk":
             nltk.download("punkt")
             nltk.download('averaged_perceptron_tagger')
+            nltk.download('universal_tagset')
         data, model_path = self.get_model(model_id)
         return load_tagger(data, model_path)
 
