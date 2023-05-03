@@ -5,16 +5,16 @@ import functools
 import nltk
 from nltk.util import skipgrams
 from ovos_config import Configuration
-from quebra_frases import word_tokenize
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
+from ovos_classifiers.heuristics.tokenize import word_tokenize
 from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
-from quebra_frases import word_tokenize
+from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -310,7 +310,7 @@ class SentenceWordFeaturesTransformer(BaseEstimator, TransformerMixin):
                 return False
 
         for sent in X:
-            toks = nltk.word_tokenize(sent)
+            toks = word_tokenize(sent)
             wfeat = {}
             for idx, w in enumerate(toks):
                 wfeat.update({

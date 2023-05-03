@@ -1,6 +1,7 @@
 import re
 
 import nltk
+from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
 class RegexPostag:
@@ -10,7 +11,7 @@ class RegexPostag:
 
     def tag(self, sentence):
         if isinstance(sentence, str):
-            sentence = nltk.word_tokenize(sentence)
+            sentence = word_tokenize(sentence, lang=self.lang)
         if self.lang.startswith("en"):
             return self.tag_en(sentence)
         elif self.lang.startswith("es"):
@@ -22,7 +23,7 @@ class RegexPostag:
     # lang specific regexes
     def tag_en(self, sentence):
         if isinstance(sentence, str):
-            sentence = nltk.word_tokenize(sentence)
+            sentence = word_tokenize(sentence, lang="en")
         tags = []
         for token in sentence:
             if re.match(r'^([Tt]his|[Tt]hat|[Aa]|[Tt]he|[Aa]ny)$', token):
@@ -55,7 +56,7 @@ class RegexPostag:
 
     def tag_pt(self, sentence):
         if isinstance(sentence, str):
-            sentence = nltk.word_tokenize(sentence)
+            sentence = word_tokenize(sentence, lang="pt")
 
         tags = []
         for token in sentence:
@@ -81,7 +82,7 @@ class RegexPostag:
 
     def tag_es(self, sentence):
         if isinstance(sentence, str):
-            sentence = nltk.word_tokenize(sentence)
+            sentence = word_tokenize(sentence, lang="es")
 
         tagged_tokens = []
         for token in sentence:
