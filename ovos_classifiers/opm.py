@@ -30,13 +30,18 @@ class UtteranceNormalizer(UtteranceTransformer):
             return RussianNormalizer()
         return Normalizer()
 
+    @staticmethod
+    def strip_punctuation(utterance: str):
+        return utterance.rstrip('.').rstrip('?').rstrip('!').rstrip(',').rstrip(';').strip()
+
     def transform(self, utterances: List[str],
                   context: Optional[dict] = None) -> (list, dict):
         context = context or {}
         lang = context.get("lang") or self.config.get("lang", "en-us")
         normalizer = self.get_normalizer(lang)
-        norm = [normalizer.normalize(u) for u in utterances] + utterances
-        return list(set(norm)), context
+        norm = [normalizer.normalize(u) for u in utterances]
+        norm = [self.strip_punctuation(u) for u in norm]
+        return list(set(norm + utterances)), context
 
 
 class CoreferenceNormalizer(UtteranceTransformer):
@@ -65,7 +70,7 @@ class CoreferenceNormalizer(UtteranceTransformer):
 
 
 if __name__ == "__main__":
-    u, _ = UtteranceNormalizer().transform(["Mom is awesome, she said she loves me"])
+    u, _ = UtteranceNormalizer().transform(["Mom is awesome, she said she loves me!"])
     print(u) # ['Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
     u, _ = CoreferenceNormalizer().transform(u) #
     print(u) # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
