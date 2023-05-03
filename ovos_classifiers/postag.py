@@ -1,7 +1,7 @@
 import json
 from os import makedirs
 from os.path import isfile
-
+import nltk
 import requests
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
@@ -74,6 +74,9 @@ class OVOSPostag:
         return meta, model_path
 
     def load_model(self, model_id):
+        if model_id == "nltk":
+            nltk.download("punkt")
+            nltk.download('averaged_perceptron_tagger')
         data, model_path = self.get_model(model_id)
         return load_tagger(data, model_path)
 
