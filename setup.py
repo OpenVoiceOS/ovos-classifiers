@@ -56,7 +56,7 @@ PLUGIN_ENTRY_POINT = (
     'ovos-utterance-normalizer=ovos_classifiers.opm:UtteranceNormalizer',
     'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizer'
 )
-
+SOLVER_ENTRY_POINT = 'ovos-question-solver-wordnet=ovos_classifiers.opm:WordnetSolver'
 
 setup(
     name='ovos-classifiers',
@@ -89,6 +89,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     entry_points={
-        'neon.plugin.text': PLUGIN_ENTRY_POINT
+        'neon.plugin.text': PLUGIN_ENTRY_POINT,
+        'neon.plugin.solver': SOLVER_ENTRY_POINT
     }
 )
