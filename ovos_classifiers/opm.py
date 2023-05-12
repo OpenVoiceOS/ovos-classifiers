@@ -44,11 +44,14 @@ class UtteranceNormalizer(UtteranceTransformer):
         context = context or {}
         lang = context.get("lang") or self.config.get("lang", "en-us")
         normalizer = self.get_normalizer(lang)
-        norm = [normalizer.normalize(u) for u in utterances] + \
-               [normalizer.normalize(u, remove_articles=True) for u in utterances]
+        norm = []
+        for u in utterances:
+            norm.append(u)
+            norm.append(normalizer.normalize(u))
+            norm.append(normalizer.normalize(u, remove_articles=True))
         norm = [self.strip_punctuation(u) for u in norm]
         # this deduplicates the list while keeping order
-        return list(dict.fromkeys(utterances + norm)), context
+        return list(dict.fromkeys(norm)), context
 
 
 class CoreferenceNormalizer(UtteranceTransformer):
@@ -68,14 +71,18 @@ class CoreferenceNormalizer(UtteranceTransformer):
         lang = context.get("lang") or self.config.get("lang", "en-us")
         tagger, post = self.get_normalizer(lang)
 
-        for u in set(utterances):
+        def _coref(u):
             pos = post.postag(u)
             iob = tagger.iob_tag(pos)
-            u = UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs([iob])[0])
-            utterances.insert(0, u)
+            return UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs([iob])[0])
+
+        norm = []
+        for u in utterances:
+            norm.append(_coref(u))
+            norm.append(u)
 
         # this deduplicates the list while keeping order
-        return list(dict.fromkeys(utterances)), context
+        return list(dict.fromkeys(norm)), context
 
 
 class WordnetSolver(QuestionSolver):
