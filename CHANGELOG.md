@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a9...HEAD)
+
+**Implemented enhancements:**
+
+- add wordnet nltk helpers [\#4](https://github.com/OpenVoiceOS/ovos-classifiers/pull/4) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.0.0a9](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a9) (2023-05-03)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a8...V0.0.0a9)
+
 ## [V0.0.0a8](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a8) (2023-05-03)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a7...V0.0.0a8)
