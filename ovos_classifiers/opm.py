@@ -47,7 +47,8 @@ class UtteranceNormalizer(UtteranceTransformer):
         norm = [normalizer.normalize(u) for u in utterances] + \
                [normalizer.normalize(u, remove_articles=True) for u in utterances]
         norm = [self.strip_punctuation(u) for u in norm]
-        return list(set(norm + utterances)), context
+        # this deduplicates the list while keeping order
+        return list(dict.fromkeys(utterances + norm)), context
 
 
 class CoreferenceNormalizer(UtteranceTransformer):
@@ -70,9 +71,11 @@ class CoreferenceNormalizer(UtteranceTransformer):
         for u in set(utterances):
             pos = post.postag(u)
             iob = tagger.iob_tag(pos)
-            utterances += tagger.normalize_corefs([iob])
+            u = UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs([iob])[0])
+            utterances.insert(0, u)
 
-        return list(set(utterances)), context
+        # this deduplicates the list while keeping order
+        return list(dict.fromkeys(utterances)), context
 
 
 class WordnetSolver(QuestionSolver):
@@ -172,7 +175,6 @@ if __name__ == "__main__":
     # uma máquina para realizar cálculos automaticamente
 
     u, _ = UtteranceNormalizer().transform(["Mom is awesome, she said she loves me!"])
-    print(u)  # ['Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
+    print(u)  # ['Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
     u, _ = CoreferenceNormalizer().transform(u)  #
-    print(
-        u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
+    print(u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
