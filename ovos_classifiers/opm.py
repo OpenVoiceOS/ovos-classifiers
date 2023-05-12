@@ -44,10 +44,14 @@ class UtteranceNormalizer(UtteranceTransformer):
         context = context or {}
         lang = context.get("lang") or self.config.get("lang", "en-us")
         normalizer = self.get_normalizer(lang)
-        norm = [normalizer.normalize(u) for u in utterances] + \
-               [normalizer.normalize(u, remove_articles=True) for u in utterances]
+        norm = []
+        for u in utterances:
+            norm.append(u)
+            norm.append(normalizer.normalize(u))
+            norm.append(normalizer.normalize(u, remove_articles=True))
         norm = [self.strip_punctuation(u) for u in norm]
-        return list(set(norm + utterances)), context
+        # this deduplicates the list while keeping order
+        return list(dict.fromkeys(norm)), context
 
 
 class CoreferenceNormalizer(UtteranceTransformer):
@@ -67,12 +71,18 @@ class CoreferenceNormalizer(UtteranceTransformer):
         lang = context.get("lang") or self.config.get("lang", "en-us")
         tagger, post = self.get_normalizer(lang)
 
-        for u in set(utterances):
+        def _coref(u):
             pos = post.postag(u)
             iob = tagger.iob_tag(pos)
-            utterances += tagger.normalize_corefs([iob])
+            return UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs([iob])[0])
 
-        return list(set(utterances)), context
+        norm = []
+        for u in utterances:
+            norm.append(_coref(u))
+            norm.append(u)
+
+        # this deduplicates the list while keeping order
+        return list(dict.fromkeys(norm)), context
 
 
 class WordnetSolver(QuestionSolver):
@@ -172,7 +182,6 @@ if __name__ == "__main__":
     # uma máquina para realizar cálculos automaticamente
 
     u, _ = UtteranceNormalizer().transform(["Mom is awesome, she said she loves me!"])
-    print(u)  # ['Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
+    print(u)  # ['Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
     u, _ = CoreferenceNormalizer().transform(u)  #
-    print(
-        u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome , she said she loves me', 'Mom is awesome, she said she loves me']
+    print(u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
