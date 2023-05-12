@@ -7,8 +7,9 @@ from ovos_classifiers.datasets.wordnet import Wordnet
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
 from ovos_classifiers.postag import OVOSPostag
+from ovos_classifiers.heuristics.summarization import HeuristicSummarizer
 
-from ovos_plugin_manager.templates.solvers import QuestionSolver
+from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
 
 
@@ -168,6 +169,14 @@ class WordnetSolver(QuestionSolver):
                 return v
         # definition
         return data.get("definition")
+
+
+
+class NltkSummarizer(TldrSolver):
+
+    def get_tldr(self, document, context):
+        lang = context.get("lang") or "en"
+        return HeuristicSummarizer().summarize(document, lang)
 
 
 if __name__ == "__main__":

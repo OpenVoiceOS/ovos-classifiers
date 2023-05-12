@@ -57,6 +57,8 @@ PLUGIN_ENTRY_POINT = (
     'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizer'
 )
 SOLVER_ENTRY_POINT = 'ovos-question-solver-wordnet=ovos_classifiers.opm:WordnetSolver'
+SUMMARIZER_ENTRY_POINT = 'ovos-summarizer-solver-nltk=ovos_classifiers.opm:NltkSummarizer'
+
 
 setup(
     name='ovos-classifiers',
@@ -90,6 +92,7 @@ setup(
     ],
     entry_points={
         'neon.plugin.text': PLUGIN_ENTRY_POINT,
-        'neon.plugin.solver': SOLVER_ENTRY_POINT
+        'neon.plugin.solver': SOLVER_ENTRY_POINT,
+        'opm.solver.summarization': SUMMARIZER_ENTRY_POINT
     }
 )
