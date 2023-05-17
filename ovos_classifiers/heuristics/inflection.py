@@ -65,7 +65,7 @@ class GrammaticalGender(str, enum.Enum):
 
 
 class Inflection:
-    def __int__(self, lang):
+    def __init__(self, lang):
         self.lang = lang
 
     def ordinal(self, number: int, gender=GrammaticalGender.NONE) -> str:
@@ -77,6 +77,8 @@ class Inflection:
             return self.ordinal_en(number, gender)
         elif self.lang.startswith("pt"):
             return self.ordinal_pt(number, gender)
+        elif self.lang.startswith("de"):
+            return f"{number}."
         raise NotImplementedError
 
     def get_plural_category(self, amount, ptype=PluralCategory.CARDINAL):
@@ -98,6 +100,8 @@ class Inflection:
             return self.get_plural_category_en(amount, ptype)
         elif self.lang.startswith("sl"):
             return self.get_plural_category_sl(amount, ptype)
+        elif self.lang.startswith("de"):
+            return self.get_plural_category_de(amount, ptype)
         elif ptype == PluralCategory.CARDINAL:
             if amount == 1:
                 return PluralAmount.ONE
@@ -121,6 +125,8 @@ class Inflection:
             return self.get_plural_form_en(word, amount, ptype)
         if self.lang.startswith("pt"):
             return self.get_plural_form_pt(word, amount, ptype)
+        elif self.lang.startswith("de"):
+            return self.get_plural_form_de(word, amount, ptype)
         raise NotImplementedError
 
     # generic lang agnostic helpers
@@ -456,6 +462,143 @@ class Inflection:
         if amount == 1:
             return self._singularize_pt(word)
         return self._pluralize_pt(word)
+
+    # german specific handlers
+    @staticmethod
+    def _get_de_data():
+        # _VOWELS_DE = ["a", "e", "i", "o", "u", "y"]
+        # _INVARIANTS_DE = []
+        _PLURALS = [
+            ("aal", "äle"), ("aat", "aaten"), ("abe", "aben" ), (r"(.*(?:b|kr))ach$", r'\1äche'),
+            ("lach", "lache"), ("ach", "ächer"), ("ade", "aden"), ("aden", "äden"),
+            ("age", "agen"), (r"(.*(?:h|k|z))ahn$", r'\1ähne'), ("ahn", "ahnen"),
+            ("fahr", "fahren" ), ("ahr", "ahre" ), ("fakt", "fakten"), ("akt", "akte"),
+            ("akte", "akten"), ("ale", "alen"), ("ame", "amen"), ("amt", "ämter"),
+            ("ane", "anen"), ("ang", "änge"), ("tank", "tanks"), ("ank", "änke"),
+            ("ann", "änner"), ("ant", "anten"), ("aph", "aphen"), ("are", "aren"),
+            ("arn", "arne"), ("ase", "asen"), ("ate", "aten"), ("statt", "stätten"),
+            ("att", "ätter"), ("atz", "atzen"), ("aum", "äume"), (r"(.*(?:m|l))aus$", r'\1äuse'),
+            ("aus", "äuser"), ("bad", "bäder"), ("bel", "beln"), ("bot", "bote"),
+            ("che", "chen"), ("chs", "chse"), ("cke", "cken"), (r"(.*(?:na|n|u))del$", r'\1deln'),
+            ("ader", "adern"), ("nder", "nde"), (r"(.*(?:w|r))ebe$", r'\1eben'),
+            ("ede", "eden"), ("ehl", "ehle"), ("ehr", "ehre"), ("eil", "eile"),
+            ("eim", "eime"), ("eis", "eise"), (r"(.*(?:tr|ch))eit$", r'\1eite'),
+            ("eit", "eiten"), (r"(.*(?:s|t))ekt$", r'\1ekten'), ("ekt", "ekte"),
+            ("held", "helden"), ("eld", "elder"), ("ell", "elle" ), ("ene", "enen"),
+            ("enz", "enzen"), ("erd", "erde"), ("ere", "eren"), ("erk", "erke"),
+            ("ern", "erne"), ("ert", "erte"), ("ese", "esen"), (r"(.*(?:n|t|d))ess$", r'\1essen'),
+            ("ess", "esse"), ("nest", "nester"), ("test", "tests"), ("est", "este"),
+            ("etz", "etze"), ("eug", "euge"), ("eur", "eure"), (r"(.*(?:ta|au))fel$", r'\1feln'),
+            ("ffel", "ffeln"), (r"(.*(?:if|ie|ng))fer$", r'\1fern'), ("ffe", "ffen"),
+            (r"(.*(?:re|in|ku))gel$", r'\1geln'), ("iger", "ige"), ("gie", "gien"),
+            (r"(.*(?:lic|disc))her$", r'\1he'), ("hie", "hien" ), ("hle", "hlen"),
+            ("hme", "hmen"), ("hne", "hnen"), ("hof", "höfe"), ("hre", "hren"),
+            ("hrt", "hrten"), ("hse", "hsen"), ("hte", "hten"), ("ich", "iche"),
+            (r"(.*(?:tr|kl|st))ick$", r'\1icks'), ("ick", "icke"), ("ide", "iden"),
+            ("ieb", "iebe"), ("ief", "iefe"), ("ieg", "iege"), ("iel", "iele"),
+            (r"(.*(?:l|r))ien$", r'\1ien'), ("ien", "ium"), ("iet", "iete"),
+            ("ife", "ifen"), ("iff", "iffe"), (r"(.*(?:g|st|l))ift$", r'\1ifte'),
+            ("ift", "iften"), ("ige", "igen"), ("ika", "ikas"), ("ild", "ilder"),
+            ("ilm", "ilme"), ("ine", "inen"), (r"(.*(?:l|r))ing$", r'\1inge'),
+            ("ing", "ings"), ("pion", "pione"), ("ion", "ionen"), ("ise", "isen"),
+            ("iss", "isse"), ("geist", "geister"), ("ist", "isten"), ("ite", "iten"),
+            ("itt", "itte"), ("itz", "itze"), ("ium", "ien"), ("lag", "läge"),
+            ("lan", "läne"), ("lar", "lare"), ("lei", "leien"), ("llen", "llen"),
+            ("len", "lene"), (r"(.*(?:u|i))eller$", r'\1elle'), ("lge", "lgen"),
+            ("lie", "lien"), ("lle", "llen"), ("mmel", "mmel"), ("mel", "meln"),
+            (r"(.*(?:a|u))mmer$", r'\1mmern'), ("mme", "mmen"), ("mpe", "mpen"),
+            ("mpf", "mpfe"), ("mus", "men"), ("gnat", "gnaten"), ("nat", "nate"),
+            ("ände", "ände"), ("nde", "nden"), (r"(.*(?:r|s))ener$", r'\1ene'),
+            (r"(^(?![gG]e).*)nge$", r'\1ngen'), ("nge", "ngen"), ("nie", "nien"),
+            ("nis", "nisse"), ("nke", "nken"), ("nkt", "nkte"), ("nne", "nnen"),
+            ("nst", "nste"), ("nte", "nten"), ("nze", "nzen"), ("ock", "öcke"),
+            ("ode", "oden"), ("off", "offe"), ("oge", "ogen"), ("ohn", "öhne"),
+            ("rohr", "rohre"), ("ohr", "ohren"), ("olz", "ölzer"), ("one", "onen"),
+            ("oot", "oote"), ("opf", "öpfe"), ("ord", "orde"), ("orm", "ormen"),
+            ("orn", "örner"), ("ose", "osen"), ("ote", "oten"), (r"(.*(?:am|p))pel$", r'\1peln'),
+            ("pie", "pien"), ("ppe", "ppen"), ("rag", "räge"), ("frau", "frauen"),
+            ("rau", "raün"), (r"(^(?![gG]e).*)rbe$", r'\1rben'), ("rde", "rden"),
+            (r"(.*(?:sch|b))rei$", r'\1reie'), ("rei", "reien"), ("rie", "rien"),
+            ("rin", "rinnen"), ("rke", "rken"), ("rot", "rote"), ("rre", "rren"),
+            ("rte", "rten"), ("ruf", "rufe"), ("rzt", "rzte"), ("mensch", "menschen"),
+            ("sch", "sche"), (r"(.*(?:lo|fa))ser$", r'\1sern'), ("sie", "sien"),
+            ("sik", "siken"), ("sse", "ssen"), ("ste", "sten"), ("tag", "tage"),
+            (r"(.*(?:is|an|ch))tel$", r'\1teln'), (r"(.*(?:tig|tes|ag|am|hr))ter$", r'\1te'),
+            ("tie", "tien"), ("tin", "tinnen"), ("tiv", "tive"), ("tor", "toren"),
+            ("tte", "tten"), ("datum", "daten"), ("tum", "ta"), ("tum", "tümer"),
+            ("tur", "turen"), ("tze", "tzen"), ("ube", "uben"), ("äude", "äude"),
+            ("ude", "uden"), ("ufe", "ufen"), ("uge", "ugen"), ("uhr", "uhren"),
+            ("ule", "ulen"), ("ume", "umen"), (r"(.*(?:pr|w))ung$", r'\1ünge'),
+            ("ung", "ungen"), ("äuse", "äuse"), ("use", "usen"), ("uss", "üsse"),
+            ("eute", "eute"), ("ute", "uten"), ("weg", "wege"), ("zug", "züge"),
+            ("ück", "ücke")
+        ]
+
+        _SINGULAR = [tuple(reversed(tup)) for tup in _PLURALS]
+        for i, tup in enumerate(_SINGULAR):
+            if r"(" in tup[1]:
+                rule = re.search(r"(.*(?:\(.*\)))", tup[1])[0]
+                _SINGULAR[i] = (tup[0].replace(r"\1", rule)+"$",
+                                tup[1].replace(rule, r"\1").replace("$", ""))
+
+        return _PLURALS, _SINGULAR
+
+    def _singularize_de(self, word):
+        _, SINGULAR = Inflection._get_de_data()
+        for end, replacement in SINGULAR:
+            if not "(" in end:
+                if word.endswith(end):
+                    return word.replace(end, replacement)
+            elif re.search(end, word):
+                return re.sub(end, replacement, word)
+        
+        return word
+
+    def _pluralize_de(self, word):
+        PLURALS, _ = Inflection._get_de_data()
+        for end, replacement in PLURALS:
+            if not "(" in end:
+                if word.endswith(end):
+                    return word.replace(end, replacement)
+            elif re.search(end, word):
+                return re.sub(end, replacement, word)
+        
+        return word
+
+    def get_plural_form_de(self, word, amount, ptype=PluralCategory.CARDINAL):
+        """
+            Get plural form of the specified word for the specified amount.
+            Args:
+                word(str): Word to be pluralized.
+                amount(int or float or pair or list): The amount that is used to
+                    determine the category. If type is range, it must contain
+                    the start and end numbers.
+                ptype(str): Either cardinal (default), ordinal or range.
+            Returns:
+                (str): Pluralized word.
+            """
+        if amount == 1:
+            return self._singularize_de(word)
+        return self._pluralize_de(word)
+    
+    def get_plural_category_de(self, amount, ptype=PluralCategory.CARDINAL):
+        if type == PluralCategory.CARDINAL:
+            if amount == 1:
+                return PluralAmount.ONE
+            else:
+                return PluralAmount.OTHER
+
+        elif type == PluralCategory.ORDINAL:
+            return PluralAmount.OTHER
+
+        elif type == PluralCategory.RANGE:
+            if not (isinstance(amount, tuple) or isinstance(amount, list)) or len(amount) != 2:
+                raise ValueError("Argument \"number\" must be tuple|list type with the start and end numbers")
+
+            return PluralAmount.OTHER
+
+        else:
+            return ValueError("Argument \"type\" must be cardinal|ordinal|range")
 
     # english specific handlers
     @staticmethod
