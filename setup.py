@@ -49,6 +49,7 @@ def required(requirements_file):
         return [pkg for pkg in requirements
                 if pkg.strip() and not pkg.startswith("#")]
 
+
 extra_files = package_files('ovos_classifiers/res')
 
 
@@ -58,6 +59,7 @@ PLUGIN_ENTRY_POINT = (
 )
 SOLVER_ENTRY_POINT = 'ovos-question-solver-wordnet=ovos_classifiers.opm:WordnetSolver'
 SUMMARIZER_ENTRY_POINT = 'ovos-summarizer-solver-nltk=ovos_classifiers.opm:NltkSummarizer'
+QA_ENTRY_POINT = 'ovos-evidence-solver-bm25=ovos_classifiers.opm:BM25Solver'
 
 
 setup(
@@ -93,6 +95,7 @@ setup(
     entry_points={
         'neon.plugin.text': PLUGIN_ENTRY_POINT,
         'neon.plugin.solver': SOLVER_ENTRY_POINT,
-        'opm.solver.summarization': SUMMARIZER_ENTRY_POINT
+        'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
+        "opm.solver.reading_comprehension": QA_ENTRY_POINT
     }
 )

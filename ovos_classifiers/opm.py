@@ -2,15 +2,17 @@ import random
 from typing import Optional, List
 
 from nltk.corpus import wordnet as wn
+from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver, EvidenceSolver
+from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from quebra_frases import sentence_tokenize, word_tokenize
+
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets.wordnet import Wordnet
+from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
-from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.heuristics.summarization import HeuristicSummarizer
-
-from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver
-from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from ovos_classifiers.postag import OVOSPostag
 
 
 class UtteranceNormalizer(UtteranceTransformer):
@@ -171,13 +173,32 @@ class WordnetSolver(QuestionSolver):
         return data.get("definition")
 
 
-
 class NltkSummarizer(TldrSolver):
 
     def get_tldr(self, document, context=None):
         context = context or {}
         lang = context.get("lang") or "en"
         return HeuristicSummarizer().summarize(document, lang)
+
+
+class BM25Solver(EvidenceSolver):
+
+    def get_best_passage(self, evidence, question, context=None):
+        """
+        evidence and question assured to be in self.default_lang
+         returns summary of provided document
+        """
+        bm25 = BM25()
+
+        sents = []
+        for s in evidence.split("\n"):
+            sents += sentence_tokenize(s)
+        corpus = [word_tokenize(s) for s in sents]
+        bm25.fit(corpus)
+        scores = bm25.search(word_tokenize(question))
+        ans = max([s for s in zip(scores, corpus)],
+                  key=lambda k: k[0])[1]
+        return " ".join(ans)
 
 
 if __name__ == "__main__":
@@ -207,6 +228,10 @@ if __name__ == "__main__":
     So if you're looking for a personal assistant and smart speaker that gives you the freedom and control you deserve, be sure to check out OpenVoiceOS today!
     """
 
+    b = BM25Solver()
+    a = b.get_best_passage(doc, "does OpenVoiceOS run offline")
+    # With OpenVoiceOS , you have the option to run the platform fully offline , giving you complete control over your data and ensuring that your information is never shared with third parties .
+
     h = NltkSummarizer()
     print(h.tldr(doc, lang="en"))
     #     Built on open-source software, OpenVoiceOS is designed to provide users with a seamless and intuitive voice interface for controlling their smart home devices, playing music, setting reminders, and much more.
@@ -216,7 +241,6 @@ if __name__ == "__main__":
     #     So if you're looking for a personal assistant and smart speaker that gives you the freedom and control you deserve, be sure to check out OpenVoiceOS today!
     #     One of the key advantages of OpenVoiceOS is its open-source nature, which means that anyone with the technical skills can contribute to the platform and help shape its future.
     #     OpenVoiceOS is a new player in the smart speaker market, offering a powerful and flexible alternative to proprietary solutions like Amazon Echo and Google Home.
-
 
     d = WordnetSolver()
     sentence = d.spoken_answer("what is the definition of computer")
@@ -231,4 +255,5 @@ if __name__ == "__main__":
     u, _ = UtteranceNormalizer().transform(["Mom is awesome, she said she loves me!"])
     print(u)  # ['Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
     u, _ = CoreferenceNormalizer().transform(u)  #
-    print(u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
+    print(
+        u)  # ['Mom is awesome , Mom said Mom loves me', 'Mom is awesome, she said she loves me!', 'Mom is awesome , she said she loves me']
