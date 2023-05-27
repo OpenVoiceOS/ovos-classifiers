@@ -7,8 +7,16 @@ from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 
 class SklearnOVOSClassifier(OVOSAbstractClassifier):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.pipeline_id == "raw":
+            self.clf = self._pipeline_clf
+
     def train(self, train_data, target_data):
-        self.clf = Pipeline(self.pipeline)
+        if self.pipeline_id != "raw":
+            self.clf = Pipeline(self.pipeline)
+        else:
+            self.clf = self._pipeline_clf
         self.clf.fit(train_data, target_data)
         return self.clf
 
