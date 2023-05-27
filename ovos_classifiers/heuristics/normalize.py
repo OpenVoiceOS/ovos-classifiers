@@ -3,7 +3,7 @@ import re
 from os.path import dirname
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.heuristics.numbers import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser
+from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser
 
 
 class Normalizer:
@@ -227,6 +227,6 @@ class AzerbaijaniNormalizer(Normalizer):
 class GermanNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/de/normalize.json") as f:
         _default_config = json.load(f)
-    
+
     def numbers_to_digits(self, utterance):
         return GermanNumberParser().convert_words_to_numbers(utterance)
