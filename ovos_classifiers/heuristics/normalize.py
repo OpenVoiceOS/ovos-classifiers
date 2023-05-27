@@ -3,7 +3,7 @@ import re
 from os.path import dirname
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser
+from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser
 
 
 class Normalizer:
