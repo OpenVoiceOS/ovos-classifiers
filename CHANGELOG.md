@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+## [V0.0.0a13](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a13) (2023-05-17)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a12...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a12...V0.0.0a13)
 
 **Implemented enhancements:**
 
