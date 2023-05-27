@@ -2,12 +2,14 @@ import random
 from typing import Optional, List
 
 from nltk.corpus import wordnet as wn
+from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
 from quebra_frases import sentence_tokenize, word_tokenize
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets.wordnet import Wordnet
+from ovos_classifiers.heuristics.keyword_extraction import Rake
 from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
@@ -101,14 +103,22 @@ class WordnetSolver(QuestionSolver):
         query = query.lower()
 
         # regex from narrow to broader matches
-        match = None
         if lang == "en":
-            # TODO - keyword extractor class / localization
             starts = ["who is ", "what is ", "when is ", "tell me about "]
             for s in starts:
                 if query.startswith(s):
                     return query.split(s)[-1]
-        return None
+
+        # default to Rake extractor
+        # TODO - default kw extractor from config/opm
+        if self.config.get("extract_keywords"):
+            # default False to minimize wrong answers
+            kw = RakeExtractor()
+            words = sorted(kw.extract(query, lang).items(),
+                           key=lambda k: k[1], reverse=True)
+            return words[0][0]
+
+        return None  # this solver can't answer
 
     def get_data_key(self, query, lang="en"):
         # TODO localization
@@ -201,6 +211,16 @@ class BM25Solver(EvidenceSolver):
         return " ".join(ans)
 
 
+class RakeExtractor(KeywordExtractor):
+    def extract(self, text, lang):
+        r = Rake()
+        r.extract_keywords_from_text(text)
+        scores = r.get_ranked_phrases_with_scores()
+        total = sum(s[0] for s in scores)
+        scores = {k: v / total for v, k in scores}
+        return scores
+
+
 if __name__ == "__main__":
     doc = """
     Introducing OpenVoiceOS - The Free and Open-Source Personal Assistant and Smart Speaker.
@@ -227,6 +247,10 @@ if __name__ == "__main__":
 
     So if you're looking for a personal assistant and smart speaker that gives you the freedom and control you deserve, be sure to check out OpenVoiceOS today!
     """
+
+    k = RakeExtractor()
+    k.extract("who invented the telephone", "en")  # {'telephone': 0.5, 'invented': 0.5}
+    k.extract("what is the speed of light", "en")  # {'speed': 0.5, 'light': 0.5}
 
     b = BM25Solver()
     a = b.get_best_passage(doc, "does OpenVoiceOS run offline")
