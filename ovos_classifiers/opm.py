@@ -6,8 +6,8 @@ from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
 from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
-from quebra_frases import sentence_tokenize, word_tokenize
-
+from ovos_plugin_manager.templates.postag import PosTagger
+from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets.wordnet import Wordnet
 from ovos_classifiers.heuristics.keyword_extraction import Rake, HeuristicExtractor
@@ -216,7 +216,20 @@ class HeuristicCoreferenceSolver(CoreferenceSolverEngine):
         return solved[0][0]
 
 
+class OVOSPostagPlugin(PosTagger):
+    def postag(self, spans, lang=None):
+        if isinstance(spans, str):
+            spans = span_indexed_word_tokenize(spans)
+        tagger = OVOSPostag(lang=lang)
+        tags = tagger.postag(" ".join(t for s, e, t in spans))
+        tagged_spans = [(s, e, t, tags[idx][1])
+                        for idx, (s, e, t) in enumerate(spans)]
+        return tagged_spans
+
+
 if __name__ == "__main__":
+    print(OVOSPostagPlugin().postag("I like pizza", "en"))
+    # [(0, 1, 'I', 'PRON'), (2, 6, 'like', 'VERB'), (7, 12, 'pizza', 'NOUN')]
 
     coref = HeuristicCoreferenceSolver()
     print(coref.solve_corefs("Mom is awesome, she said she loves me!", "en"))

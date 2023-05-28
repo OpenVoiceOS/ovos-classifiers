@@ -65,6 +65,8 @@ KW_ENTRY_POINT = (
     'ovos-keyword-extractor-rake=ovos_classifiers.opm:RakeExtractor'
 )
 COREF_ENTRY = "ovos-coref-solver-heuristic=ovos_classifiers.opm:HeuristicCoreferenceSolver"
+POSTAG_ENTRY = "ovos-classifiers-postag-plugin=ovos_classifiers.opm:OVOSPostagPlugin"
+
 
 setup(
     name='ovos-classifiers',
@@ -102,6 +104,7 @@ setup(
         'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
         "opm.solver.reading_comprehension": QA_ENTRY_POINT,
         "intentbox.keywords": KW_ENTRY_POINT,
-        "intentbox.coreference": COREF_ENTRY
+        "intentbox.coreference": COREF_ENTRY,
+        "intentbox.postag": POSTAG_ENTRY
     }
 )
