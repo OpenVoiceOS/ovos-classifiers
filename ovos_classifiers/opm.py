@@ -65,27 +65,14 @@ class CoreferenceNormalizer(UtteranceTransformer):
     def __init__(self, name="ovos-utterance-coref-normalizer", priority=3):
         super().__init__(name, priority)
 
-    @staticmethod
-    def get_normalizer(lang: str):
-        tagger = OVOSCorefIOBTagger(lang.split("-")[0])
-        post = OVOSPostag(lang=lang)
-        return tagger, post
-
     def transform(self, utterances: List[str],
                   context: Optional[dict] = None) -> (list, dict):
         context = context or {}
         lang = context.get("lang") or self.config.get("lang", "en-us")
-        tagger, post = self.get_normalizer(lang)
-
-        def _coref(u):
-            pos = post.postag(u)
-            iob = tagger.iob_tag(pos)
-            return UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs([iob])[0])
 
         norm = []
         for u in utterances:
-            norm.append(_coref(u))
-            norm.append(u)
+            norm += [HeuristicCoreferenceSolver.solve_corefs(u, lang), u]
 
         # this deduplicates the list while keeping order
         return list(dict.fromkeys(norm)), context
@@ -211,9 +198,13 @@ class HeuristicKeywordExtractor(KeywordExtractor):
 
 
 class HeuristicCoreferenceSolver(CoreferenceSolverEngine):
-    def solve_corefs(self, text, lang=None):
-        solved = CoreferenceNormalizer().transform([text], {"lang": lang})
-        return solved[0][0]
+
+    @classmethod
+    def solve_corefs(cls, text, lang=None):
+        tagger = OVOSCorefIOBTagger(lang.split("-")[0])
+        pos = OVOSPostag(lang=lang).postag(text)
+        iob = [tagger.iob_tag(pos)]
+        return UtteranceNormalizer.strip_punctuation(tagger.normalize_corefs(iob)[0])
 
 
 class OVOSPostagPlugin(PosTagger):
