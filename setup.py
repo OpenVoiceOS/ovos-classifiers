@@ -60,8 +60,11 @@ PLUGIN_ENTRY_POINT = (
 SOLVER_ENTRY_POINT = 'ovos-question-solver-wordnet=ovos_classifiers.opm:WordnetSolver'
 SUMMARIZER_ENTRY_POINT = 'ovos-summarizer-solver-nltk=ovos_classifiers.opm:NltkSummarizer'
 QA_ENTRY_POINT = 'ovos-evidence-solver-bm25=ovos_classifiers.opm:BM25Solver'
-KW_ENTRY_POINT = 'ovos-keyword-extractor-rake=ovos_classifiers.opm:RakeExtractor'
-
+KW_ENTRY_POINT = (
+    'ovos-keyword-extractor-heuristic=ovos_classifiers.opm:HeuristicKeywordExtractor',
+    'ovos-keyword-extractor-rake=ovos_classifiers.opm:RakeExtractor'
+)
+COREF_ENTRY = "ovos-coref-solver-heuristic=ovos_classifiers.opm:HeuristicCoreferenceSolver"
 
 setup(
     name='ovos-classifiers',
@@ -98,6 +101,7 @@ setup(
         'neon.plugin.solver': SOLVER_ENTRY_POINT,
         'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
         "opm.solver.reading_comprehension": QA_ENTRY_POINT,
-        "intentbox.keywords": KW_ENTRY_POINT
+        "intentbox.keywords": KW_ENTRY_POINT,
+        "intentbox.coreference": COREF_ENTRY
     }
 )

@@ -5,6 +5,7 @@ from nltk.corpus import wordnet as wn
 from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
 from quebra_frases import sentence_tokenize, word_tokenize
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
@@ -209,8 +210,17 @@ class HeuristicKeywordExtractor(KeywordExtractor):
         return {text: 0.0}
 
 
+class HeuristicCoreferenceSolver(CoreferenceSolverEngine):
+    def solve_corefs(self, text, lang=None):
+        solved = CoreferenceNormalizer().transform([text], {"lang": lang})
+        return solved[0][0]
+
 
 if __name__ == "__main__":
+
+    coref = HeuristicCoreferenceSolver()
+    print(coref.solve_corefs("Mom is awesome, she said she loves me!", "en"))
+
     doc = """
     Introducing OpenVoiceOS - The Free and Open-Source Personal Assistant and Smart Speaker.
 
@@ -246,7 +256,7 @@ if __name__ == "__main__":
     k.extract("what is the speed of light", "en")  # {'speed': 0.5, 'light': 0.5}
 
     b = BM25Solver()
-    a = b.get_best_passage(doc, "does OpenVoiceOS run offline")
+    print(b.get_best_passage(doc, "does OpenVoiceOS run offline"))
     # With OpenVoiceOS , you have the option to run the platform fully offline , giving you complete control over your data and ensuring that your information is never shared with third parties .
 
     h = NltkSummarizer()
