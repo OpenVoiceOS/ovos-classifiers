@@ -1,3 +1,4 @@
+import re
 import string
 from collections import Counter, defaultdict
 from enum import Enum
@@ -5,6 +6,92 @@ from itertools import chain, groupby, product
 from typing import Callable, DefaultDict, Dict, List, Optional, Set, Tuple
 
 import nltk
+
+from ovos_classifiers.heuristics.postag import NltkPostag
+
+
+class HeuristicExtractor:
+    langs = {
+        "en": "english",
+        "ar": "arabic",
+        "az": "azerbaijani",
+        "ca": "catalan",
+        "eu": "basque",
+        "da": "danish",
+        "de": "german",
+        "nl": "dutch",
+        "fi": "finnish",
+        "fr": "french",
+        "hu": "hungarian",
+        "it": "italian",
+        "no": "norwegian",
+        "pt": "portuguese",
+        "ru": "russian",
+        "es": "spanish",
+        "sw": "swedish",
+        "ro": "romanian"
+    }
+
+    @staticmethod
+    def extract_subject(query, lang="en"):
+        """ return the search term keyword """
+        subject = ""
+        patterns = []
+        if lang == "en":
+            patterns = [
+                r"(?:tell me about|who is|what is|who invented|who created|definition of) ([\w\s]+)",
+                # "Tell me about Isaac Newton"
+                r"(?:search|find|look up) (?:for)? ([\w\s]+)",  # "Search for famous scientists"
+                r"(?:show|give) (?:me)? (?:some)? ([\w\s]+)",  # "Show me books on astronomy"
+                r"(?:tell|show|give) (?:me|me some)? (?:information|details) (?:about|on) ([\w\s]+)",
+                r"(?:explain) (?:to me)? (?:what is|who is|where is|how does) (?:the)? ([\w\s]+)"
+                # "Explain to me what is the theory of relativity"
+            ]
+
+        for pattern in patterns:
+            match = re.search(pattern, query, re.IGNORECASE)
+            if match:
+                subject = match.group(1).strip()
+                break
+        else:
+            # Perform POS tagging
+            tagged_tokens = NltkPostag().tag(query)
+
+            # Define regex patterns
+            patterns = [
+                r"(?:NOUN(?:\s+PROPN)*)",  # Proper noun followed by optional proper nouns (e.g., "Isaac Newton")
+                r"(?:NOUN(?:\s+NOUN)*)",  # Common noun followed by optional common nouns (e.g., "famous scientists")
+                r"(?:NOUNS(?:\s+NOUNS)*)"  # Plural noun followed by optional plural nouns (e.g., "books on astronomy")
+            ]
+
+            # Combine patterns into a single regex pattern
+            combined_pattern = "|".join(patterns)
+
+            # Convert tagged tokens to string representation
+            tagged_string = ' '.join(tagged[1] for tagged in tagged_tokens)
+
+            # Find matches using regex
+            matches = re.finditer(combined_pattern, tagged_string)
+
+            # Iterate through matches to extract the subject
+            for match in matches:
+                tags = tagged_string[:match.end()].split(" ")
+                end = len(tags)
+                tags2 = tagged_string[match.start():].split(" ")
+                start = len(tags2)
+                toks = tagged_tokens[start:end]
+                subject = " ".join([t[0] for t in toks])
+                if subject:
+                    return subject
+
+        # some post-processing
+        if lang == "en":
+            if subject.startswith("the "):
+                subject = subject[4:]
+
+        if subject:
+            return subject.strip()
+        return None
 
 
 class RakeMetric(Enum):
@@ -315,3 +402,27 @@ class Rake:
         groups = groupby(word_list, lambda x: x not in self.to_ignore)
         phrases: List[Tuple[str, ...]] = [tuple(group[1]) for group in groups if group[0]]
         return list(filter(lambda x: self.min_length <= len(x) <= self.max_length, phrases))
+
+
+if __name__ == "__main__":
+    k = HeuristicExtractor()
+
+    question1 = "Tell me about Isaac Newton"
+    subject1 = k.extract_subject(question1)
+    print(subject1)  # Output: "Isaac Newton"
+
+    question2 = "Search famous scientists"
+    subject2 = k.extract_subject(question2)
+    print(subject2)  # Output: "famous scientists"
+
+    question3 = "Show me some books on astronomy"
+    subject3 = k.extract_subject(question3)
+    print(subject3)  # Output: "books on astronomy"
+
+    question4 = "Tell me information about Marie Curie"
+    subject4 = k.extract_subject(question4)
+    print(subject4)  # Output: "Marie Curie"
+
+    question5 = "Explain to me what is the theory of relativity"
+    subject5 = k.extract_subject(question5)
+    print(subject5)  # Output: "theory of relativity"

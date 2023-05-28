@@ -9,7 +9,7 @@ from quebra_frases import sentence_tokenize, word_tokenize
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets.wordnet import Wordnet
-from ovos_classifiers.heuristics.keyword_extraction import Rake
+from ovos_classifiers.heuristics.keyword_extraction import Rake, HeuristicExtractor
 from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
@@ -99,31 +99,11 @@ class WordnetSolver(QuestionSolver):
         config["lang"] = "en"  # only english supported
         super(WordnetSolver, self).__init__(config)
 
-    def extract_keyword(self, query, lang="en"):
-        query = query.lower()
-
-        # regex from narrow to broader matches
-        if lang == "en":
-            starts = ["who is ", "what is ", "when is ", "tell me about "]
-            for s in starts:
-                if query.startswith(s):
-                    return query.split(s)[-1]
-
-        # default to Rake extractor
-        # TODO - default kw extractor from config/opm
-        if self.config.get("extract_keywords"):
-            # default False to minimize wrong answers
-            kw = RakeExtractor()
-            words = sorted(kw.extract(query, lang).items(),
-                           key=lambda k: k[1], reverse=True)
-            return words[0][0]
-
-        return None  # this solver can't answer
-
     def get_data_key(self, query, lang="en"):
+        query = HeuristicExtractor.extract_subject(query, lang) or query
+
         # TODO localization
         if lang == "en":
-            query = self.extract_keyword(query, lang) or query
             words = query.split()
 
             stop_words = ["the", "on", "of", "in", "a", "is", "what", "when", "for", "an", "at"]
@@ -169,7 +149,7 @@ class WordnetSolver(QuestionSolver):
         # extract the best keyword with some regexes or fallback to RAKE
         k, query = self.get_data_key(query, lang)
         if not query:
-            query = self.extract_keyword(query, lang) or query
+            query = HeuristicExtractor.extract_subject(query, lang) or query
         data = self.search(query, context)
         if k and k in data:
             v = data[k]
@@ -221,6 +201,15 @@ class RakeExtractor(KeywordExtractor):
         return scores
 
 
+class HeuristicKeywordExtractor(KeywordExtractor):
+    def extract(self, text, lang):
+        kw = HeuristicExtractor.extract_subject(text, lang)
+        if kw:
+            return {kw: 1.0}
+        return {text: 0.0}
+
+
+
 if __name__ == "__main__":
     doc = """
     Introducing OpenVoiceOS - The Free and Open-Source Personal Assistant and Smart Speaker.
@@ -247,6 +236,10 @@ if __name__ == "__main__":
 
     So if you're looking for a personal assistant and smart speaker that gives you the freedom and control you deserve, be sure to check out OpenVoiceOS today!
     """
+
+    k = HeuristicKeywordExtractor()
+    k.extract("who invented the telephone", "en")  # {'telephone': 1.0}
+    k.extract("what is the speed of light", "en")  # {'speed of light': 1.0}
 
     k = RakeExtractor()
     k.extract("who invented the telephone", "en")  # {'telephone': 0.5, 'invented': 0.5}
