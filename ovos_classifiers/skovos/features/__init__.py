@@ -10,11 +10,11 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
+from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
 from ovos_classifiers.heuristics.tokenize import word_tokenize
 from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
-from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -99,6 +99,78 @@ class WordFeaturesVectorizer(BaseEstimator, TransformerMixin):
         return self._vectorizer.get_feature_names()
 
     def fit(self, X, y=None, **kwargs):
+        X = self._transformer.transform(X)
+        self._vectorizer.fit(X)
+        return self
+
+    def transform(self, X, **transform_params):
+        X = self._transformer.transform(X, **transform_params)
+        return self._vectorizer.transform(X)
+
+
+class LangFeaturesTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        super().__init__()
+        self.stopwords = {}
+        self.langs = {
+            "en": "english",
+            "ar": "arabic",
+            "az": "azerbaijani",
+            "ca": "catalan",
+            "eu": "basque",
+            "da": "danish",
+            "de": "german",
+            "nl": "dutch",
+            "fi": "finnish",
+            "fr": "french",
+            "hu": "hungarian",
+            "it": "italian",
+            "no": "norwegian",
+            "pt": "portuguese",
+            "ru": "russian",
+            "es": "spanish",
+            "sw": "swedish",
+            "ro": "romanian"
+        }
+        self.clf = None
+
+    def extract_features(self, sentence):
+        tokens = word_tokenize(sentence)
+        feats = {
+            l + "_stopword_count": 0 for l in self.stopwords.keys()
+        }
+        for lang, swords in self.stopwords.items():
+            feats[lang] = sum(1 for w in tokens if w in swords)
+        for lang, score in self.clf.predict(sentence):
+            feats[lang + "_score"] = score
+        return feats
+
+    def fit(self, *args, **kwargs):
+        nltk.download("stopwords")
+        for l, lang in self.langs.items():
+            self.stopwords[l] = nltk.corpus.stopwords.words(lang)
+        self.clf = LMLangClassifier()
+        return self
+
+    def transform(self, X, **transform_params):
+        feats = [self.extract_features(x) for x in X]
+        return feats
+
+
+class LangFeaturesVectorizer(BaseEstimator, TransformerMixin):
+    def __init__(self, lang=None, stemmer=None, memory=2):
+        self.lang = lang
+        self.memory = memory
+        self.stemmer = stemmer
+        self._transformer = LangFeaturesTransformer()
+        self._vectorizer = DictVectorizer(sparse=False)
+        super().__init__()
+
+    def get_feature_names(self):
+        return self._vectorizer.get_feature_names()
+
+    def fit(self, X, y=None, **kwargs):
+        self._transformer.fit()
         X = self._transformer.transform(X)
         self._vectorizer.fit(X)
         return self
