@@ -1,5 +1,9 @@
 # Changelog
 
+## [V0.0.0a22](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a22) (2023-05-28)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a21...V0.0.0a22)
+
 ## [V0.0.0a21](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a21) (2023-05-28)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a20...V0.0.0a21)
