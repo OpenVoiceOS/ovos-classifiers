@@ -66,6 +66,7 @@ KW_ENTRY_POINT = (
 )
 COREF_ENTRY = "ovos-coref-solver-heuristic=ovos_classifiers.opm:HeuristicCoreferenceSolver"
 POSTAG_ENTRY = "ovos-classifiers-postag-plugin=ovos_classifiers.opm:OVOSPostagPlugin"
+LANG_DETECT_ENTRY = "ovos-lang-detect-ngram-lm=ovos_classifiers.opm:LMLangDetectPlugin"
 
 
 setup(
@@ -101,6 +102,7 @@ setup(
     entry_points={
         'neon.plugin.text': PLUGIN_ENTRY_POINT,
         'neon.plugin.solver': SOLVER_ENTRY_POINT,
+        'neon.plugin.lang.detect': LANG_DETECT_ENTRY,
         'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
         "opm.solver.reading_comprehension": QA_ENTRY_POINT,
         "intentbox.keywords": KW_ENTRY_POINT,

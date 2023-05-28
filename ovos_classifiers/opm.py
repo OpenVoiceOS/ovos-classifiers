@@ -2,15 +2,18 @@ import random
 from typing import Optional, List
 
 from nltk.corpus import wordnet as wn
+from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
 from ovos_plugin_manager.templates.keywords import KeywordExtractor
+from ovos_plugin_manager.templates.language import LanguageDetector
+from ovos_plugin_manager.templates.postag import PosTagger
 from ovos_plugin_manager.templates.solvers import QuestionSolver, TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
-from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
-from ovos_plugin_manager.templates.postag import PosTagger
 from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
+
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets.wordnet import Wordnet
 from ovos_classifiers.heuristics.keyword_extraction import Rake, HeuristicExtractor
+from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
 from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
@@ -216,6 +219,18 @@ class OVOSPostagPlugin(PosTagger):
         tagged_spans = [(s, e, t, tags[idx][1])
                         for idx, (s, e, t) in enumerate(spans)]
         return tagged_spans
+
+
+class LMLangDetectPlugin(LanguageDetector):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.clf = LMLangClassifier()
+
+    def detect(self, text):
+        return self.clf.identify_language(text)
+
+    def detect_probs(self, text):
+        return self.clf.predict(text)
 
 
 if __name__ == "__main__":
