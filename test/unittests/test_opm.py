@@ -10,7 +10,7 @@ from ovos_plugin_manager.language import find_lang_detect_plugins
 
 
 class TestKeywords(unittest.TestCase):
-    expected_kw_plugs = ['ovos-keyword-plugin-dummy', "ovos-keyword-extractor-heuristic", "ovos-keyword-extractor-rake"]
+    expected_kw_plugs = ["ovos-keyword-extractor-heuristic", "ovos-keyword-extractor-rake"]
     expected_utt_plugs = ['ovos-utterance-normalizer', 'ovos-utterance-coref-normalizer']
     expected_solver_plugs = ['ovos-question-solver-wordnet']
     expected_summ = ["ovos-summarizer-solver-wordfreq"]
