@@ -16,7 +16,8 @@ from ovos_classifiers.heuristics.keyword_extraction import Rake, HeuristicExtrac
 from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
 from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
-    PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer
+    PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer, \
+    GermanNormalizer
 from ovos_classifiers.heuristics.summarization import HeuristicSummarizer
 from ovos_classifiers.postag import OVOSPostag
 
@@ -42,11 +43,14 @@ class UtteranceNormalizer(UtteranceTransformer):
             return AzerbaijaniNormalizer()
         elif lang.startswith("ru"):
             return RussianNormalizer()
+        elif lang.startswith("de"):
+            return GermanNormalizer()
         return Normalizer()
 
     @staticmethod
     def strip_punctuation(utterance: str):
-        return utterance.rstrip('.').rstrip('?').rstrip('!').rstrip(',').rstrip(';').strip()
+        return utterance.lstrip('"').rstrip('"').rstrip('.').rstrip('?')\
+                .rstrip('!').rstrip(',').rstrip(';').strip()
 
     def transform(self, utterances: List[str],
                   context: Optional[dict] = None) -> (list, dict):
