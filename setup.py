@@ -54,7 +54,7 @@ extra_files = package_files('ovos_classifiers/res')
 
 
 UTTERANCE_ENTRY_POINT = (
-    'ovos-utterance-normalizer=ovos_classifiers.opm.heuristic:UtteranceNormalizerPlugin',
+    'ovos-utterance-normalizer=ovos_classifiers.opm.heuristics:UtteranceNormalizerPlugin',
     # ovos-classifiers models
     'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizerPlugin'
 )
@@ -63,18 +63,18 @@ SOLVER_ENTRY_POINT = (
     'ovos-question-solver-wordnet=ovos_classifiers.opm.nltk:WordnetSolverPlugin'
 )
 SUMMARIZER_ENTRY_POINT = (
-    'ovos-summarizer-solver-wordfreq=ovos_classifiers.opm.heuristic:HeuristicSummarizerPlugin'
+    'ovos-summarizer-solver-wordfreq=ovos_classifiers.opm.heuristics:HeuristicSummarizerPlugin'
 )
 QA_ENTRY_POINT = (
-    'ovos-evidence-solver-bm25=ovos_classifiers.opm.heuristic:BM25SolverPlugin'
+    'ovos-evidence-solver-bm25=ovos_classifiers.opm.heuristics:BM25SolverPlugin'
 )
 KW_ENTRY_POINT = (
-    'ovos-keyword-extractor-heuristic=ovos_classifiers.opm.heuristic:HeuristicKeywordExtractorPlugin',
+    'ovos-keyword-extractor-heuristic=ovos_classifiers.opm.heuristics:HeuristicKeywordExtractorPlugin',
     # nltk data dependent (stopwords)
-    'ovos-keyword-extractor-rake=ovos_classifiers.opm.heuristic:RakeExtractorPlugin'
+    'ovos-keyword-extractor-rake=ovos_classifiers.opm.nltk:RakeExtractorPlugin'
 )
 COREF_ENTRY = (
-    "ovos-coref-solver-heuristic=ovos_classifiers.opm.heuristic:HeuristicCoreferenceSolverPlugin",
+    "ovos-coref-solver-heuristic=ovos_classifiers.opm.heuristics:HeuristicCoreferenceSolverPlugin",
     # ovos-classifiers models
     "ovos-classifiers-coref-solver=ovos_classifiers.opm:OVOSCoreferenceSolverPlugin"
 )

@@ -22,56 +22,40 @@ class TestKeywords(unittest.TestCase):
 
     def test_lang(self):
         plugs = list(find_lang_detect_plugins().keys())
-        print(plugs)
         for kw in self.expected_lang:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_postag(self):
         plugs = list(find_postag_plugins().keys())
-        print(plugs)
         for kw in self.expected_post:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_coref(self):
         plugs = list(find_coref_plugins().keys())
-        print(plugs)
-        for kw in self.expected_qa:
-            print(kw)
+        for kw in self.expected_coref:
             self.assertTrue(kw in plugs)
 
     def test_qa(self):
         plugs = list(find_reading_comprehension_solver_plugins().keys())
-        print(plugs)
         for kw in self.expected_qa:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_summarizer(self):
         plugs = list(find_tldr_solver_plugins().keys())
-        print(plugs)
         for kw in self.expected_summ:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_solver(self):
         plugs = list(find_question_solver_plugins().keys())
-        print(plugs)
         for kw in self.expected_solver_plugs:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_utt(self):
         plugs = list(find_utterance_transformer_plugins().keys())
-        print(plugs)
         for kw in self.expected_utt_plugs:
-            print(kw)
             self.assertTrue(kw in plugs)
 
     def test_kw(self):
         plugs = find_keyword_extract_plugins()
-        print(plugs)
         for kw in self.expected_kw_plugs:
-            print(kw)
             self.assertTrue(kw in plugs)
