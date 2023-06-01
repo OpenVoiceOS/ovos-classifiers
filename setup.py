@@ -53,20 +53,43 @@ def required(requirements_file):
 extra_files = package_files('ovos_classifiers/res')
 
 
-PLUGIN_ENTRY_POINT = (
-    'ovos-utterance-normalizer=ovos_classifiers.opm:UtteranceNormalizer',
-    'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizer'
+UTTERANCE_ENTRY_POINT = (
+    'ovos-utterance-normalizer=ovos_classifiers.opm.heuristic:UtteranceNormalizerPlugin',
+    # ovos-classifiers models
+    'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizerPlugin'
 )
-SOLVER_ENTRY_POINT = 'ovos-question-solver-wordnet=ovos_classifiers.opm:WordnetSolver'
-SUMMARIZER_ENTRY_POINT = 'ovos-summarizer-solver-nltk=ovos_classifiers.opm:NltkSummarizer'
-QA_ENTRY_POINT = 'ovos-evidence-solver-bm25=ovos_classifiers.opm:BM25Solver'
+SOLVER_ENTRY_POINT = (
+    # nltk data dependent
+    'ovos-question-solver-wordnet=ovos_classifiers.opm.nltk:WordnetSolverPlugin'
+)
+SUMMARIZER_ENTRY_POINT = (
+    'ovos-summarizer-solver-wordfreq=ovos_classifiers.opm.heuristic:HeuristicSummarizerPlugin'
+)
+QA_ENTRY_POINT = (
+    'ovos-evidence-solver-bm25=ovos_classifiers.opm.heuristic:BM25SolverPlugin'
+)
 KW_ENTRY_POINT = (
-    'ovos-keyword-extractor-heuristic=ovos_classifiers.opm:HeuristicKeywordExtractor',
-    'ovos-keyword-extractor-rake=ovos_classifiers.opm:RakeExtractor'
+    'ovos-keyword-extractor-heuristic=ovos_classifiers.opm.heuristic:HeuristicKeywordExtractorPlugin',
+    # nltk data dependent (stopwords)
+    'ovos-keyword-extractor-rake=ovos_classifiers.opm.heuristic:RakeExtractorPlugin'
 )
-COREF_ENTRY = "ovos-coref-solver-heuristic=ovos_classifiers.opm:HeuristicCoreferenceSolver"
-POSTAG_ENTRY = "ovos-classifiers-postag-plugin=ovos_classifiers.opm:OVOSPostagPlugin"
-LANG_DETECT_ENTRY = "ovos-lang-detect-ngram-lm=ovos_classifiers.opm:LMLangDetectPlugin"
+COREF_ENTRY = (
+    "ovos-coref-solver-heuristic=ovos_classifiers.opm.heuristic:HeuristicCoreferenceSolverPlugin",
+    # ovos-classifiers models
+    "ovos-classifiers-coref-solver=ovos_classifiers.opm:OVOSCoreferenceSolverPlugin"
+)
+POSTAG_ENTRY = (
+    "ovos-postag-plugin-regex=ovos_classifiers.opm.heuristics:RegexPostagPlugin",
+    # nltk data dependent
+    "ovos-postag-plugin-nltk=ovos_classifiers.opm.nltk:NltkPostagPlugin",
+    # ovos-classifiers models
+    "ovos-classifiers-postag-plugin=ovos_classifiers.opm:OVOSPostagPlugin"
+)
+LANG_DETECT_ENTRY = (
+    # nltk data dependent
+    "ovos-lang-detect-ngram-lm=ovos_classifiers.opm.nltk:LMLangDetectPlugin"
+)
+
 
 
 setup(
@@ -82,6 +105,7 @@ setup(
               'ovos_classifiers.skovos',
               'ovos_classifiers.skovos.features',
               "ovos_classifiers.tasks",
+              "ovos_classifiers.opm",
               "ovos_classifiers.utils"],
     include_package_data=True,
     package_data={"": extra_files},
@@ -100,7 +124,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     entry_points={
-        'neon.plugin.text': PLUGIN_ENTRY_POINT,
+        'neon.plugin.text': UTTERANCE_ENTRY_POINT,
         'neon.plugin.solver': SOLVER_ENTRY_POINT,
         'neon.plugin.lang.detect': LANG_DETECT_ENTRY,
         'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
