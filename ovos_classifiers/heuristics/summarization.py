@@ -6,7 +6,7 @@ import nltk
 from string import punctuation
 
 
-class HeuristicSummarizer:
+class WordFrequencySummarizer:
     def __init__(self):
         nltk.download("stopwords")
         self.langs = {

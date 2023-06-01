@@ -392,3 +392,27 @@ class CorefIOBHeuristicTagger:
         iob = self._fix_iob_seqs(iob)
         return iob
 
+    @staticmethod
+    def normalize_corefs(iobtagged_tokens):
+        sentences = []
+        for toks in iobtagged_tokens:
+            ents = {}
+            s = ""
+            for t, _, iob in toks:
+                if iob == "O":
+                    s += t + " "
+                elif "B-ENTITY" in iob:
+                    s += t + " "
+                    ents[iob.replace("B-", "")] = t
+                elif "I-ENTITY" in iob:
+                    s += t + " "
+                    ents[iob.replace("I-", "")] = t
+                elif "B-COREF" in iob:
+                    i = iob.replace("B-COREF-", "ENTITY-")
+                    if i in ents:
+                        s += ents[i] + " "
+                    else:
+                        s += t + " "
+
+            sentences.append(s.strip())
+        return sentences
