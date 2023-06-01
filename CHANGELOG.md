@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a23...HEAD)
+
+**Merged pull requests:**
+
+- add german utterance normalizer [\#9](https://github.com/OpenVoiceOS/ovos-classifiers/pull/9) ([emphasize](https://github.com/emphasize))
+
+## [V0.0.0a23](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a23) (2023-05-28)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a22...V0.0.0a23)
+
 ## [V0.0.0a22](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a22) (2023-05-28)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a21...V0.0.0a22)
