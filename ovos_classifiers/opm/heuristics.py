@@ -1,6 +1,6 @@
 # these plugins do not have external dependencies and do not download any data
 # they should be available in all platforms
-
+import string
 from typing import Optional, List
 
 from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
@@ -66,8 +66,7 @@ class UtteranceNormalizerPlugin(UtteranceTransformer):
 
     @staticmethod
     def strip_punctuation(utterance: str):
-        return utterance.lstrip('"').rstrip('"').rstrip('.').rstrip('?') \
-            .rstrip('!').rstrip(',').rstrip(';').strip()
+        return utterance.strip(string.punctuation).strip()
 
     def transform(self, utterances: List[str],
                   context: Optional[dict] = None) -> (list, dict):
