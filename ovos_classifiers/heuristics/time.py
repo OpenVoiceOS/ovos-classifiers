@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timedelta
 
 from ovos_classifiers.heuristics.numeric import EnglishNumberParser
-from ovos_classifiers.utils.time import DAYS_IN_1_MONTH, DAYS_IN_1_YEAR
+from ovos_utils.time import DAYS_IN_1_MONTH, DAYS_IN_1_YEAR
 
 
 class EnglishTimeTagger:

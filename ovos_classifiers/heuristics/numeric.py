@@ -376,7 +376,7 @@ class GermanNumberParser:
         return ' '.join(results)
 
 
-    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List(Replaceablenumber):
+    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List:
         """
         extract numeric values from a list of tokens.
         Args:
@@ -922,7 +922,7 @@ class EnglishNumberParser:
 
         return ' '.join(results)
 
-    def extract_numbers(self, tokens: list, short_scale: bool=True, ordinals: bool=False) -> List(Replaceablenumber):
+    def extract_numbers(self, tokens: list, short_scale: bool=True, ordinals: bool=False) -> List:
         """
         extract numeric values from a list of tokens.
         Args:
@@ -1602,7 +1602,7 @@ class AzerbaijaniNumberParser:
 
         return ' '.join(results)
 
-    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List(Replaceablenumber):
+    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List:
         """
         extract numeric values from a list of tokens.
         Args:
