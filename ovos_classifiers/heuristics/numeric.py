@@ -358,9 +358,7 @@ class GermanNumberParser:
             The original text, with numbers subbed in where appropriate.
         """
         tokens = [Token(word, index) for index, word in enumerate(word_tokenize(utterance))]
-        numbers_to_replace = \
-            self._extract_numbers_with_text_de(tokens, short_scale, ordinals, fractions)
-        numbers_to_replace.sort(key=lambda number: number.start_index)
+        numbers_to_replace = self.extract_numbers(tokens, short_scale, ordinals, fractions)
 
         results = []
         for token in tokens:
@@ -377,6 +375,24 @@ class GermanNumberParser:
 
         return ' '.join(results)
 
+
+    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List(Replaceablenumber):
+        """
+        extract numeric values from a list of tokens.
+        Args:
+            tokens (list): list of tokens (str)
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                              be parsed to their number values (1, 2, 3...)
+        Returns:
+            list of extraced numbers (ReplaceableNumber)
+
+        """
+        if not isinstance(tokens[0], Token): # list of string tokens
+            tokens = [Token(word, index) for index, word in enumerate(tokens)]
+        numbers_to_replace = self._extract_numbers_with_text_de(tokens, short_scale, ordinals)
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+        return numbers_to_replace
 
     def _extract_numbers_with_text_de(self, tokens, short_scale=True,
                                       ordinals=False, fractions=True):
@@ -889,9 +905,7 @@ class EnglishNumberParser:
 
         """
         tokens = [Token(word, index) for index, word in enumerate(word_tokenize(utterance))]
-        numbers_to_replace = \
-            self._extract_numbers_with_text_en(tokens, short_scale, ordinals)
-        numbers_to_replace.sort(key=lambda number: number.start_index)
+        numbers_to_replace = self.extract_numbers(tokens, short_scale, ordinals)
 
         results = []
         for token in tokens:
@@ -907,6 +921,24 @@ class EnglishNumberParser:
                     numbers_to_replace.pop(0)
 
         return ' '.join(results)
+
+    def extract_numbers(self, tokens: list, short_scale: bool=True, ordinals: bool=False) -> List(Replaceablenumber):
+        """
+        extract numeric values from a list of tokens.
+        Args:
+            tokens (list): list of tokens (str)
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                              be parsed to their number values (1, 2, 3...)
+        Returns:
+            list of extraced numbers (ReplaceableNumber)
+
+        """
+        if not isinstance(tokens[0], Token): # list of string tokens
+            tokens = [Token(word, index) for index, word in enumerate(tokens)]
+        numbers_to_replace = self._extract_numbers_with_text_en(tokens, short_scale, ordinals)
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+        return numbers_to_replace
 
     # helper methods
     def _initialize_number_data_en(self, short_scale, speech=True):
@@ -1554,11 +1586,7 @@ class AzerbaijaniNumberParser:
 
         """
         tokens = [Token(word, index) for index, word in enumerate(word_tokenize(text))]
-        numbers_to_replace = \
-            self._extract_numbers_with_text_az(tokens, short_scale, ordinals)
-
-        numbers_to_replace.sort(key=lambda number: number.start_index)
-
+        numbers_to_replace = self.extract_numbers_az(tokens, short_scale, ordinals)
         results = []
         for token in tokens:
             if not numbers_to_replace or \
@@ -1573,6 +1601,24 @@ class AzerbaijaniNumberParser:
                     numbers_to_replace.pop(0)
 
         return ' '.join(results)
+
+    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List(Replaceablenumber):
+        """
+        extract numeric values from a list of tokens.
+        Args:
+            tokens (list): list of tokens (str)
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                              be parsed to their number values (1, 2, 3...)
+        Returns:
+            list of extraced numbers (ReplaceableNumber)
+
+        """
+        if not isinstance(tokens[0], Token): # list of string tokens
+            tokens = [Token(word, index) for index, word in enumerate(tokens)]
+        numbers_to_replace = self._extract_numbers_with_text_az(tokens, short_scale, ordinals)
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+        return numbers_to_replace
 
     def is_fractional(self, input_str, short_scale=True, spoken=True):
         """
