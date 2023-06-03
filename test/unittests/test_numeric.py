@@ -4,7 +4,7 @@ from ovos_classifiers.heuristics.numeric import EnglishNumberParser
 from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
-class TestKeywords(unittest.TestCase):
+class TestEnglish(unittest.TestCase):
 
     def test_convert(self):
         parser = EnglishNumberParser()
@@ -149,9 +149,7 @@ class TestKeywords(unittest.TestCase):
         # test big numbers / short vs long scale
         test_xtract("this is the billionth test", 1e09, ordinals=True)
         test_xtract("this is the billionth test", 1e-9)
-        test_xtract("this is the billionth test", 1e12,
-                    ordinals=True,
-                    short_scale=False)
+        test_xtract("this is the billionth test", 1e12, ordinals=True, short_scale=False)
         test_xtract("this is the billionth test", 1e-12, short_scale=False)
 
         # test the Nth one

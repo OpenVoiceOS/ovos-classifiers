@@ -57,7 +57,7 @@ class ReplaceableEntity:
 
     def __repr__(self):
         return "{n}({v}, {t})".format(n=self.__class__.__name__, v=self.value,
-                                      t=self.tokens)
+                                      t=[t.word for t in self.tokens])
 
 
 class ReplaceableNumber(ReplaceableEntity):
@@ -115,7 +115,7 @@ class ReplaceableTimedelta(ReplaceableEntity):
     """
 
     def __init__(self, value: timedelta, tokens: List):
-        assert isinstance(v, timedelta)
+        assert isinstance(value, timedelta)
         super().__init__(value, tokens)
 
 

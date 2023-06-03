@@ -2,6 +2,8 @@ import re
 from datetime import datetime, timedelta
 
 from ovos_classifiers.heuristics.numeric import EnglishNumberParser
+from ovos_classifiers.heuristics.tokenize import ReplaceableNumber, ReplaceableTimedelta, \
+    ReplaceableTime, ReplaceableDate, Token, word_tokenize
 from ovos_utils.time import DAYS_IN_1_MONTH, DAYS_IN_1_YEAR
 
 
@@ -87,30 +89,21 @@ class EnglishTimeTagger:
         """
         raise NotImplementedError
 
-    def extract_duration(self, text):
+    def extract_durations(self, tokens):
         """
-     Convert an english phrase into a number of seconds
+        Extract all timedeltas from a list of Tokens, with the words that
+        represent them.
 
-     Convert things like:
-         "10 minute"
-         "2 and a half hours"
-         "3 days 8 hours 10 minutes and 49 seconds"
-     into an int, representing the total number of seconds.
+        Args:
+            [Token]: The tokens to parse.
 
-     The words used in the duration will be consumed, and
-     the remainder returned.
+        Returns:
+            [ReplaceableTimedelta]: A list of tuples, each containing a timedelta and a
+                             string.
 
-     As an example, "set a timer for 5 minutes" would return
-     (300, "set a timer for").
-
-     Args:
-         text (str): string containing a duration
-
-     Returns:
-         duration (timedelta): the duration or None if no duration is found
-     """
-        if not text:
-            return None
+        """
+        if isinstance(tokens, str):
+            tokens = [Token(word.lower(), index) for index, word in enumerate(word_tokenize(tokens))]
 
         time_units = {
             'microseconds': 0,
@@ -121,43 +114,88 @@ class EnglishTimeTagger:
             'days': 0,
             'weeks': 0
         }
-        # NOTE: these are spelled wrong on purpose because of the loop below that strips the s
-        units = ['months', 'years', 'decades', 'centurys', 'millenniums'] + \
-                list(time_units.keys())
 
-        pattern = r"(?P<value>\d+(?:\.?\d+)?)(?:\s+|\-){unit}s?"
-        text = EnglishNumberParser().convert_words_to_numbers(text)
-        text = text.replace("centuries", "century").replace("millenia", "millennium")
-        for word in ('day', 'month', 'year', 'decade', 'century', 'millennium'):
-            text = text.replace(f'a {word}', f'1 {word}')
+        # handle "a day" -> "1 day"
+        for idx, tok in enumerate(tokens):
+            if tok.word != "a" or idx == len(tokens) - 1:
+                continue
+            next_tok = tokens[idx + 1]
+            is_dur = next_tok.word in ['day', 'month', 'year', 'decade', 'century', 'millennium'] or \
+                     next_tok.word + "s" in time_units.keys()
+            if is_dur:
+                tokens[idx] = Token("1", idx)
 
-        for unit_en in units:
-            unit_pattern = pattern.format(unit=unit_en[:-1])  # remove 's' from unit
 
-            def repl(match):
-                time_units[unit_en] += float(match.group(1))
-                return ''
+        numbers = EnglishNumberParser().extract_numbers(tokens)
 
-            def repl_non_std(match):
-                val = float(match.group(1))
-                if unit_en == "months":
-                    val = DAYS_IN_1_MONTH * val
-                if unit_en == "years":
-                    val = DAYS_IN_1_YEAR * val
-                if unit_en == "decades":
-                    val = 10 * DAYS_IN_1_YEAR * val
-                if unit_en == "centurys":
-                    val = 100 * DAYS_IN_1_YEAR * val
-                if unit_en == "millenniums":
-                    val = 1000 * DAYS_IN_1_YEAR * val
-                time_units["days"] += val
-                return ''
+        durations = []
+        for idx, number in enumerate(numbers):
+            if number.end_index == len(tokens) - 1:
+                break
 
-            if unit_en not in time_units:
-                text = re.sub(unit_pattern, repl_non_std, text)
-            else:
-                text = re.sub(unit_pattern, repl, text)
+            next_token = tokens[number.end_index + 1]
+            unit_en = next_token.word.rstrip("s")
 
-        duration = timedelta(**time_units) if any(time_units.values()) else None
+            if unit_en + "s" in time_units:
+                time_units[unit_en+  "s"] += number.value
+            elif unit_en == "month":
+                time_units["days"] += DAYS_IN_1_MONTH * val
+            elif unit_en == "year":
+                time_units["days"] += DAYS_IN_1_YEAR * val
+            elif unit_en == "decade":
+                time_units["days"] += 10 * DAYS_IN_1_YEAR * val
+            elif unit_en == "century" or unit_en == "centuries":
+                time_units["days"] += 100 * DAYS_IN_1_YEAR * val
+            elif unit_en == "millennium" or unit_en == "millenia":
+                time_units["days"] += 1000 * DAYS_IN_1_YEAR * val
 
-        return duration
+            # if we have any duration, save the extraction, else it was just a number
+            if any(time_units.values()):
+                toks = tokens[number.start_index:number.end_index+2]
+                delta = timedelta(**time_units)
+
+                # if we have a previous duration without intermediate tokens
+                # AND it is larger than current, merge
+                prev_dur = None
+                prev_word = "" if number.start_index == 0 else tokens[number.start_index - 1].word
+                if len(durations):
+                    prev_dur = durations[-1]
+
+                if prev_dur and prev_dur.value > delta and \
+                        any((prev_dur.end_index == number.start_index - 1,
+                            prev_dur.end_index == number.start_index - 2 and prev_word == "and"
+                            )):
+                    delta = prev_dur.value + delta
+                    toks  = tokens[prev_dur.start_index:number.end_index+3]
+                    durations[-1] = ReplaceableTimedelta(delta, toks)
+                else:
+                    durations.append(ReplaceableTimedelta(delta, toks))
+
+                # reset for next number
+                time_units = {
+                    'microseconds': 0,
+                    'milliseconds': 0,
+                    'seconds': 0,
+                    'minutes': 0,
+                    'hours': 0,
+                    'days': 0,
+                    'weeks': 0
+                }
+
+        durations.sort(key=lambda n: n.start_index)
+        return durations
+
+
+
+if __name__ == "__main__":
+    t = EnglishTimeTagger()
+    print(t.extract_durations("remind me in a minute"))
+    print(t.extract_durations("remind me in one hundred minutes"))
+    print(t.extract_durations("remind me in 10 minutes 5 seconds"))
+    print(t.extract_durations("remind me in 10 minutes and 5 seconds"))
+    print(t.extract_durations("remind me in 10 seconds and 5 hours and 10 seconds"))
+    # [ReplaceableTimedelta(0:01:00, ['1', 'minute'])]
+    # [ReplaceableTimedelta(1:40:00, ['one', 'hundred', 'minutes'])]
+    # [ReplaceableTimedelta(0:10:05, ['10', 'minutes', '5', 'seconds'])]
+    # [ReplaceableTimedelta(0:10:05, ['10', 'minutes', 'and', '5', 'seconds'])]
+    # [ReplaceableTimedelta(0:00:10, ['10', 'seconds']), ReplaceableTimedelta(5:00:10, ['5', 'hours', 'and', '10', 'seconds'])]
