@@ -1,7 +1,8 @@
 import re
 from collections import namedtuple
-
+from typing import List, Any
 from quebra_frases import word_tokenize as _wtok
+from datetime import datetime, date, timedelta, time
 
 # Token is intended to be used in the number processing functions in
 # this module. The parsing requires slicing and dividing of the original
@@ -10,19 +11,23 @@ from quebra_frases import word_tokenize as _wtok
 Token = namedtuple('Token', 'word index')
 
 
-class Replaceablenumber:
+class ReplaceableEntity:
     """
-    Similar to Token, this class is used in number parsing.
+    Similar to Token, this class is used in entity parsing.
 
-    Once we've found a number in a string, this class contains all
+    Once we've found an entity in a string, this class contains all
     the info about the value, and where it came from in the original text.
-    In other words, it is the text, and the number that can replace it in
+    In other words, it is the text, and the entity that can replace it in
     the string.
     """
 
-    def __init__(self, value, tokens):
+    def __init__(self, value: Any, tokens: List):
         self.value = value
         self.tokens = tokens
+
+    @property
+    def type(self):
+        return type(self.value)
 
     def __bool__(self):
         return bool(self.value is not None and self.value is not False)
@@ -53,6 +58,65 @@ class Replaceablenumber:
     def __repr__(self):
         return "{n}({v}, {t})".format(n=self.__class__.__name__, v=self.value,
                                       t=self.tokens)
+
+
+class ReplaceableNumber(ReplaceableEntity):
+    """
+    Similar to Token, this class is used in number parsing.
+
+    Once we've found a number in a string, this class contains all
+    the info about the value, and where it came from in the original text.
+    In other words, it is the text, and the number that can replace it in
+    the string.
+    """
+
+class ReplaceableDate(ReplaceableEntity):
+    """
+    Similar to Token, this class is used in date parsing.
+
+    Once we've found a date in a string, this class contains all
+    the info about the value, and where it came from in the original text.
+    In other words, it is the text, and the date that can replace it in
+    the string.
+    """
+
+    def __init__(self, value: date, tokens: List):
+        if isinstance(value, datetime):
+            value = datetime.date()
+        assert isinstance(v, date)
+        super().__init__(value, tokens)
+
+
+class ReplaceableTime(ReplaceableEntity):
+    """
+    Similar to Token, this class is used in date parsing.
+
+    Once we've found a time in a string, this class contains all
+    the info about the value, and where it came from in the original text.
+    In other words, it is the text, and the time that can replace it in
+    the string.
+    """
+
+    def __init__(self, value: time, tokens: List):
+        if isinstance(value, datetime):
+            value = datetime.time()
+        assert isinstance(v, time)
+        super().__init__(value, tokens)
+
+
+class ReplaceableTimedelta(ReplaceableEntity):
+    """
+    Similar to Token, this class is used in date parsing.
+
+    Once we've found a timedelta in a string, this class contains all
+    the info about the value, and where it came from in the original text.
+    In other words, it is the text, and the duration that can replace it in
+    the string.
+    """
+
+    def __init__(self, value: timedelta, tokens: List):
+        assert isinstance(v, timedelta)
+        super().__init__(value, tokens)
 
 
 def partition_list(items, split_on):

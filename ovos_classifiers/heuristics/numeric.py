@@ -3,7 +3,7 @@ from typing import List
 
 from ovos_utils.json_helper import invert_dict
 from ovos_classifiers.heuristics.tokenize import word_tokenize, partition_list, \
-    Token, Replaceablenumber
+    Token, ReplaceableNumber
 
 
 def is_numeric(word):
@@ -451,13 +451,13 @@ class GermanNumberParser:
             fractional_numbers (bool): True if we should look for fractions and
                                     decimals.
         Returns:
-            Replaceablenumber
+            ReplaceableNumber
 
         """
         number, tokens = \
             self._extract_number_with_text_de_helper(tokens, short_scale,
                                                      ordinals)
-        return Replaceablenumber(number, tokens)
+        return ReplaceableNumber(number, tokens)
 
 
     def _extract_number_with_text_de_helper(self, tokens,
@@ -1354,7 +1354,7 @@ class EnglishNumberParser:
                                                      ordinals, fractional_numbers)
         while tokens and tokens[0].word in self._ARTICLES_EN:
             tokens.pop(0)
-        return Replaceablenumber(number, tokens)
+        return ReplaceableNumber(number, tokens)
 
     def _extract_numbers_with_text_en(self, tokens, short_scale=True,
                                       ordinals=False, fractional_numbers=True):
@@ -1702,7 +1702,7 @@ class AzerbaijaniNumberParser:
         number, tokens = \
             self._extract_number_with_text_az_helper(tokens, short_scale,
                                                      ordinals, fractional_numbers)
-        return Replaceablenumber(number, tokens)
+        return ReplaceableNumber(number, tokens)
 
     def _extract_number_with_text_az_helper(self, tokens,
                                             short_scale=True, ordinals=False,
