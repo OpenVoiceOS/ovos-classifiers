@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a28...HEAD)
+
+**Implemented enhancements:**
+
+- extract duration [\#11](https://github.com/OpenVoiceOS/ovos-classifiers/pull/11) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.0.0a28](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a28) (2023-06-03)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a27...V0.0.0a28)
+
 ## [V0.0.0a27](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a27) (2023-06-03)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a26...V0.0.0a27)
