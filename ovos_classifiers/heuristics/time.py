@@ -194,7 +194,7 @@ class GermanTimeTagger:
     def extract_time(self, text: str, anchorDate: Optional[datetime] = None):
         raise NotImplementedError
     
-    def extract_durations(self, tokens: Union[List[Token], str]):
+    def extract_durations(self, tokens: Union[List[Token], str]) -> List[ReplaceableTimedelta]:
 
         if isinstance(tokens, str):
             tokens = [Token(word.lower(), index) for index, word in enumerate(word_tokenize(tokens))]
