@@ -82,8 +82,8 @@ class ReplaceableDate(ReplaceableEntity):
 
     def __init__(self, value: date, tokens: List):
         if isinstance(value, datetime):
-            value = datetime.date()
-        assert isinstance(v, date)
+            value = value.date()
+        assert isinstance(value, date)
         super().__init__(value, tokens)
 
 
@@ -99,8 +99,8 @@ class ReplaceableTime(ReplaceableEntity):
 
     def __init__(self, value: time, tokens: List):
         if isinstance(value, datetime):
-            value = datetime.time()
-        assert isinstance(v, time)
+            value = value.time()
+        assert isinstance(value, time)
         super().__init__(value, tokens)
 
 
