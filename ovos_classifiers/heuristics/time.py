@@ -200,7 +200,6 @@ class GermanTimeTagger:
             tokens = [Token(word.lower(), index) for index, word in enumerate(word_tokenize(tokens))]
 
         numbers = GermanNumberParser().extract_numbers(tokens)
-        print(numbers)
 
         # Einzahl, Mehrzahl und Flexionen
         pattern = r"\b(?P<unit>{unit}[nes]?[sn]?\b)"
@@ -232,7 +231,6 @@ class GermanTimeTagger:
                 unit_pattern = pattern.format(unit=unit_de[:-1])
                 matched = re.match(unit_pattern, test_str)
                 if matched:
-                    print(unit_de, number.value)
                     time_units[unit_en] = number.value
                     toks = tokens[number.start_index:number.end_index+2]
             
