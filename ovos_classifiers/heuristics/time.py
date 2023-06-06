@@ -228,9 +228,7 @@ class GermanTimeTagger:
                 if toks:
                     continue
 
-                unit_pattern = pattern.format(unit=unit_de[:-1])
-                matched = re.match(unit_pattern, test_str)
-                if matched:
+                if re.match(pattern.format(unit=unit_de[:-1]), test_str):
                     time_units[unit_en] = number.value
                     toks = tokens[number.start_index:number.end_index+2]
             
