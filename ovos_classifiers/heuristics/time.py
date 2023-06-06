@@ -1,7 +1,8 @@
 import re
 from datetime import datetime, timedelta
+from typing import List, Dict, Union, Any, Optional
 
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser
+from ovos_classifiers.heuristics.numeric import EnglishNumberParser, GermanNumberParser
 from ovos_classifiers.heuristics.tokenize import ReplaceableNumber, ReplaceableTimedelta, \
     ReplaceableTime, ReplaceableDate, Token, word_tokenize
 from ovos_utils.time import DAYS_IN_1_MONTH, DAYS_IN_1_YEAR
@@ -139,15 +140,15 @@ class EnglishTimeTagger:
             if unit_en + "s" in time_units:
                 time_units[unit_en+  "s"] += number.value
             elif unit_en == "month":
-                time_units["days"] += DAYS_IN_1_MONTH * val
+                time_units["days"] += DAYS_IN_1_MONTH * number.value
             elif unit_en == "year":
-                time_units["days"] += DAYS_IN_1_YEAR * val
+                time_units["days"] += DAYS_IN_1_YEAR * number.value
             elif unit_en == "decade":
-                time_units["days"] += 10 * DAYS_IN_1_YEAR * val
+                time_units["days"] += 10 * DAYS_IN_1_YEAR * number.value
             elif unit_en == "century" or unit_en == "centuries":
-                time_units["days"] += 100 * DAYS_IN_1_YEAR * val
+                time_units["days"] += 100 * DAYS_IN_1_YEAR * number.value
             elif unit_en == "millennium" or unit_en == "millenia":
-                time_units["days"] += 1000 * DAYS_IN_1_YEAR * val
+                time_units["days"] += 1000 * DAYS_IN_1_YEAR * number.value
 
             # if we have any duration, save the extraction, else it was just a number
             if any(time_units.values()):
@@ -182,6 +183,74 @@ class EnglishTimeTagger:
                     'weeks': 0
                 }
 
+        durations.sort(key=lambda n: n.start_index)
+        return durations
+
+
+class GermanTimeTagger:
+    def extract_date(self, text: str, anchorDate: Optional[datetime] = None):
+        raise NotImplementedError
+
+    def extract_time(self, text: str, anchorDate: Optional[datetime] = None):
+        raise NotImplementedError
+    
+    def extract_durations(self, tokens: Union[List[Token], str]):
+
+        if isinstance(tokens, str):
+            tokens = [Token(word.lower(), index) for index, word in enumerate(word_tokenize(tokens))]
+
+        numbers = GermanNumberParser().extract_numbers(tokens)
+        print(numbers)
+
+        # Einzahl, Mehrzahl und Flexionen
+        pattern = r"\b(?P<unit>{unit}[nes]?[sn]?\b)"
+
+        durations = []
+        for number in numbers:
+            if number.end_index == len(tokens) - 1:
+                break
+
+            time_units: Dict[str, Any] = {
+                'microseconds': 'mikrosekunden',
+                'milliseconds': 'millisekunden',
+                'seconds': 'sekunden',
+                'minutes': 'minuten',
+                'hours': 'stunden',
+                'days': 'tage',
+                'weeks': 'wochen'
+            }
+
+            next_token = tokens[number.end_index + 1]
+            test_str = next_token.word
+            toks = []
+
+            for (unit_en, unit_de) in time_units.items():
+                time_units[unit_en] = 0
+                if toks:
+                    continue
+
+                unit_pattern = pattern.format(unit=unit_de[:-1])
+                matched = re.match(unit_pattern, test_str)
+                if matched:
+                    print(unit_de, number.value)
+                    time_units[unit_en] = number.value
+                    toks = tokens[number.start_index:number.end_index+2]
+            
+            if toks:  
+                delta = timedelta(**time_units)
+                prev_dur = durations[-1] if len(durations) else None
+                prev_word = "" if number.start_index == 0 else tokens[number.start_index - 1].word
+
+                if prev_dur and prev_dur.value > delta and \
+                        any((prev_dur.end_index == number.start_index - 1,
+                            prev_dur.end_index == number.start_index - 2 and prev_word == "und"
+                            )):
+                    delta = prev_dur.value + delta
+                    toks  = tokens[prev_dur.start_index:number.end_index+3]
+                    durations[-1] = ReplaceableTimedelta(delta, toks)
+                else:
+                    durations.append(ReplaceableTimedelta(delta, toks))
+    
         durations.sort(key=lambda n: n.start_index)
         return durations
 
