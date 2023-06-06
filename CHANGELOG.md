@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a29...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a30...HEAD)
+
+**Merged pull requests:**
+
+- refactor symbol normalizer [\#12](https://github.com/OpenVoiceOS/ovos-classifiers/pull/12) ([emphasize](https://github.com/emphasize))
+
+## [V0.0.0a30](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a30) (2023-06-06)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a29...V0.0.0a30)
 
 **Merged pull requests:**
 
