@@ -1,6 +1,7 @@
 import json
 import re
 from os.path import dirname
+from typing import List, Dict
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
 from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser
@@ -19,51 +20,51 @@ class Normalizer:
         self.config = config or self._default_config
 
     @staticmethod
-    def tokenize(utterance):
+    def tokenize(utterance) -> List[str]:
         return word_tokenize(utterance)
 
     @property
-    def should_lowercase(self):
+    def should_lowercase(self) -> bool:
         return self.config.get("lowercase", False)
 
     @property
-    def should_numbers_to_digits(self):
+    def should_numbers_to_digits(self) -> bool:
         return self.config.get("numbers_to_digits", True)
 
     @property
-    def should_expand_contractions(self):
+    def should_expand_contractions(self) -> bool:
         return self.config.get("expand_contractions", True)
 
     @property
-    def should_remove_symbols(self):
+    def should_remove_symbols(self) -> bool:
         return self.config.get("remove_symbols", False)
 
     @property
-    def should_remove_accents(self):
+    def should_remove_accents(self) -> bool:
         return self.config.get("remove_accents", False)
 
     @property
-    def should_remove_articles(self):
+    def should_remove_articles(self) -> bool:
         return self.config.get("remove_articles", False)
 
     @property
-    def should_remove_stopwords(self):
+    def should_remove_stopwords(self) -> bool:
         return self.config.get("remove_stopwords", False)
 
     @property
-    def contractions(self):
+    def contractions(self) -> Dict[str, str]:
         return self.config.get("contractions", {})
 
     @property
-    def word_replacements(self):
+    def word_replacements(self) -> Dict[str, str]:
         return self.config.get("word_replacements", {})
 
     @property
-    def number_replacements(self):
+    def number_replacements(self) -> Dict[str, str]:
         return self.config.get("number_replacements", {})
 
     @property
-    def accents(self):
+    def accents(self) -> Dict[str, str]:
         return self.config.get("accents",
                                {"á": "a", "à": "a", "ã": "a", "â": "a",
                                 "é": "e", "è": "e", "ê": "e", "ẽ": "e",
@@ -78,21 +79,21 @@ class Normalizer:
                                 })
 
     @property
-    def stopwords(self):
+    def stopwords(self) -> List[str]:
         return self.config.get("stopwords", [])
 
     @property
-    def articles(self):
+    def articles(self) -> List[str]:
         return self.config.get("articles", [])
 
     @property
-    def symbols(self):
+    def symbols(self) -> List[str]:
         return self.config.get("symbols",
-                               [";", "_", "!", "?", "<", ">",
-                                "|", "(", ")", "=", "[", "]", "{",
-                                "}", "»", "«", "*", "~", "^", "`"])
+                               [";", "_", "!", "?", "<", ">", "|",
+                                "(", ")", "=", "[", "]", "{", "}",
+                                "»", "«", "*", "~", "^", "`", "\""])
 
-    def expand_contractions(self, utterance):
+    def expand_contractions(self, utterance: str) -> str:
         """ Expand common contractions, e.g. "isn't" -> "is not" """
         words = self.tokenize(utterance)
         for idx, w in enumerate(words):
@@ -101,7 +102,7 @@ class Normalizer:
         utterance = " ".join(words)
         return utterance
 
-    def numbers_to_digits(self, utterance):
+    def numbers_to_digits(self, utterance: str) -> str:
         words = self.tokenize(utterance)
         for idx, w in enumerate(words):
             if w in self.number_replacements:
@@ -109,7 +110,7 @@ class Normalizer:
         utterance = " ".join(words)
         return utterance
 
-    def remove_articles(self, utterance):
+    def remove_articles(self, utterance: str) -> str:
         words = self.tokenize(utterance)
         for idx, w in enumerate(words):
             if w in self.articles:
@@ -117,7 +118,7 @@ class Normalizer:
         utterance = " ".join(words)
         return utterance
 
-    def remove_stopwords(self, utterance):
+    def remove_stopwords(self, utterance: str) -> str:
         words = self.tokenize(utterance)
         for idx, w in enumerate(words):
             if w in self.stopwords:
@@ -130,17 +131,16 @@ class Normalizer:
         utterance = re.sub(r'- *$', '', utterance)
         return utterance
 
-    def remove_symbols(self, utterance):
-        for s in self.symbols:
-            utterance = utterance.replace(s, " ")
-        return utterance
+    def remove_symbols(self, utterance: str) -> str:
+        mapping = str.maketrans('', '', "".join(self.symbols))
+        return utterance.translate(mapping)
 
-    def remove_accents(self, utterance):
+    def remove_accents(self, utterance : str) -> str:
         for s in self.accents:
             utterance = utterance.replace(s, self.accents[s])
         return utterance
 
-    def replace_words(self, utterance):
+    def replace_words(self, utterance: str) -> str:
         words = self.tokenize(utterance)
         for idx, w in enumerate(words):
             if w in self.word_replacements:
@@ -148,7 +148,7 @@ class Normalizer:
         utterance = " ".join(words)
         return utterance
 
-    def normalize(self, utterance="", remove_articles=None):
+    def normalize(self, utterance: str = "", remove_articles: bool = None):
         # mutations
         if self.should_lowercase:
             utterance = utterance.lower()
@@ -180,7 +180,7 @@ class CatalanNormalizer(Normalizer):
         _default_config = json.load(f)
 
     @staticmethod
-    def tokenize(utterance):
+    def tokenize(utterance : str) -> List[str]:
         return word_tokenize(utterance, lang="ca")
 
 
@@ -194,7 +194,7 @@ class PortugueseNormalizer(Normalizer):
         _default_config = json.load(f)
 
     @staticmethod
-    def tokenize(utterance):
+    def tokenize(utterance: str) -> List[str]:
         return word_tokenize(utterance, lang="pt")
 
 
@@ -212,7 +212,7 @@ class EnglishNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/en/normalize.json") as f:
         _default_config = json.load(f)
 
-    def numbers_to_digits(self, utterance):
+    def numbers_to_digits(self, utterance: str) -> str:
         return EnglishNumberParser().convert_words_to_numbers(utterance)
 
 
@@ -220,7 +220,7 @@ class AzerbaijaniNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/az/normalize.json") as f:
         _default_config = json.load(f)
 
-    def numbers_to_digits(self, utterance):
+    def numbers_to_digits(self, utterance: str) -> str:
         return AzerbaijaniNumberParser().convert_words_to_numbers(utterance)
 
 
@@ -228,5 +228,11 @@ class GermanNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/de/normalize.json") as f:
         _default_config = json.load(f)
 
-    def numbers_to_digits(self, utterance):
+    def numbers_to_digits(self, utterance: str) -> str:
         return GermanNumberParser().convert_words_to_numbers(utterance)
+    
+    def remove_symbols(self, utterance: str) -> str:
+        # special rule for hyphanated words in german as some STT engines falsely
+        # return them pretty regularly
+        utterance = re.sub(r'\b(\w*)-(\w*)\b', r'\1 \2', utterance)
+        return super().remove_symbols(utterance)
