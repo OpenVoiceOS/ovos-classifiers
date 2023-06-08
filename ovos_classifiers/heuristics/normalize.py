@@ -230,9 +230,16 @@ class GermanNormalizer(Normalizer):
 
     def numbers_to_digits(self, utterance: str) -> str:
         return GermanNumberParser().convert_words_to_numbers(utterance)
-    
+
     def remove_symbols(self, utterance: str) -> str:
         # special rule for hyphanated words in german as some STT engines falsely
         # return them pretty regularly
         utterance = re.sub(r'\b(\w*)-(\w*)\b', r'\1 \2', utterance)
         return super().remove_symbols(utterance)
+
+class FrenchNormalizer(Normalizer):
+    with open(f"{dirname(dirname(__file__))}/res/fr/normalize.json") as f:
+        _default_config = json.load(f)
+
+    def numbers_to_digits(self, utterance: str) -> str:
+        return GermanNumberParser().convert_words_to_numbers(utterance)
