@@ -1,0 +1,24 @@
+{
+  "day": {
+    "one": "jour",
+    "other": "jours"
+  },
+  "hour": {
+    "one": "heure",
+    "other": "heures"
+  },
+  "minute": {
+    "one": "minute",
+    "other": "minutes"
+  },
+  "second": {
+    "one": "seconde",
+    "other": "secondes"
+  },
+  "and": {
+    "one": "et"
+  },
+  "or": {
+    "one": "ou"
+  }
+}

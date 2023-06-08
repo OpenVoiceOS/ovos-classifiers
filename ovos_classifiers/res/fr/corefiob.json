@@ -15,7 +15,9 @@
     "frère",
     "oncle",
     "fils",
-    "papa"
+    "papa",
+    "tonton",
+    "parrain"
   ],
   "female": [
     "fille",
@@ -25,7 +27,9 @@
     "soeur",
     "tante",
     "fille",
-    "maman"
+    "maman",
+    "tata",
+    "marraine"
   ],
   "inanimate": [
     "chat",
@@ -36,6 +40,7 @@
     "araignée",
     "serpent",
     "poisson",
+    "insecte",
     "lumière",
     "télévision",
     "ordinateur",
@@ -73,6 +78,7 @@
     "la",
     "lui",
     "leur",
+    "leurs",
     "eux",
     "elles",
     "les"
