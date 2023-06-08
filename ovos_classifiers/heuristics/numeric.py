@@ -341,7 +341,7 @@ class GermanNumberParser:
             return self._STRING_NUM_DE.get(word)
         elif word in self._STRING_LONG_SCALE_DE:
             return self._STRING_LONG_SCALE_DE.get(word)
-        
+
         return None
 
     def convert_words_to_numbers(self, utterance, short_scale=False,
@@ -561,13 +561,13 @@ class GermanNumberParser:
             # is this a negative number?
             if _current_val is not None and prev_word in self._NEGATIVES_DE:
                 _val = 0 - _current_val
-            
+
             # is the prev word a number and should we multiply it?
             if _prev_val is not None and ( word in self._MULTIPLIER_DE or \
                 word in ("einer", "eines", "einem")):
                 to_sum.append(_prev_val * _current_val or _current_val)
                 _val = _current_val = None
-            
+
             # fraction handling
             _fraction_val = self.is_fractional_de(word, short_scale=short_scale)
             if _fraction_val:
@@ -584,7 +584,7 @@ class GermanNumberParser:
                 else:
                     _val = _fraction_val
                 _current_val = _val
-            
+
             # directly following numbers without relation
             if (is_numeric(prev_word) or prev_word in self._STRING_NUM_DE) \
                     and not _fraction_val \
@@ -602,7 +602,7 @@ class GermanNumberParser:
                 if not next_word or not number:
                     val = f"{_val-1}:{int(60*_prev_val)}"
                     break
- 
+
             # spoken decimals
             if _current_val is not None and _comma:
                 # to_sum = [ 1, 0.2, 0.04,...]
@@ -614,7 +614,7 @@ class GermanNumberParser:
                     next_word in (self._NUMBER_CONNECTORS_DE | self._COMMA_DE | {""}):
                 to_sum.append(_val or _current_val)
                 _val = _current_val = None
-            
+
             if not next_word and number_words:
                 val = sum(to_sum) or _val
 
