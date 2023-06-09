@@ -4,7 +4,7 @@ from os.path import dirname
 from typing import List, Dict
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser
+from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser, FrenchNumberParser
 
 
 class Normalizer:
@@ -241,5 +241,11 @@ class FrenchNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/fr/normalize.json") as f:
         _default_config = json.load(f)
 
+    def remove_symbols(self, utterance: str) -> str:
+        # special rule for hyphanated words in french as some STT engines falsely
+        # return them pretty regularly
+        utterance = re.sub(r'\b(\w*)-(\w*)\b', r'\1 \2', utterance)
+        return super().remove_symbols(utterance)
+
     def numbers_to_digits(self, utterance: str) -> str:
-        return GermanNumberParser().convert_words_to_numbers(utterance)
+        return FrenchNumberParser().convert_words_to_numbers(utterance)

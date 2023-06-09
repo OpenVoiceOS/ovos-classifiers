@@ -2097,3 +2097,571 @@ class AzerbaijaniNumberParser:
         string_num_scale_az = {v: k for k, v in string_num_scale_az.items()}
 
         return multiplies, string_num_ordinal_az, string_num_scale_az
+
+class FrenchNumberParser:
+    # taken from lingua_franca
+    _ARTICLES_FR = {'der', 'das', 'die', 'dem', 'den'}
+
+    #_SPOKEN_NUMBER
+    _NUM_STRING_FR = {
+        0: 'zéro',
+        1: 'un',
+        2: 'deux',
+        3: 'trois',
+        4: 'quatre',
+        5: 'cinq',
+        6: 'six',
+        7: 'sept',
+        8: 'huit',
+        9: 'neuf',
+        10: 'dix',
+        11: 'onze',
+        12: 'douze',
+        13: 'treize',
+        14: 'quatorze',
+        15: 'quinze',
+        16: 'seize',
+        17: 'dix-sept',
+        18: 'dix-huit',
+        19: 'dix-neuf',
+        20: 'vingt',
+        30: 'trentre',
+        40: 'quarante',
+        50: 'cinquante',
+        60: 'soixante',
+        70: 'soixant-dix',
+        80: 'quatre-vingts',
+        90: 'quatre-vingt-dix',
+        100: 'cent',
+        200: 'deux cent',
+        300: 'trois cents',
+        400: 'quatre cents',
+        500: 'cinq cents',
+        600: 'six cents',
+        700: 'sept cents',
+        800: 'huit cents',
+        900: 'neuf cents',
+        1000: 'mille',
+        1000000: 'million'
+    }
+
+    _STRING_NUM_FR = invert_dict(_NUM_STRING_FR)
+    _STRING_NUM_FR.update({
+        'un': 1,
+        'eine': 1,
+        'einer': 1,
+        'einem': 1,
+        'einen': 1
+    })
+
+    _MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                  'juillet', 'août', 'septembre', 'octobre', 'novembre',
+                  'décembre']
+
+    _NUM_POWERS_OF_TEN_FR = [
+        '', 'Mille', 'Million', 'Milliard', 'Billion', 'Billiard', 'Trillion',
+        'Trilliarde', 'Quadrillion'
+    ]
+
+    _FRACTION_STRING_FR = {
+        2: 'demi',
+        3: 'trier',
+        4: 'quart',
+        5: 'cinquième',
+        6: 'sixième',
+        7: 'septième',
+        8: 'huitième',
+        9: 'neufième',
+        10: 'dixième',
+        11: 'onzième',
+        12: 'douzième',
+        13: 'treizième',
+        14: 'quatorzième',
+        15: 'quinzième',
+        16: 'sizième',
+        17: 'dix-septième',
+        18: 'dix-huitième',
+        19: 'dix-neuvième',
+        20: 'vingtième'
+    }
+
+    _STRING_FRACTION_FR = invert_dict(_FRACTION_STRING_FR)
+    _STRING_FRACTION_FR.update({
+        'halb': 2,
+        'halbe': 2,
+        'halben': 2,
+        'halbes': 2,
+        'halber': 2,
+        'halbem': 2
+    })
+
+    _EXTRA_SPACE_FR = ""
+
+    _ORDINAL_BASE_FR = {
+        "1.": "premier",
+        "2.": "deuxième",
+        "3.": "troisième",
+        "4.": "quatrième",
+        "5.": "cinquième",
+        "6.": "sixìème",
+        "7.": "septième",
+        "8.": "huitième",
+        "9.": "neuvième",
+        "10.": "dixième",
+        "11.": "onzième",
+        "12.": "douzième",
+        "13.": "treizième",
+        "14.": "quatorzième",
+        "15.": "quinzième",
+        "16.": "seizième",
+        "17.": "dix-septième",
+        "18.": "dix-huitième",
+        "19.": "dix-neuvième",
+        "20.": "vingtième",
+        "21.": "vingt-et-unième",
+        "22.": "vingt-deuxième",
+        "23.": "vingt-troisième",
+        "24.": "vingt-quatrième",
+        "25.": "vingt-cinquième",
+        "26.": "vingt-sixième",
+        "27.": "vingt-septième",
+        "28.": "vingt-huitième",
+        "29.": "vingt-neuvième",
+        "30.": "trentième",
+        "31.": "trentième-et-unième",
+        "32.": "trentième-deuxième",
+        "33.": "trentième-troisième",
+        "34.": "trentième-quatrième",
+        "35.": "trentième-cinquième",
+        "36.": "trentième-sixième",
+        "37.": "trentième-septième",
+        "38.": "trentième-huitième",
+        "39.": "trentième-neuvième",
+        "40.": "quarantième",
+        "41.": "quarantième-et-unième",
+        "42.": "quarantième-deuxième",
+        "43.": "quarantième-troisième",
+        "44.": "quarantième-quatrième",
+        "45.": "quarantième-cinquième",
+        "46.": "quarantième-sixième",
+        "47.": "quarantième-septième",
+        "48.": "quarantième-huitième",
+        "49.": "quarantième-neuvième",
+        "50.": "cinquante",
+        "51.": "cinquante-et-unième",
+        "52.": "cinquante-deuxième",
+        "53.": "cinquante-troisième",
+        "60.": "soixantième",
+        "70.": "soixante-dixième",
+        "80.": "quatre-vingtième",
+        "90.": "quatre-vingt-dixième",
+        "100.": "centième",
+        "1000.": "millième",
+        "1000000.": "millionième"
+        }
+
+    _LONG_SCALE_FR = OrderedDict([
+        (100, 'cent'),
+        (1000, 'mille'),
+        (1000000, 'million'),
+        (1e9, "milliard"),
+        (1e12, 'billion'),
+        (1e15, "billiard"),
+        (1e18, "trillion"),
+        (1e21, "trilliard"),
+        (1e24, "quadrillion"),
+        (1e27, "quadrilliard")
+    ])
+
+    _MULTIPLIER_FR = set(_LONG_SCALE_FR.values())
+
+    _STRING_LONG_SCALE_FR = invert_dict(_LONG_SCALE_FR)
+
+    # ending manipulation
+    for number, item in _LONG_SCALE_FR.items():
+        if int(number) > 1000:
+            if item.endswith('e'):
+                name = item + 'n'
+                _MULTIPLIER_FR.add(name)
+                _STRING_LONG_SCALE_FR[name] = number
+            else:
+                name = item + 'en'
+                _MULTIPLIER_FR.add(name)
+                _STRING_LONG_SCALE_FR[name] = number
+
+    _LONG_ORDINAL_FR = {
+        1e6: "millionième",
+        1e9: "milliardième",
+        1e12: "billionième",
+        1e15: "billiardième",
+        1e18: "trillionième",
+        1e21: "trilliardième",
+        1e24: "quadrillionième",
+        1e27: "quadrilliardième"
+    }
+
+    _LONG_ORDINAL_FR.update(_ORDINAL_BASE_FR)
+
+    _STRING_LONG_ORDINAL_FR = {ord+ending: num for ord, num in invert_dict(_LONG_ORDINAL_FR).items()
+                               for ending in ("en", "em", "es", "er", "e")}
+    _FRACTION_MARKER_FR = set()
+    _NEGATIVES_FR = {"moins"}
+    _NUMBER_CONNECTORS_FR = {"et"}
+    _COMMA_FR = {"virgule", "comma", "point"}
+
+
+    def is_ordinal_fr(self, input_str):
+        """
+        This function takes the given text and checks if it is an ordinal number.
+        Args:
+            input_str (str): the string to check if ordinal
+        Returns:
+            (bool) or (float): False if not an ordinal, otherwise the number
+            corresponding to the ordinal
+        ordinals for 1, 3, 7 and 8 are irregular
+        only works for ordinals corresponding to the numbers in _STRING_NUM
+        """
+        val = self._STRING_LONG_ORDINAL_FR.get(input_str.lower(), False)
+        # account for numbered ordinals
+        if not val and input_str.endswith('.') and is_numeric(input_str[:-1]):
+            val = input_str
+        return val
+
+    def is_fractional_fr(self, input_str, short_scale=False):
+        """
+        This function takes the given text and checks if it is a fraction.
+        Args:
+            input_str (str): the string to check if fractional
+            short_scale (bool): use short scale if True, long scale if False
+        Returns:
+            (bool) or (float): False if not a fraction, otherwise the fraction
+        """
+        # account for different numerators, e.g. zweidrittel
+
+        input_str = input_str.lower()
+        numerator = 1
+        prev_number = 0
+        denominator = False
+        remainder = ""
+
+        # first check if is a fraction containing a char (eg "2/3")
+        _bucket = input_str.split('/')
+        if look_for_fractions(_bucket):
+            numerator = float(_bucket[0])
+            denominator = float(_bucket[1])
+
+        if not denominator:
+            for fraction in sorted(self._STRING_FRACTION_FR.keys(),
+                                key=lambda x: len(x),
+                                reverse=True):
+                if fraction in input_str and not denominator:
+                    denominator = self._STRING_FRACTION_FR.get(fraction)
+                    remainder = input_str.replace(fraction, "")
+                    break
+
+            if remainder:
+                if not self._STRING_NUM_FR.get(remainder, False):
+                    for numstring, number in self._STRING_NUM_FR.items():
+                        if remainder.endswith(numstring):
+                            prev_number = self._STRING_NUM_FR.get(
+                                remainder.replace(numstring, "", 1), 0)
+                            numerator = number
+                            break
+                    else:
+                        return False
+                else:
+                    numerator = self._STRING_NUM_FR.get(remainder)
+
+        if denominator:
+            return prev_number + (numerator / denominator)
+        else:
+            return False
+
+    def is_number_fr(self, word: str):
+        if is_numeric(word):
+            if word.isdigit():
+                return int(word)
+            else:
+                return float(word)
+        elif word in self._STRING_NUM_FR:
+            return self._STRING_NUM_FR.get(word)
+        elif word in self._STRING_LONG_SCALE_FR:
+            return self._STRING_LONG_SCALE_FR.get(word)
+
+        return None
+
+    def convert_words_to_numbers(self, utterance, short_scale=False,
+                                 ordinals=False, fractions=True):
+        """
+        Convert words in a string into their equivalent numbers.
+        Args:
+            text str:
+            short_scale boolean: True if short scale numberres should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                            be parsed to their number values (1, 2, 3...)
+        Returns:
+            str
+            The original text, with numbers subbed in where appropriate.
+        """
+        tokens = [Token(word, index) for index, word in enumerate(word_tokenize(utterance))]
+        numbers_to_replace = self.extract_numbers(tokens, short_scale, ordinals, fractions)
+
+        results = []
+        for token in tokens:
+            if not numbers_to_replace or \
+                    token.index < numbers_to_replace[0].start_index:
+                results.append(token.word)
+            else:
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].start_index:
+                    results.append(str(numbers_to_replace[0].value))
+                if numbers_to_replace and \
+                        token.index == numbers_to_replace[0].end_index:
+                    numbers_to_replace.pop(0)
+
+        return ' '.join(results)
+
+
+    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List:
+        """
+        extract numeric values from a list of tokens.
+        Args:
+            tokens (list): list of tokens (str)
+            short_scale boolean: True if short scale numbers should be used.
+            ordinals boolean: True if ordinals (e.g. first, second, third) should
+                              be parsed to their number values (1, 2, 3...)
+        Returns:
+            list of extraced numbers (ReplaceableNumber)
+
+        """
+        if not isinstance(tokens[0], Token): # list of string tokens
+            tokens = [Token(word, index) for index, word in enumerate(tokens)]
+        numbers_to_replace = self._extract_numbers_with_text_fr(tokens, short_scale, ordinals)
+        numbers_to_replace.sort(key=lambda number: number.start_index)
+        return numbers_to_replace
+
+    def _extract_numbers_with_text_fr(self, tokens, short_scale=True,
+                                      ordinals=False, fractions=True):
+        """
+        Extract all numbers from a list of Tokens, with the words that
+        represent them.
+
+        Args:
+            [Token]: The tokens to parse.
+            short_scale bool: True if short scale numbers should be used, False for
+                            long scale. True by default.
+            ordinals bool: True if ordinal words (first, second, third, etc) should
+                        be parsed.
+            fractional_numbers bool: True if we should look for fractions and
+                                    decimals.
+
+        Returns:
+            [ReplaceableNumber]: A list of tuples, each containing a number and a
+                            string.
+
+        """
+        placeholder = "<placeholder>"  # inserted to maintain correct indices
+        results = []
+        while True:
+            to_replace = \
+                self._extract_number_with_text_fr(tokens, short_scale,
+                                                  ordinals)
+
+            if not to_replace:
+                break
+
+            if isinstance(to_replace.value, float) and not fractions:
+                pass
+            else:
+                results.append(to_replace)
+
+            tokens = [
+                t if not
+                to_replace.start_index <= t.index <= to_replace.end_index
+                else
+                Token(placeholder, t.index) for t in tokens
+            ]
+        results.sort(key=lambda n: n.start_index)
+        return results
+
+
+    def _extract_number_with_text_fr(self, tokens, short_scale=True,
+                                     ordinals=False):
+        """
+        This function extracts a number from a list of Tokens.
+
+        Args:
+            tokens str: the string to normalize
+            short_scale (bool): use short scale if True, long scale if False
+            ordinals (bool): consider ordinal numbers
+            fractional_numbers (bool): True if we should look for fractions and
+                                    decimals.
+        Returns:
+            ReplaceableNumber
+
+        """
+        number, tokens = \
+            self._extract_number_with_text_fr_helper(tokens, short_scale,
+                                                     ordinals)
+        return ReplaceableNumber(number, tokens)
+
+
+    def _extract_number_with_text_fr_helper(self, tokens,
+                                            short_scale, ordinals):
+        """
+        Helper for _extract_number_with_text_fr.
+
+        Args:
+            tokens [Token]:
+            short_scale boolean:
+            ordinals boolean:
+            fractional_numbers boolean:
+        Returns:
+            int or float, [Tokens]
+        """
+        if ordinals:
+            for token in tokens:
+                ordinal = self.is_ordinal_fr(token.word)
+                if ordinal:
+                    return ordinal, [token]
+
+        return self._extract_real_number_with_text_fr(tokens, short_scale)
+
+
+    def _extract_real_number_with_text_fr(self, tokens, short_scale):
+        """
+        This is handling real numbers.
+
+        Args:
+            tokens [Token]:
+            short_scale boolean:
+        Returns:
+            int or float, [Tokens]
+            The value parsed, and tokens that it corresponds to.
+        """
+        number_words = []
+        val = _val = _current_val = None
+        _comma = False
+        to_sum = []
+
+        for idx, token in enumerate(tokens):
+
+            _prev_val = _current_val
+            _current_val = None
+
+            word = token.word
+
+            if word in self._NUMBER_CONNECTORS_FR and not number_words:
+                continue
+            if word in (self._NEGATIVES_FR |
+                        self._NUMBER_CONNECTORS_FR |
+                        self._COMMA_FR):
+                number_words.append(token)
+                if word in self._COMMA_FR:
+                    _comma = token
+                    _current_val = _val or _prev_val
+                continue
+
+            prev_word = tokens[idx - 1].word if idx > 0 else ""
+            next_word = tokens[idx + 1].word if idx + 1 < len(tokens) else ""
+
+            if word not in self._STRING_LONG_SCALE_FR and \
+                    word not in self._STRING_NUM_FR and \
+                    word not in self._MULTIPLIER_FR and \
+                    not is_numeric(word) and \
+                    not self.is_fractional_fr(word):
+                words_only = [token.word for token in number_words]
+                if _val is not None:
+                    to_sum.append(_val)
+                if to_sum:
+                    val = sum(to_sum)
+
+                if number_words and (not all([w in self._ARTICLES_FR |
+                                                   self._NEGATIVES_FR|
+                                                   self._NUMBER_CONNECTORS_FR
+                                              for w in words_only])
+                                or str(val) == number_words[-1].word):
+                    break
+                else:
+                    number_words.clear()
+                    to_sum.clear()
+                    val = _val = _prev_val = None
+                continue
+            elif word not in self._MULTIPLIER_FR \
+                    and prev_word not in self._MULTIPLIER_FR \
+                    and prev_word not in self._NUMBER_CONNECTORS_FR \
+                    and prev_word not in self._NEGATIVES_FR \
+                    and prev_word not in self._COMMA_FR \
+                    and prev_word not in self._STRING_LONG_SCALE_FR \
+                    and prev_word not in self._STRING_NUM_FR \
+                    and not self.is_ordinal_fr(word) \
+                    and not is_numeric(prev_word)  \
+                    and not self.is_fractional_fr(prev_word):
+                number_words = [token]
+            else:
+                number_words.append(token)
+
+            # is this word already a number or a word of a number?
+            _val = _current_val = self.is_number_fr(word)
+
+            # is this a negative number?
+            if _current_val is not None and prev_word in self._NEGATIVES_FR:
+                _val = 0 - _current_val
+
+            # is the prev word a number and should we multiply it?
+            if _prev_val is not None and ( word in self._MULTIPLIER_FR or \
+                word in ("einer", "eines", "einem")):
+                to_sum.append(_prev_val * _current_val or _current_val)
+                _val = _current_val = None
+
+            # fraction handling
+            _fraction_val = self.is_fractional_fr(word, short_scale=short_scale)
+            if _fraction_val:
+                if _prev_val is not None and prev_word != "eine" and \
+                        word not in self._STRING_FRACTION_FR:   # zusammengesetzter Bruch
+                    _val = _prev_val + _fraction_val
+                    if prev_word not in self._NUMBER_CONNECTORS_FR \
+                            and tokens[idx -1] not in number_words:
+                        number_words.append(tokens[idx - 1])
+                elif _prev_val is not None:
+                    _val = _prev_val * _fraction_val
+                    if tokens[idx -1] not in number_words:
+                        number_words.append(tokens[idx - 1])
+                else:
+                    _val = _fraction_val
+                _current_val = _val
+
+            # directly following numbers without relation
+            if (is_numeric(prev_word) or prev_word in self._STRING_NUM_FR) \
+                    and not _fraction_val \
+                    and not self.is_fractional_fr(next_word) \
+                    and not to_sum:
+                val = _prev_val
+                number_words.pop(-1)
+                break
+
+            # is this a spoken time ("drei viertel acht")
+            if isinstance(_prev_val, float) and self.is_number_fr(word) and not to_sum:
+                if idx+1 < len(tokens):
+                    _, number = self._extract_real_number_with_text_fr([tokens[idx + 1]],
+                                                                       short_scale=short_scale)
+                if not next_word or not number:
+                    val = f"{_val-1}:{int(60*_prev_val)}"
+                    break
+
+            # spoken decimals
+            if _current_val is not None and _comma:
+                # to_sum = [ 1, 0.2, 0.04,...]
+                to_sum.append(_current_val if _current_val >= 10 else (
+                    _current_val) / (10 ** (token.index - _comma.index)))
+                _val = _current_val = None
+
+            if _current_val is not None and \
+                    next_word in (self._NUMBER_CONNECTORS_FR | self._COMMA_FR | {""}):
+                to_sum.append(_val or _current_val)
+                _val = _current_val = None
+
+            if not next_word and number_words:
+                val = sum(to_sum) or _val
+
+        return val, number_words
