@@ -242,14 +242,16 @@ class FrenchNormalizer(Normalizer):
         _default_config = json.load(f)
 
     def remove_articles(self, utterance):
-            words = self.tokenize(utterance)
-            for idx, word in enumerate(words):
-                if word.startswith("l'") or word.startswith("d'"):
+        words = self.tokenize(utterance)
+        contract_articles = ["l'", "d'", "c'","qu'", "s'", "n'", "t'", "m'", "j'"]
+        for idx, word in enumerate(words):
+            for article in contract_articles:
+                if word.startswith(article):
                     words[idx] = word[2:]
                 elif word in self.articles:
                     words[idx] = ""
 
-            return " ".join([w for w in words if w != ""])
+        return " ".join([w for w in words if w != ""])
 
     def numbers_to_digits(self, utterance: str) -> str:
         return FrenchNumberParser().convert_words_to_numbers(utterance)
