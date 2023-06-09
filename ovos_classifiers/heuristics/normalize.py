@@ -243,7 +243,7 @@ class FrenchNormalizer(Normalizer):
 
     def remove_articles(self, utterance):
         words = self.tokenize(utterance)
-        contract_articles = ["l'", "d'", "c'","qu'", "s'", "n'", "t'", "m'", "j'"]
+        contract_articles = ["l'", "d'", "c'", "qu'", "s'", "n'", "t'", "m'", "j'"]
         for idx, word in enumerate(words):
             for article in contract_articles:
                 if word.startswith(article):
