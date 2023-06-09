@@ -2307,7 +2307,7 @@ class FrenchNumberParser:
     _FRACTION_MARKER_FR = set()
     _NEGATIVES_FR = {"moins"}
     _NUMBER_CONNECTORS_FR = {"et"}
-    _COMMA_FR = {"virgule", "comma", "point"}
+    _COMMA_FR = {"virgule", "point"}
 
 
     def is_ordinal_fr(self, input_str):
