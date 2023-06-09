@@ -2100,7 +2100,7 @@ class AzerbaijaniNumberParser:
 
 class FrenchNumberParser:
     # taken from lingua_franca
-    _ARTICLES_FR = {'le', 'la', 'les', 'de', 'du', 'des'}
+    _ARTICLES_FR = {'le', 'la', 'les', 'de la', 'du', 'des'}
 
     #_SPOKEN_NUMBER
     _NUM_STRING_FR = {
