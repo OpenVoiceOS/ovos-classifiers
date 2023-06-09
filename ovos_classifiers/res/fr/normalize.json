@@ -1,5 +1,5 @@
 {
-  "lowercase": false,
+  "lowercase": true,
   "numbers_to_digits": true,
   "expand_contractions": true,
   "remove_symbols": true,
