@@ -2147,11 +2147,7 @@ class FrenchNumberParser:
 
     _STRING_NUM_FR = invert_dict(_NUM_STRING_FR)
     _STRING_NUM_FR.update({
-        'un': 1,
-        'eine': 1,
-        'einer': 1,
-        'einem': 1,
-        'einen': 1
+        'une': 1
     })
 
     _MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
