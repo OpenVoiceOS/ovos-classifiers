@@ -2183,12 +2183,8 @@ class FrenchNumberParser:
 
     _STRING_FRACTION_FR = invert_dict(_FRACTION_STRING_FR)
     _STRING_FRACTION_FR.update({
-        'halb': 2,
-        'halbe': 2,
-        'halben': 2,
-        'halbes': 2,
-        'halber': 2,
-        'halbem': 2
+        'demi': 2,
+        'moitié': 2
     })
 
     _EXTRA_SPACE_FR = ""
