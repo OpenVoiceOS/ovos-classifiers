@@ -2155,8 +2155,8 @@ class FrenchNumberParser:
                   'décembre']
 
     _NUM_POWERS_OF_TEN_FR = [
-        '', 'Mille', 'Million', 'Milliard', 'Billion', 'Billiard', 'Trillion',
-        'Trilliarde', 'Quadrillion'
+        '', 'mille', 'million', 'milliard', 'billion', 'billiard', 'trillion',
+        'trilliarde', 'quadrillion'
     ]
 
     _FRACTION_STRING_FR = {
@@ -2602,7 +2602,7 @@ class FrenchNumberParser:
 
             # is the prev word a number and should we multiply it?
             if _prev_val is not None and ( word in self._MULTIPLIER_FR or \
-                word in ("einer", "eines", "einem")):
+                word in ("un", "une")):
                 to_sum.append(_prev_val * _current_val or _current_val)
                 _val = _current_val = None
 
@@ -2610,7 +2610,7 @@ class FrenchNumberParser:
             _fraction_val = self.is_fractional_fr(word, short_scale=short_scale)
             if _fraction_val:
                 if _prev_val is not None and prev_word != "une" and \
-                        word not in self._STRING_FRACTION_FR:   # zusammengesetzter Bruch
+                        word not in self._STRING_FRACTION_FR:
                     _val = _prev_val + _fraction_val
                     if prev_word not in self._NUMBER_CONNECTORS_FR \
                             and tokens[idx -1] not in number_words:
@@ -2632,7 +2632,7 @@ class FrenchNumberParser:
                 number_words.pop(-1)
                 break
 
-            # is this a spoken time ("drei viertel acht")
+            # is this a spoken time ("huit heures moins le quart")
             if isinstance(_prev_val, float) and self.is_number_fr(word) and not to_sum:
                 if idx+1 < len(tokens):
                     _, number = self._extract_real_number_with_text_fr([tokens[idx + 1]],
