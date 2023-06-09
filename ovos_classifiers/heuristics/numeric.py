@@ -2609,7 +2609,7 @@ class FrenchNumberParser:
             # fraction handling
             _fraction_val = self.is_fractional_fr(word, short_scale=short_scale)
             if _fraction_val:
-                if _prev_val is not None and prev_word != "eine" and \
+                if _prev_val is not None and prev_word != "une" and \
                         word not in self._STRING_FRACTION_FR:   # zusammengesetzter Bruch
                     _val = _prev_val + _fraction_val
                     if prev_word not in self._NUMBER_CONNECTORS_FR \
