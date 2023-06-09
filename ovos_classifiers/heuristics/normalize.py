@@ -241,11 +241,15 @@ class FrenchNormalizer(Normalizer):
     with open(f"{dirname(dirname(__file__))}/res/fr/normalize.json") as f:
         _default_config = json.load(f)
 
-    def remove_symbols(self, utterance: str) -> str:
-        # special rule for hyphanated words in french as some STT engines falsely
-        # return them pretty regularly
-        utterance = re.sub(r'\b(\w*)-(\w*)\b', r'\1 \2', utterance)
-        return super().remove_symbols(utterance)
+    def remove_articles(self, utterance):
+            words = self.tokenize(utterance)
+            for idx, word in enumerate(words):
+                if word.startswith("l'") or word.startswith("d'"):
+                    words[idx] = word[2:]
+                elif word in self.articles:
+                    words[idx] = ""
+
+            return " ".join([w for w in words if w != ""])
 
     def numbers_to_digits(self, utterance: str) -> str:
         return FrenchNumberParser().convert_words_to_numbers(utterance)
