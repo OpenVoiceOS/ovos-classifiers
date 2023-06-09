@@ -1,18 +1,19 @@
 {
   "command": [
-    "faire",
-    "réaliser",
-    "accomplir",
-    "cuisiner",
-    "bouillir",
-    "amener",
-    "appeler",
-    "allumer",
-    "éteindre"
+    "fait",
+    "réalise",
+    "accomplis",
+    "cuisine",
+    "bout",
+    "amène",
+    "appelle",
+    "allume",
+    "éteind"
   ],
   "denial": [
     "ne fais pas",
     "prohibé",
+    "interdit",
     "strictement interdit",
     "éloigne-toi",
     "arrête",
@@ -25,40 +26,39 @@
     "où",
     "quand",
     "quel",
+    "quelle",
     "qui",
     "pourquoi",
-    "parle-moi de"
+    "parle-moi de",
+    "dis-m'en",
+    "qu'est-ce"
   ],
   "yesno": [
-    "est-ce que",
-    "suis-je",
-    "suis-je en train",
-    "sont-ils",
-    "est-ce que tu es",
+    "est",
+    "sont",
+    "pourrait",
+    "faire",
+    "devient",
+    "peut",
+    "pourrait",
+    "devrait",
+    "serait",
+    "voudraist",
     "es-tu",
-    "seras-tu",
-    "peux-tu",
-    "pourrais-tu",
-    "devrais-je",
-    "voudrais-tu",
-    "as-tu",
-    "as-tu besoin",
-    "y a-t-il",
-    "y a-t-il des",
-    "c'est",
-    "ce sont",
-    "ça va",
-    "ça ne va pas",
-    "est-ce grave"
+    "tu es"
   ],
   "request": [
     "pourrais-tu",
     "peux-tu",
+    "aurais-tu",
     "s'il te plaît",
     "pourrais-je",
     "pourrais-je avoir",
     "apporte-moi",
-    "donne-moi"
+    "donne-moi",
+    "as-tu",
+    "es-tu",
+    "est-ce que"
   ],
   "social": [
     "félicitations",
@@ -67,7 +67,9 @@
     "bonne chance",
     "bonjour",
     "bon travail",
-    "joyeux anniversaire"
+    "joyeux anniversaire",
+    "bravo",
+    "bien joué"
   ],
   "exclamation": [
     "quoi",
@@ -75,6 +77,10 @@
     "incroyable",
     "fantastique",
     "impressionnant",
-    "merveilleux"
+    "merveilleux",
+    "super",
+    "génial",
+    "formidable",
+    "phénoménale"
   ]
 }

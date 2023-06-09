@@ -15,7 +15,7 @@ from ovos_classifiers.heuristics.keyword_extraction import HeuristicExtractor
 from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer, \
-    GermanNormalizer
+    GermanNormalizer, FrenchNormalizer
 from ovos_classifiers.heuristics.postag import RegexPostag
 from ovos_classifiers.heuristics.summarization import WordFrequencySummarizer
 
@@ -62,6 +62,8 @@ class UtteranceNormalizerPlugin(UtteranceTransformer):
             return RussianNormalizer()
         elif lang.startswith("de"):
             return GermanNormalizer()
+        elif lang.startswith("fr"):
+            return FrenchNormalizer()
         return Normalizer()
 
     @staticmethod

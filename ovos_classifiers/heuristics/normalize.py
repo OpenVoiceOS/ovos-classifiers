@@ -4,7 +4,7 @@ from os.path import dirname
 from typing import List, Dict
 
 from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser
+from ovos_classifiers.heuristics.numeric import EnglishNumberParser, AzerbaijaniNumberParser, GermanNumberParser, FrenchNumberParser
 
 
 class Normalizer:
@@ -230,9 +230,28 @@ class GermanNormalizer(Normalizer):
 
     def numbers_to_digits(self, utterance: str) -> str:
         return GermanNumberParser().convert_words_to_numbers(utterance)
-    
+
     def remove_symbols(self, utterance: str) -> str:
         # special rule for hyphanated words in german as some STT engines falsely
         # return them pretty regularly
         utterance = re.sub(r'\b(\w*)-(\w*)\b', r'\1 \2', utterance)
         return super().remove_symbols(utterance)
+
+class FrenchNormalizer(Normalizer):
+    with open(f"{dirname(dirname(__file__))}/res/fr/normalize.json") as f:
+        _default_config = json.load(f)
+
+    def remove_articles(self, utterance):
+        words = self.tokenize(utterance)
+        contract_articles = ["l'", "d'", "c'", "qu'", "s'", "n'", "t'", "m'", "j'"]
+        for idx, word in enumerate(words):
+            for article in contract_articles:
+                if word.startswith(article):
+                    words[idx] = word[2:]
+                elif word in self.articles:
+                    words[idx] = ""
+
+        return " ".join([w for w in words if w != ""])
+
+    def numbers_to_digits(self, utterance: str) -> str:
+        return FrenchNumberParser().convert_words_to_numbers(utterance)
