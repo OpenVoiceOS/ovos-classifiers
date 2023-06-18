@@ -89,7 +89,9 @@ LANG_DETECT_ENTRY = (
     # nltk data dependent
     "ovos-lang-detect-ngram-lm=ovos_classifiers.opm.nltk:LMLangDetectPlugin"
 )
-
+G2P_ENTRY_POINT = (
+    'ovos-g2p-plugin-heuristic-arpa=ovos_classifiers.opm.heuristics:ARPAHeuristicPhonemizerPlugin'
+)
 
 
 setup(
@@ -131,6 +133,7 @@ setup(
         "opm.solver.reading_comprehension": QA_ENTRY_POINT,
         "intentbox.keywords": KW_ENTRY_POINT,
         "intentbox.coreference": COREF_ENTRY,
-        "intentbox.postag": POSTAG_ENTRY
+        "intentbox.postag": POSTAG_ENTRY,
+        "ovos.plugin.g2p": G2P_ENTRY_POINT
     }
 )

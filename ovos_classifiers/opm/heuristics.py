@@ -4,6 +4,7 @@ import string
 from typing import Optional, List
 
 from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
+from ovos_plugin_manager.templates.g2p import Grapheme2PhonemePlugin
 from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.postag import PosTagger
 from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver
@@ -16,6 +17,7 @@ from ovos_classifiers.heuristics.machine_comprehension import BM25
 from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer, \
     GermanNormalizer
+from ovos_classifiers.heuristics.phonemizer import EnglishARPAHeuristicPhonemizer
 from ovos_classifiers.heuristics.postag import RegexPostag
 from ovos_classifiers.heuristics.summarization import WordFrequencySummarizer
 
@@ -141,7 +143,46 @@ class HeuristicCoreferenceSolverPlugin(CoreferenceSolverEngine):
         return UtteranceNormalizerPlugin.strip_punctuation(tagger.normalize_corefs(iob)[0])
 
 
+class ARPAHeuristicPhonemizerPlugin(Grapheme2PhonemePlugin):
+
+    def get_arpa(self, word, lang="en", ignore_oov=False):
+        phones = EnglishARPAHeuristicPhonemizer.phonemize(word)
+        return phones
+
+    def get_ipa(self, word, lang="en", ignore_oov=False):
+        # just not requiring lang arg
+        return super().get_ipa(word, lang, ignore_oov)
+
+    def utterance2arpa(self, utterance, lang="en", ignore_oov=False):
+        # just not requiring lang arg
+        return super().utterance2arpa(utterance, lang, ignore_oov)
+
+    def utterance2ipa(self, utterance, lang="en", ignore_oov=False):
+        # just not requiring lang arg
+        return super().utterance2ipa(utterance, lang, ignore_oov)
+
+    @staticmethod
+    def get_languages():
+        return {'en'}
+
+    @property
+    def available_languages(self):
+        """Return languages supported by this G2P implementation in this state
+        This property should be overridden by the derived class to advertise
+        what languages that engine supports.
+        Returns:
+            set: supported languages
+        """
+        return self.get_languages()
+
+
 if __name__ == "__main__":
+    pho = ARPAHeuristicPhonemizerPlugin()
+    pho.utterance2arpa("hello world")
+    # ['HH', 'EH', 'L', 'L', 'OW', '.', 'W', 'OW', 'R', 'L', 'D']
+    pho.utterance2ipa("hello world")
+    # ['h', 'ɛ', 'l', 'l', 'oʊ', '.', 'w', 'oʊ', 'ɹ', 'l', 'd']
+
     print(RegexPostagPlugin().postag("I like pizza", "en"))
     # [(0, 1, 'I', 'PRON'), (2, 6, 'like', 'VERB'), (7, 12, 'pizza', 'NOUN')]
 
