@@ -4,7 +4,7 @@ import re
 class EnglishARPAHeuristicPhonemizer:
     @staticmethod
     def phonemize(word):
-        word = re.sub('[^a-zA-Z0-9 \n\.]', " ", word)
+        word = re.sub('[^a-zA-Z0-9 \n\.]', " ", word.lower())
         total_phones = []
         for w in word.split(" "):
 
@@ -56,8 +56,9 @@ class EnglishARPAHeuristicPhonemizer:
                     w = w[1:]
                     progress -= 1
                 else:
-                    # TODO - what now?
-                    continue
+                    # skip this word letter by letter, if we can't handle it.
+                    w = w[1:]
+                    progress -= 1
             if len(total_phones):
                 total_phones.append(".")
             total_phones += phones
