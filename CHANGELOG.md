@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a32...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a33...HEAD)
+
+**Merged pull requests:**
+
+- Skip unknown phonemes to prevent an infinite loop. [\#18](https://github.com/OpenVoiceOS/ovos-classifiers/pull/18) ([JeffmeisterJ](https://github.com/JeffmeisterJ))
+
+## [V0.0.0a33](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a33) (2023-06-18)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a32...V0.0.0a33)
 
 **Merged pull requests:**
 
