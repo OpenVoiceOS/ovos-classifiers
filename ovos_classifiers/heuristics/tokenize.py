@@ -1,8 +1,10 @@
 import re
 from collections import namedtuple
-from typing import List, Any
-from quebra_frases import word_tokenize as _wtok
 from datetime import datetime, date, timedelta, time
+from typing import List, Any
+
+from ovos_utils import flatten_list
+from quebra_frases import word_tokenize as _wtok, sentence_tokenize as _stok
 
 # Token is intended to be used in the number processing functions in
 # this module. The parsing requires slicing and dividing of the original
@@ -69,6 +71,7 @@ class ReplaceableNumber(ReplaceableEntity):
     In other words, it is the text, and the number that can replace it in
     the string.
     """
+
 
 class ReplaceableDate(ReplaceableEntity):
     """
@@ -149,6 +152,11 @@ def partition_list(items, split_on):
     return list(filter(lambda x: len(x) != 0, splits))
 
 
+def sentence_tokenize(text):
+    sents = [_stok(s) for s in text.split("\n")]
+    return flatten_list(sents)
+
+
 def word_tokenize(utterance, lang=None):
     if lang is not None and lang.startswith("pt"):
         return word_tokenize_pt(utterance)
@@ -187,3 +195,53 @@ def word_tokenize_ca(utterance):
         tokens = tokens[:-1]
 
     return tokens
+
+
+def subword_tokenize(utterance):
+    """phonetically meaningful subwords,
+    Pronunciation-assisted Subword Modeling, generates linguistically
+    meaningful subwords by analyzing a corpus and a dictionary.
+
+    @inproceedings{xu2019improving,
+        title={Improving End-to-end Speech Recognition with Pronunciation-assisted Sub-word Modeling},
+        author={Xu, Hainan and Ding, Shuoyang and Watanabe, Shinji},
+        booktitle={ICASSP 2019-2019 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+        pages={7110--7114},
+        year={2019},
+        organization={IEEE}
+    }
+
+    see https://github.com/hainan-xv/PASM
+    """
+    from ovos_classifiers.heuristics.phonemizer import EnglishARPAHeuristicPhonemizer
+    return EnglishARPAHeuristicPhonemizer.subword_tokenize(utterance)
+
+
+def syllable_tokenize(utterance):
+    """
+    The Sonority Sequencing Principle (SSP) is a language agnostic algorithm proposed
+    by Otto Jesperson in 1904. The sonorous quality of a phoneme is judged by the
+    openness of the lips. Syllable breaks occur before troughs in sonority. For more
+    on the SSP see Selkirk (1984).
+
+    The default implementation uses the English alphabet, but the `sonority_hiearchy`
+    can be modified to IPA or any other alphabet for the use-case. The SSP is a
+    universal syllabification algorithm, but that does not mean it performs equally
+    across languages. Bartlett et al. (2009) is a good benchmark for English accuracy
+    if utilizing IPA (pg. 311).
+
+    Importantly, if a custom hierarchy is supplied and vowels span across more than
+    one level, they should be given separately to the `vowels` class attribute.
+
+    References:
+
+    - Otto Jespersen. 1904. Lehrbuch der Phonetik.
+      Leipzig, Teubner. Chapter 13, Silbe, pp. 185-203.
+    - Elisabeth Selkirk. 1984. On the major class features and syllable theory.
+      In Aronoff & Oehrle (eds.) Language Sound Structure: Studies in Phonology.
+      Cambridge, MIT Press. pp. 107-136.
+    - Susan Bartlett, et al. 2009. On the Syllabification of Phonemes.
+      In HLT-NAACL. pp. 308-316.
+    """
+    from nltk.tokenize.sonority_sequencing import SyllableTokenizer
+    return SyllableTokenizer().tokenize(utterance)
