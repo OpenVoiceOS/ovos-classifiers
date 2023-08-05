@@ -9,6 +9,7 @@ from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.postag import PosTagger
 from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from ovos_utils.lang.visimes import VISIMES
 from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
 
 from ovos_classifiers.heuristics.corefiob import CorefIOBHeuristicTagger
@@ -137,7 +138,7 @@ class HeuristicCoreferenceSolverPlugin(CoreferenceSolverEngine):
 
     @classmethod
     def solve_corefs(cls, text, lang=None):
-        tagger = CorefIOBHeuristicTagger(lang.split("-")[0])
+        tagger = CorefIOBHeuristicTagger({"lang": lang.split("-")[0]})
         pos = RegexPostag({"lang": lang}).tag(text)
         iob = [tagger.tag(pos)]
         return UtteranceNormalizerPlugin.strip_punctuation(tagger.normalize_corefs(iob)[0])
@@ -148,6 +149,10 @@ class ARPAHeuristicPhonemizerPlugin(Grapheme2PhonemePlugin):
     def get_arpa(self, word, lang="en", ignore_oov=False):
         phones = EnglishARPAHeuristicPhonemizer.phonemize(word)
         return phones
+
+    def utterance2visemes(self, utterance, lang="e-us", default_dur=0.4):
+        arpa = EnglishARPAHeuristicPhonemizer.phoneme_duration_tokenize(utterance)
+        return [(VISIMES.get(pho.lower(), '4'), dur) for pho, dur in arpa]
 
     def get_ipa(self, word, lang="en", ignore_oov=False):
         # just not requiring lang arg
@@ -178,10 +183,12 @@ class ARPAHeuristicPhonemizerPlugin(Grapheme2PhonemePlugin):
 
 if __name__ == "__main__":
     pho = ARPAHeuristicPhonemizerPlugin()
-    pho.utterance2arpa("hello world")
+    pho.utterance2visemes("hello world")
     # ['HH', 'EH', 'L', 'L', 'OW', '.', 'W', 'OW', 'R', 'L', 'D']
     pho.utterance2ipa("hello world")
     # ['h', 'ɛ', 'l', 'l', 'oʊ', '.', 'w', 'oʊ', 'ɹ', 'l', 'd']
+    pho.utterance2visemes("hello world")
+    # [('0', 3.1), ('3', 2.651), ('3', 2.651), ('2', 3.1), ('4', 2.605), ('2', 3.1), ('2', 2.815), ('3', 3.1)]
 
     print(RegexPostagPlugin().postag("I like pizza", "en"))
     # [(0, 1, 'I', 'PRON'), (2, 6, 'like', 'VERB'), (7, 12, 'pizza', 'NOUN')]
