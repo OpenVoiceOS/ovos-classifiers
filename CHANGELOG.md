@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a35...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a36...HEAD)
+
+**Fixed bugs:**
+
+- fix de extract\_numbers sig [\#21](https://github.com/OpenVoiceOS/ovos-classifiers/pull/21) ([emphasize](https://github.com/emphasize))
+
+## [V0.0.0a36](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a36) (2023-08-05)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a35...V0.0.0a36)
 
 **Implemented enhancements:**
 
