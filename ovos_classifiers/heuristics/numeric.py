@@ -376,7 +376,10 @@ class GermanNumberParser:
         return ' '.join(results)
 
 
-    def extract_numbers(self, tokens: list, short_scale: bool=False, ordinals: bool=False) -> List:
+    def extract_numbers(self, tokens: list,
+                              short_scale: bool = False,
+                              ordinals: bool = False,
+                              fractions: bool = True) -> List:
         """
         extract numeric values from a list of tokens.
         Args:
@@ -390,7 +393,7 @@ class GermanNumberParser:
         """
         if not isinstance(tokens[0], Token): # list of string tokens
             tokens = [Token(word, index) for index, word in enumerate(tokens)]
-        numbers_to_replace = self._extract_numbers_with_text_de(tokens, short_scale, ordinals)
+        numbers_to_replace = self._extract_numbers_with_text_de(tokens, short_scale, ordinals, fractions)
         numbers_to_replace.sort(key=lambda number: number.start_index)
         return numbers_to_replace
 
