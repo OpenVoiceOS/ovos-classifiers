@@ -29,16 +29,25 @@ from ovos_classifiers.heuristics.summarization import WordFrequencySummarizer
 
 class ExactMatchesIntentPipeline(IntentPipelinePlugin):
 
+    # required plugin methods
     @classproperty
     def matcher_id(self):
         return "exact"
 
     def train(self):
-        """ plugins should parse self.registered_intents and self.registered_entities here and handle any new entries
+        # no action, we just compare against registered samples at runtime
+        pass
 
-        this is called on mycroft.ready and then after every new skill loads"""
-        # no action, we just compare against registered samples
+    def match(self, utterances, lang, message):
+        for utt in utterances:
+            # TODO - stages from config
+            m = self.match_exact_intents(utt, lang) or \
+                self.match_keyword_intents(utt, lang) or \
+                self.match_regex_intents(utt, lang)
+            if m:
+                return m
 
+    # implementation
     def extract_regex_entities(self, utterance, lang=None):
         lang = lang or self.lang
         entities = {}
@@ -146,14 +155,6 @@ class ExactMatchesIntentPipeline(IntentPipelinePlugin):
                                    skill_id=intent.skill_id)
         return None
 
-    def match(self, utterances, lang, message):
-        for utt in utterances:
-            # TODO - from config
-            m = self.match_exact_intents(utt, lang) or \
-                self.match_keyword_intents(utt, lang) or \
-                self.match_regex_intents(utt, lang)
-            if m:
-                return m
 
 
 class RegexPostagPlugin(PosTagger):
