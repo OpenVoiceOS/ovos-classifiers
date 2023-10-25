@@ -44,9 +44,12 @@ jobs:
       - name: Install core repo
         run: |
           pip install .
+      - name: Install test dependencies
+        run: |
+          pip install pytest pytest-cov cov-core
       - name: Run unittests
         run: |
-          pytest --cov=ovos_config --cov-report xml test/unittests
+          pytest --cov=ovos_classifiers --cov-report xml test/unittests
           # NOTE: additional pytest invocations should also add the --cov-append flag
           #       or they will overwrite previous invocations' coverage reports
           #       (for an example, see OVOS Skill Manager's workflow)
