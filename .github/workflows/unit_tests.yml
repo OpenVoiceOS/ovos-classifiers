@@ -4,7 +4,7 @@ on:
     branches:
       - dev
     paths-ignore:
-      - 'ovos_config/version.py'
+      - 'ovos_classifiers/version.py'
       - 'examples/**'
       - '.github/**'
       - '.gitignore'
@@ -17,10 +17,9 @@ on:
     branches:
       - master
     paths-ignore:
-      - 'ovos_config/version.py'
+      - 'ovos_classifiers/version.py'
       - 'requirements/**'
       - 'examples/**'
-      - '.github/**'
       - '.gitignore'
       - 'LICENSE'
       - 'CHANGELOG.md'
