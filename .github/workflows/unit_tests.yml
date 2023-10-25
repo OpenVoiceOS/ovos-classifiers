@@ -47,7 +47,7 @@ jobs:
           pip install .
       - name: Install test dependencies
         run: |
-          pip install pytest pytest-cov cov-core
+          pip install pytest pytest-cov cov-core ovos-plugin-manager
       - name: Run unittests
         run: |
           pytest --cov=ovos_classifiers --cov-report xml test/unittests

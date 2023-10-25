@@ -3,3 +3,4 @@ nltk
 joblib
 ovos-utils
 python-dateutil>=2.8.2
+quebra_frases
