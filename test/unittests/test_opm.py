@@ -1,5 +1,6 @@
 import unittest
 
+from ovos_plugin_manager.g2p import find_g2p_plugins
 from ovos_plugin_manager.keywords import find_keyword_extract_plugins
 from ovos_plugin_manager.solvers import find_question_solver_plugins, find_reading_comprehension_solver_plugins, \
     find_tldr_solver_plugins, find_entailment_solver_plugins, find_multiple_choice_solver_plugins
@@ -19,6 +20,7 @@ class TestKeywords(unittest.TestCase):
     expected_post = ["ovos-postag-plugin-regex", "ovos-postag-plugin-nltk",
                      "ovos-classifiers-postag-plugin"]
     expected_lang = ["ovos-lang-detect-ngram-lm"]
+    expected_g2p = ["ovos-g2p-plugin-heuristic-arpa"]
 
     def test_lang(self):
         plugs = list(find_lang_detect_plugins().keys())
@@ -59,3 +61,10 @@ class TestKeywords(unittest.TestCase):
         plugs = find_keyword_extract_plugins()
         for kw in self.expected_kw_plugs:
             self.assertTrue(kw in plugs)
+
+    def test_g2p(self):
+        from ovos_plugin_manager.g2p import Grapheme2PhonemePlugin
+        plugs = find_g2p_plugins()
+        for kw in self.expected_g2p:
+            self.assertIn(kw, plugs)
+            self.assertIsInstance(plugs[kw](), Grapheme2PhonemePlugin)
