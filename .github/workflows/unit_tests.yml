@@ -45,7 +45,6 @@ jobs:
       - name: Install core repo
         run: |
           pip install .
-      - name: Install test dependencies
       - name: Run unittests
         run: |
           pytest --cov=ovos_config --cov-report xml test/unittests
