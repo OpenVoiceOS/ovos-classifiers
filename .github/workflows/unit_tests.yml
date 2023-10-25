@@ -20,6 +20,7 @@ on:
       - 'ovos_classifiers/version.py'
       - 'requirements/**'
       - 'examples/**'
+      - '.github/**'
       - '.gitignore'
       - 'LICENSE'
       - 'CHANGELOG.md'
