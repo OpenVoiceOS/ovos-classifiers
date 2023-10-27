@@ -332,6 +332,9 @@ class GermanNumberParser:
             return False
 
     def is_number_de(self, word: str):
+        if self.is_ordinal_de(word):
+            return None
+
         if is_numeric(word):
             if word.isdigit():
                 return int(word)
