@@ -1,0 +1,19 @@
+{
+    "corpus": "tiger-custom",
+    "corpus_homepage": "https://www.ims.uni-stuttgart.de/forschung/ressourcen/korpora/tiger/",
+    "model_id": "nltk-tiger-custom-udep-brill-postag",
+    "tagset": "Universal Dependencies",
+    "tagset_homepage": "https://universaldependencies.org/u/pos/",
+    "lang": "de",
+    "algo": "nltk.brill.fntbl37",
+    "backoff_taggers": [
+        "AffixTagger",
+        "UnigramTagger",
+        "BigramTagger",
+        "TrigramTagger"
+    ],
+    "required_packages": [
+        "nltk"
+    ],
+    "accuracy": 0.96851895089112
+}

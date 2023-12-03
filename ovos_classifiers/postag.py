@@ -15,6 +15,7 @@ _LANGDEFAULTS = {
     "pt": "nltk-floresta+mcmorpho-udep-brill-postag",
     "es": "nltk-cess_esp-udep-brill-postag",
     "ca": "nltk-cess_cat-udep-brill-postag",
+    "de": "nltk-tiger-custom-udep-brill-postag",
     "en": "nltk"
 }
 
@@ -62,7 +63,7 @@ class OVOSPostag:
             url = f"{self._BASE_METADATA_URL}/{model_id}.json"
             meta = requests.get(url).json()
             with open(meta_path, "wb") as f:
-                f.write(meta)
+                f.write(json.dumps(meta).encode('utf-8'))
 
         model_path = f"{self._XDG_PATH}/{model_id}.pkl"
         if not isfile(model_path):

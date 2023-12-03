@@ -89,11 +89,11 @@ class OVOSBrillTagger(OVOSNgramTagger):
         else:
             ngrams.append(nltk.brill.fntbl37())
         return ngrams
-
-    def train(self, tagged_data, max_rules=100, deterministic=True):
+    
+    def train(self, tagged_data, max_rules=100, deterministic=True, min_acc=None):
         taggers = self.pipeline[:-1]
         brill = self.pipeline[-1]
         tagger = self.get_ngram_tagger(tagged_data, taggers)
         trainer = nltk.BrillTaggerTrainer(tagger, brill,
-                                          deterministic=True)
-        self.clf = trainer.train(tagged_data, max_rules=100)
+                                          deterministic=deterministic)
+        self.clf = trainer.train(tagged_data, max_rules=max_rules, min_acc=min_acc)
