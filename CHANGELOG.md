@@ -2,7 +2,19 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a36...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a37...HEAD)
+
+**Implemented enhancements:**
+
+- add german pos tagger [\#28](https://github.com/OpenVoiceOS/ovos-classifiers/pull/28) ([emphasize](https://github.com/emphasize))
+
+**Merged pull requests:**
+
+- Add GH Automation workflow to run unit tests [\#23](https://github.com/OpenVoiceOS/ovos-classifiers/pull/23) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [V0.0.0a37](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a37) (2023-09-05)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a36...V0.0.0a37)
 
 **Fixed bugs:**
 
