@@ -5,7 +5,7 @@ from ovos_utils.xdg_utils import xdg_data_home
 
 
 class OVOSAbstractClassifier:
-    def __init__(self, pipeline_id, pipeline_clf):
+    def __init__(self, pipeline_id="raw", pipeline_clf=None):
         self.pipeline_id = pipeline_id.lower().split("-")[0]
         self._pipeline_clf = pipeline_clf
         self.clf = None
