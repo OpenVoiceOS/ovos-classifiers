@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a37...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a38...HEAD)
+
+**Implemented enhancements:**
+
+- per label probabilities [\#29](https://github.com/OpenVoiceOS/ovos-classifiers/pull/29) ([NeonJarbas](https://github.com/NeonJarbas))
+
+## [V0.0.0a38](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a38) (2023-12-03)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a37...V0.0.0a38)
 
 **Implemented enhancements:**
 
