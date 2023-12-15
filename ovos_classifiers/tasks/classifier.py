@@ -40,6 +40,8 @@ class OVOSAbstractClassifier:
 
     def load_from_file(self, path=None):
         if not path:
+            if self.pipeline_id == "raw":
+                raise FileNotFoundError("no model path provided")
             os.makedirs(f"{xdg_data_home()}/OpenVoiceOS/classifiers", exist_ok=True)
             path = f"{xdg_data_home()}/OpenVoiceOS/classifiers/{self.pipeline_id}"
         self.clf = joblib.load(path)
