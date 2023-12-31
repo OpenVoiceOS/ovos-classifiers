@@ -6,9 +6,13 @@ from typing import Optional, List
 from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
 from ovos_plugin_manager.templates.g2p import Grapheme2PhonemePlugin
 from ovos_plugin_manager.templates.keywords import KeywordExtractor
+from ovos_plugin_manager.templates.pipeline import IntentPipelinePlugin, \
+    IntentMatch, IntentDefinition, EntityDefinition, \
+    RegexIntentDefinition, RegexEntityDefinition, KeywordIntentDefinition
 from ovos_plugin_manager.templates.postag import PosTagger
 from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from ovos_utils import merge_dict, classproperty
 from ovos_utils.lang.visimes import VISIMES
 from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
 
@@ -21,6 +25,136 @@ from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer,
 from ovos_classifiers.heuristics.phonemizer import EnglishARPAHeuristicPhonemizer
 from ovos_classifiers.heuristics.postag import RegexPostag
 from ovos_classifiers.heuristics.summarization import WordFrequencySummarizer
+
+
+class ExactMatchesIntentPipeline(IntentPipelinePlugin):
+
+    # required plugin methods
+    @classproperty
+    def matcher_id(self):
+        return "exact"
+
+    def train(self):
+        # no action, we just compare against registered samples at runtime
+        pass
+
+    def match(self, utterances, lang, message):
+        for utt in utterances:
+            # TODO - stages from config
+            m = self.match_exact_intents(utt, lang) or \
+                self.match_keyword_intents(utt, lang) or \
+                self.match_regex_intents(utt, lang)
+            if m:
+                return m
+
+    # implementation
+    def extract_regex_entities(self, utterance, lang=None):
+        lang = lang or self.lang
+        entities = {}
+        utterance = utterance.strip().lower()
+        entity_patterns = (e for e in self.registered_entities
+                           if isinstance(e, RegexEntityDefinition) and
+                           e.lang == lang)
+        for ent in entity_patterns:
+            for pattern in ent.patterns:
+                match = pattern.match(utterance)
+                if match:
+                    entities = merge_dict(entities, match.groupdict())
+        return entities
+
+    def match_regex_intents(self, utterance, lang=None):
+        lang = lang or self.lang
+        utterance = utterance.strip().lower()
+        for intent in (e for e in self.registered_intents
+                       if e.lang == lang and isinstance(e, RegexIntentDefinition)):
+            for pattern in intent.patterns:
+                match = pattern.match(utterance)
+                if match:
+                    return IntentMatch(intent_service=self.matcher_id,
+                                       intent_type=intent.name,
+                                       intent_data=match.groupdict(),
+                                       confidence=1.0,
+                                       utterance=utterance,
+                                       skill_id=intent.skill_id)
+        return None
+
+    def match_exact_intents(self, utterance, lang=None):
+        lang = lang or self.lang
+        utterance = utterance.strip().lower()
+        for intent in (e for e in self.registered_intents
+                       if e.lang == lang and
+                          isinstance(e, IntentDefinition)):
+
+            if any(s == utterance for s in intent.samples if "{" not in s):
+                entities = {}
+                for ent in (e for e in self.registered_entities
+                            if e.lang == lang and
+                               e.skill_id == intent.skill_id and
+                               isinstance(e, EntityDefinition)):
+                    for s in ent.samples:
+                        if s in utterance:
+                            entities[ent.name] = s
+                            break
+                data = {'conf': 1.0,
+                        'intent_type': intent.name,
+                        'entities': entities,
+                        'utterance': utterance,
+                        'utterance_remainder': "",
+                        'intent_engine': self.matcher_id}
+
+                return IntentMatch(intent_service=self.matcher_id,
+                                   intent_type=intent.name,
+                                   intent_data=data,
+                                   confidence=1.0,
+                                   utterance=utterance,
+                                   skill_id=intent.skill_id)
+        return None
+
+    def match_keyword_intents(self, utterance, lang=None):
+        lang = lang or self.lang
+        utterance = utterance.strip().lower()
+        for intent in (e for e in self.registered_intents
+                       if e.lang == lang and
+                          isinstance(e, KeywordIntentDefinition)):
+
+            entities = self.extract_regex_entities(utterance, lang)
+            remainder = utterance
+            for ent in (e for e in self.registered_entities
+                        if e not in entities and  # prioritize regex (?)
+                           e.lang == lang and
+                           e.skill_id == intent.skill_id and
+                           isinstance(e, EntityDefinition)):
+                for s in ent.samples:
+                    if s in remainder:
+                        entities[ent.name] = s
+                        remainder = remainder.replace(s, "")
+                        break
+
+            def is_match():
+                if any(k in entities for k in intent.excluded):
+                    return False
+                if not all(k in entities for k in intent.requires):
+                    return False
+                if self.at_least_one and not \
+                        any(k in entities for k in intent.at_least_one):
+                    return False
+                return True
+
+            if is_match():
+                # make confidence depend on % of utterance consumed
+                # full utterance consumed == 1.0
+                # no utterance consumed == 0.0
+                diff = len(utterance) - len(remainder)
+                conf = diff / len(utterance)
+
+                return IntentMatch(intent_service=self.matcher_id,
+                                   intent_type=intent.name,
+                                   intent_data=entities,
+                                   confidence=conf,
+                                   utterance=utterance,
+                                   skill_id=intent.skill_id)
+        return None
+
 
 
 class RegexPostagPlugin(PosTagger):
