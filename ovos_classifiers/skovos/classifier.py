@@ -140,4 +140,3 @@ class SklearnOVOSVotingClassifier(SklearnOVOSClassifier):
 
     def predict_proba(self, text):
         return np.max(self.clf.predict_proba(text), axis=1)
-
