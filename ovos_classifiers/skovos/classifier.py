@@ -15,23 +15,16 @@ from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 def iter_clfs(calibrate=True, feature_select=False, voting=False):
     if voting:
         clfs = {
-            "v_svcmnbmlp": VotingClassifier(estimators=[("SVC", SVC(kernel='linear', probability=True)),
-                                                        ("MultinomialNB", MultinomialNB()),
-                                                        ("MLPClassifier", MLPClassifier(max_iter=300))
-                                                        ], voting="soft"),
-            "v_svclrmlp": VotingClassifier(estimators=[("SVC", SVC(kernel='linear', probability=True)),
-                                                       ("LogisticRegression", LogisticRegression()),
-                                                       ("MLPClassifier", MLPClassifier(max_iter=300))
-                                                       ], voting="soft"),
-            "v_svccplr": VotingClassifier(estimators=[("SVC", SVC(kernel='linear', probability=True)),
-                                                      ("CalibratedPerceptron", CalibratedClassifierCV(Perceptron())),
-                                                      ("LogisticRegression", LogisticRegression())
-                                                      ], voting="soft"),
-            "v_svccplrmnb": VotingClassifier(estimators=[("SVC", SVC(kernel='linear', probability=True)),
-                                                         ("CalibratedPerceptron", CalibratedClassifierCV(Perceptron())),
-                                                         ("LogisticRegression", LogisticRegression()),
-                                                         ("MultinomialNB", MultinomialNB()),
-                                                         ], voting="soft")
+
+            "v_clsvccpcmlp": VotingClassifier(
+                estimators=[("CalibratedLSVC", CalibratedClassifierCV(LinearSVC(dual="auto", penalty="l1"))),
+                            ("CalibratedPerceptron", CalibratedClassifierCV(Perceptron())),
+                            ("CalibratedMLP", MLPClassifier(max_iter=1000)),
+                            ], voting="soft"),
+            "v_cpcmlp": VotingClassifier(
+                estimators=[("CalibratedPerceptron", CalibratedClassifierCV(Perceptron())),
+                            ("CalibratedMLP", MLPClassifier(max_iter=1000)),
+                            ], voting="soft")
         }
     elif feature_select:
         clfs = {
@@ -71,8 +64,7 @@ def iter_clfs(calibrate=True, feature_select=False, voting=False):
         clfs = {f"c_{k}": CalibratedClassifierCV(clf)
                 for k, clf in clfs.items()}
 
-    for k, clf in clfs.items():
-        yield k, clf
+    yield from clfs.items()
 
 
 class SklearnOVOSClassifier(OVOSAbstractClassifier):

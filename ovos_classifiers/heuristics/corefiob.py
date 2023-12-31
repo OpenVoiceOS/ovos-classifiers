@@ -41,7 +41,7 @@ class CorefIOBHeuristicTagger:
         res = f"{dirname(dirname(__file__))}/res/{self.lang}/corefiob.json"
         if not isfile(res):
             raise ValueError(f"unsupported language: {self.lang}")
-        with open(res, "r") as f:
+        with open(res) as f:
             data = json.load(f)
         self.joiner_tokens = data["joiner"]
         self.prev_toks = data["prev"]

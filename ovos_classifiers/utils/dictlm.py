@@ -8,7 +8,7 @@ from nltk import trigrams
 
 class DictLM:
     def __init__(self):
-        self.lm = defaultdict(lambda: defaultdict(lambda: 0))
+        self.lm = defaultdict(lambda: defaultdict(int))
 
     def train(self, sentences):
         for sentence in sentences:

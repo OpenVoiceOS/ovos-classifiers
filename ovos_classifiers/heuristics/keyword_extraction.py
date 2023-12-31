@@ -310,7 +310,7 @@ class Rake:
         :param phrase_list: List of List of strings where each sublist is a
                             collection of words which form a contender phrase.
         """
-        co_occurance_graph: DefaultDict[str, DefaultDict[str, int]] = defaultdict(lambda: defaultdict(lambda: 0))
+        co_occurance_graph: DefaultDict[str, DefaultDict[str, int]] = defaultdict(lambda: defaultdict(int))
         for phrase in phrase_list:
             # For each phrase in the phrase list, count co-occurances of the
             # word with other words in the phrase.
@@ -319,7 +319,7 @@ class Rake:
             # use in other creative ways if required later.
             for (word, coword) in product(phrase, phrase):
                 co_occurance_graph[word][coword] += 1
-        self.degree = defaultdict(lambda: 0)
+        self.degree = defaultdict(int)
         for key in co_occurance_graph:
             self.degree[key] = sum(co_occurance_graph[key].values())
 
