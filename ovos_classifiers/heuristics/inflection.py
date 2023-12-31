@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 English implementation taken from
 ~~~~~~~~~~~~
@@ -151,7 +150,7 @@ class Inflection:
             '-1021st'
 
         """
-        return "{}{}".format(number, self.ordinal(number))
+        return f"{number}{self.ordinal(number)}"
 
     @staticmethod
     def parameterize(string: str, separator: str = '-') -> str:
@@ -692,15 +691,15 @@ class Inflection:
 
             if singular[0].upper() == plural[0].upper():
                 PLURALS.insert(0, (
-                    r"(?i)({}){}$".format(singular[0], singular[1:]),
+                    fr"(?i)({singular[0]}){singular[1:]}$",
                     r'\1' + plural[1:]
                 ))
                 PLURALS.insert(0, (
-                    r"(?i)({}){}$".format(plural[0], plural[1:]),
+                    fr"(?i)({plural[0]}){plural[1:]}$",
                     r'\1' + plural[1:]
                 ))
                 SINGULARS.insert(0, (
-                    r"(?i)({}){}$".format(plural[0], plural[1:]),
+                    fr"(?i)({plural[0]}){plural[1:]}$",
                     r'\1' + singular[1:]
                 ))
             else:
@@ -715,19 +714,19 @@ class Inflection:
                     plural[0].lower() + plural[1:]
                 ))
                 PLURALS.insert(0, (
-                    r"{}{}$".format(plural[0].upper(), caseinsensitive(plural[1:])),
+                    fr"{plural[0].upper()}{caseinsensitive(plural[1:])}$",
                     plural[0].upper() + plural[1:]
                 ))
                 PLURALS.insert(0, (
-                    r"{}{}$".format(plural[0].lower(), caseinsensitive(plural[1:])),
+                    fr"{plural[0].lower()}{caseinsensitive(plural[1:])}$",
                     plural[0].lower() + plural[1:]
                 ))
                 SINGULARS.insert(0, (
-                    r"{}{}$".format(plural[0].upper(), caseinsensitive(plural[1:])),
+                    fr"{plural[0].upper()}{caseinsensitive(plural[1:])}$",
                     singular[0].upper() + singular[1:]
                 ))
                 SINGULARS.insert(0, (
-                    r"{}{}$".format(plural[0].lower(), caseinsensitive(plural[1:])),
+                    fr"{plural[0].lower()}{caseinsensitive(plural[1:])}$",
                     singular[0].lower() + singular[1:]
                 ))
 

@@ -15,6 +15,7 @@ from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
 def iter_clfs(calibrate=True, feature_select=False, voting=False):
     if voting:
         clfs = {
+
             "v_clsvccpcmlp": VotingClassifier(
                 estimators=[("CalibratedLSVC", CalibratedClassifierCV(LinearSVC(dual="auto", penalty="l1"))),
                             ("CalibratedPerceptron", CalibratedClassifierCV(Perceptron())),

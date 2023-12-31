@@ -72,9 +72,9 @@ def get_stemmer(lang="porter"):
 
 def get_word_shape(word):
     word_shape = 'other'
-    if re.match('[0-9]+(\.[0-9]*)?|[0-9]*\.[0-9]+$', word):
+    if re.match(r'[0-9]+(\.[0-9]*)?|[0-9]*\.[0-9]+$', word):
         word_shape = 'number'
-    elif re.match('\W+$', word):
+    elif re.match(r'\W+$', word):
         word_shape = 'punct'
     elif re.match('[A-Z][a-z]+$', word):
         word_shape = 'capitalized'
@@ -88,11 +88,11 @@ def get_word_shape(word):
         word_shape = 'mixedcase'
     elif re.match('__.+__$', word):
         word_shape = 'wildcard'
-    elif re.match('[A-Za-z0-9]+\.$', word):
+    elif re.match(r'[A-Za-z0-9]+\.$', word):
         word_shape = 'ending-dot'
-    elif re.match('[A-Za-z0-9]+\.[A-Za-z0-9\.]+\.$', word):
+    elif re.match(r'[A-Za-z0-9]+\.[A-Za-z0-9\.]+\.$', word):
         word_shape = 'abbreviation'
-    elif re.match('[A-Za-z0-9]+\-[A-Za-z0-9\-]+.*$', word):
+    elif re.match(r'[A-Za-z0-9]+\-[A-Za-z0-9\-]+.*$', word):
         word_shape = 'contains-hyphen'
 
     return word_shape

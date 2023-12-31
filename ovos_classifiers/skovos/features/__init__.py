@@ -2,19 +2,21 @@
 
 import functools
 
+import ahocorasick
 import nltk
+import numpy as np
 from nltk.util import skipgrams
-from ovos_config import Configuration
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction import DictVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-
+from normality.transliteration import latinize_text
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
 from ovos_classifiers.heuristics.tokenize import word_tokenize
 from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
+from ovos_config import Configuration
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -462,6 +464,190 @@ class SkipGramTransformer(BaseEstimator, TransformerMixin):
         return feats
 
 
+class KeywordFeatures:
+    def __init__(self, lang="en", ignore_list=None):
+        ignore_list = ignore_list or []
+        self.lang = lang.split("-")[0]
+        self.ignore_list = ignore_list
+        self.bias = {}  # just for logging
+        self.automatons = {}
+        self._needs_building = []
+        self.entities = {}
+
+    def register_entity(self, name, samples):
+        """ register runtime entity samples,
+            eg from skills"""
+        if name not in self.entities:
+            self.entities[name] = []
+        self.entities[name] += samples
+        if name not in self.bias:
+            self.bias[name] = []
+        self.bias[name] += samples
+
+        if name not in self.automatons:
+            self.automatons[name] = ahocorasick.Automaton()
+        for s in samples:
+            self.automatons[name].add_word(s.lower(), s)
+
+        self._needs_building.append(name)
+
+    def deregister_entity(self, name):
+        """ register runtime entity samples,
+            eg from skills"""
+        if name in self.entities:
+            self.entities.pop(name)
+        if name in self.bias:
+            self.bias.pop(name)
+        if name in self.automatons:
+            self.automatons.pop(name)
+        if name in self._needs_building:
+            self._needs_building.remove(name)
+
+    def load_entities(self, csv_path):
+        ents = {}
+        with open(csv_path) as f:
+            lines = f.read().split("\n")[1:]
+            data = [l.split(",", 1) for l in lines if "," in l]
+
+        for n, s in data:
+            if n not in ents:
+                ents[n] = []
+            s = latinize_text(s)
+            ents[n].append(s)
+
+        for k, samples in ents.items():
+            self._needs_building.append(k)
+            if k not in self.automatons:
+                self.automatons[k] = ahocorasick.Automaton()
+            for s in samples:
+                self.automatons[k].add_word(s.lower(), s)
+        self.entities = ents
+        return ents
+
+    def match(self, utt):
+        for k, automaton in self.automatons.items():
+            if k in self._needs_building:
+                automaton.make_automaton()
+
+        self._needs_building = []
+
+        utt = utt.lower().strip(".!?,;:")
+
+        for k, automaton in self.automatons.items():
+            for idx, v in automaton.iter(utt):
+                if len(v) <= 3:
+                    continue
+
+                if "_name" in k and v.lower() in self.ignore_list:
+                    # LOG.debug(f"ignoring {k}:  {v}")
+                    continue
+
+                # filter partial words
+                if " " not in v:
+                    if v.lower() not in utt.split(" "):
+                        continue
+                if v.lower() + " " in utt or utt.endswith(v.lower()):
+                    # if k in self.bias:
+                    #    LOG.debug(f"BIAS {k} : {v}")
+                    yield k, v
+
+    def count(self, sentence):
+        match = {k: 0 for k in self.entities.keys()}
+        for k, v in self.match(sentence):
+            if "_name" in k and v.lower() in self.ignore_list:
+                continue
+            match[k] += 1
+            if v in self.bias.get(k, []):
+                # LOG.debug(f"Feature Bias: {k} +1 because of: {v}")
+                match[k] += 1
+        return match
+
+    def extract(self, sentence):
+        match = {}
+        for k, v in self.match(sentence):
+            if k not in match:
+                match[k] = v
+            elif v in self.bias.get(k, []) or len(v) > len(match[k]):
+                match[k] = v
+
+        return match
+
+
+class KeywordFeaturesTransformer(BaseEstimator, TransformerMixin):
+
+    def __init__(self, lang="en", **kwargs):
+        self.wordlist = KeywordFeatures(lang)
+        super().__init__(**kwargs)
+
+    @property
+    def labels(self):
+        return sorted(list(self.wordlist.entities.keys()))
+
+    def load_entities(self, csv_path):
+        self.wordlist.load_entities(csv_path)
+
+    def register_entity(self, name, samples):
+        """ register runtime entity samples,
+            eg from skills"""
+        self.wordlist.register_entity(name, samples)
+
+    def deregister_entity(self, name):
+        """ register runtime entity samples,
+            eg from skills"""
+        self.wordlist.deregister_entity(name)
+
+    def fit(self, *args, **kwargs):
+        return self
+
+    def transform(self, X, **transform_params):
+        if isinstance(X, str):
+            X = [X]
+        feats = []
+        for sent in X:
+            s_feature = self.wordlist.count(sent)
+            feats += [s_feature]
+        return feats
+
+
+class KeywordFeaturesVectorizer(BaseEstimator, TransformerMixin):
+    def __init__(self, lang="en", **kwargs):
+        super().__init__(**kwargs)
+        self._transformer = KeywordFeaturesTransformer(lang)
+        # NOTE: changing this list requires retraining the classifier
+        self.labels_index = []
+
+    def load_entities(self, csv_path):
+        self._transformer.load_entities(csv_path)
+        self.fit()
+
+    def register_entity(self, name, samples):
+        """ register runtime entity samples,
+            eg from skills"""
+        self._transformer.register_entity(name, samples)
+
+    def deregister_entity(self, name):
+        """ register runtime entity samples,
+            eg from skills"""
+        self._transformer.deregister_entity(name)
+
+    def fit(self, *args, **kwargs):
+        self.labels_index = sorted(self._transformer.labels)
+        return self
+
+    def transform(self, X, **transform_params):
+        X2 = []
+        for x in self._transformer.transform(X):
+            feats = []
+            for label in self.labels_index:
+                if label in x:
+                    feats.append(x[label])
+                else:
+                    feats.append(0)
+            X2.append(feats)
+
+        return np.array(X2)
+
+
 if __name__ == '__main__':
     s = SkipGramTransformer(2, 2)
     text = ['Insurgents killed in ongoing fighting.', "i love apple", "i love watermelon"]
@@ -487,3 +673,76 @@ if __name__ == '__main__':
     #  ('love', 'watermelon'): 1,
     #  ('ongoing', '.'): 1,
     #  ('ongoing', 'fighting'): 1}
+
+    csv = "/home/miro/PycharmProjects/OCP_sprint/ocp-nlp/ocp_nlp/models/ocp_entities_v0.csv"
+    l = KeywordFeatures()
+    l.load_entities(csv)
+
+    # efficient keyword matching, search many strings inside query string
+    print(l.extract("play metallica"))
+    # {'album_name': 'Metallica', 'artist_name': 'Metallica'}
+
+    print(l.extract("play the beatles"))
+    # {'album_name': 'The Beatles', 'series_name': 'The Beatles',
+    # 'artist_name': 'The Beatles', 'movie_name': 'The Beatles'}
+
+    print(l.extract("play rob zombie"))
+    # {'artist_name': 'Rob Zombie', 'album_name': 'Zombie',
+    # 'book_name': 'Zombie', 'game_name': 'Zombie', 'movie_name': 'Zombie'}
+
+    print(l.extract("play horror movie"))
+    # {'film_genre': 'Horror', 'cartoon_genre': 'Horror', 'anime_genre': 'Horror',
+    # 'radio_drama_genre': 'horror', 'video_genre': 'horror',
+    # 'book_genre': 'Horror', 'movie_name': 'Horror Movie'}
+
+    print(l.extract("play science fiction"))
+    #  {'film_genre': 'Science Fiction', 'cartoon_genre': 'Science Fiction',
+    #  'podcast_genre': 'Fiction', 'anime_genre': 'Science Fiction',
+    #  'documentary_genre': 'Science', 'book_genre': 'Science Fiction',
+    #  'artist_name': 'Fiction', 'tv_channel': 'Science',
+    #  'album_name': 'Science Fiction', 'short_film_name': 'Science',
+    #  'book_name': 'Science Fiction', 'movie_name': 'Science Fiction'}
+
+    v = KeywordFeaturesVectorizer()
+    v.load_entities(csv)
+    print(v.transform(["play my morning jams"]))
+    # keyword count vector
+    # [[0 3 0 0 0 1 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    #   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0
+    #   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0]]
+
+    # keyword counts
+    v = KeywordFeaturesTransformer()
+    v.load_entities(csv)
+    print(v.transform(["play my morning jams"]))
+    # [{'film_genre': 0, 'cartoon_genre': 0, 'news_streaming_service': 0,
+    # 'media_type_documentary': 0, 'media_type_adult': 0, 'media_type_bw_movie': 0,
+    # 'podcast_genre': 0, 'comic_streaming_service': 0, 'music_genre': 0,
+    # 'media_type_video_episodes': 0, 'asmr_trigger': 0, 'anime_genre': 0,
+    # 'media_type_audio': 0, 'media_type_bts': 0, 'media_type_silent_movie': 0,
+    # 'audiobook_streaming_service': 0, 'radio_drama_genre': 0, 'media_type_podcast': 0,
+    # 'hentai_streaming_service': 0, 'radio_theatre_company': 0, 'ad_keyword': 0,
+    # 'media_type_short_film': 0, 'media_type_sound': 0, 'media_type_movie': 0,
+    # 'sound_name': 0, 'news_provider': 0, 'music_streaming_service': 0,
+    # 'documentary_genre': 0, 'radio_theatre_streaming_service': 0,
+    # 'podcast_streaming_service': 0, 'media_type_tv': 0, 'comic_name': 0,
+    # 'soundtrack_keyword': 0, 'media_type_adult_audio': 0, 'media_type_news': 0,
+    # 'media_type_music': 0, 'media_type_cartoon': 0, 'play_verb_audio': 0,
+    # 'documentary_streaming_service': 0, 'cartoon_streaming_service': 0,
+    # 'anime_streaming_service': 0, 'media_type_hentai': 0, 'movie_streaming_service': 0,
+    # 'media_type_trailer': 0, 'shorts_streaming_service': 0, 'video_genre': 0,
+    # 'asmr_keyword': 0, 'porn_streaming_service': 0, 'playback_device': 0,
+    # 'media_type_game': 0, 'playlist_name': 0, 'media_type_video': 0,
+    # 'media_type_visual_story': 0, 'media_type_radio_theatre': 0, 'play_verb_video': 0,
+    # 'media_type_audiobook': 0, 'porn_genre': 0, 'book_genre': 1, 'media_type_anime': 0,
+    # 'media_type_radio': 0, 'album_name': 3, 'country_name': 0, 'movie_director': 0,
+    # 'generic_streaming_service': 0, 'tv_streaming_service': 0, 'radio_drama_name': 0,
+    # 'film_studio': 0, 'video_streaming_service': 0, 'short_film_name': 1, 'tv_channel': 0,
+    # 'youtube_channel': 0, 'bw_movie_name': 0, 'audiobook_narrator': 0,
+    # 'radio_program_name': 0, 'game_name': 0, 'series_name': 1, 'artist_name': 1,
+    # 'tv_genre': 0, 'hentai_name': 0, 'podcast_name': 0, 'silent_movie_name': 0,
+    # 'book_name': 1, 'gaming_console_name': 0, 'book_author': 0, 'record_label': 0,
+    # 'radio_streaming_service': 0, 'podcaster': 0, 'game_genre': 0, 'anime_name': 0,
+    # 'documentary_name': 0, 'movie_actor': 0, 'cartoon_name': 0, 'radio_drama_actor': 0,
+    # 'audio_genre': 0, 'song_name': 0, 'movie_name': 2, 'porn_film_name': 0,
+    # 'comics_genre': 0, 'radio_program': 0, 'pornstar_name': 0}]

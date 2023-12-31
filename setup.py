@@ -111,9 +111,6 @@ setup(
               "ovos_classifiers.utils"],
     include_package_data=True,
     package_data={"": extra_files},
-    extras_require={
-        "sklearn": ["scikit-learn"]
-    },
     install_requires=required("requirements.txt"),
     zip_safe=True,
     classifiers=[

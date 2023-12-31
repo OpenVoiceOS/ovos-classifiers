@@ -55,7 +55,7 @@ class ReplaceableEntity:
             raise Exception("Immutable!")
 
     def __str__(self):
-        return "({v}, {t})".format(v=self.value, t=self.tokens)
+        return f"({self.value}, {self.tokens})"
 
     def __repr__(self):
         return "{n}({v}, {t})".format(n=self.__class__.__name__, v=self.value,
