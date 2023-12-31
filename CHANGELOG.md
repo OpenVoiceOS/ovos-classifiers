@@ -2,7 +2,19 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a38...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a39...HEAD)
+
+**Implemented enhancements:**
+
+-  keyword based feature extractor + housekeeping [\#30](https://github.com/OpenVoiceOS/ovos-classifiers/pull/30) ([NeonJarbas](https://github.com/NeonJarbas))
+
+**Closed issues:**
+
+- Hide nltk\_data log when "log\_level" is set to " INFO [\#8](https://github.com/OpenVoiceOS/ovos-classifiers/issues/8)
+
+## [V0.0.0a39](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a39) (2023-12-15)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a38...V0.0.0a39)
 
 **Implemented enhancements:**
 
