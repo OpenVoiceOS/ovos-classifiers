@@ -2,7 +2,20 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a39...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a40...HEAD)
+
+**Fixed bugs:**
+
+- Resource punkt not found. [\#32](https://github.com/OpenVoiceOS/ovos-classifiers/issues/32)
+- download postagger resources automatically [\#33](https://github.com/OpenVoiceOS/ovos-classifiers/pull/33) ([JarbasAl](https://github.com/JarbasAl))
+
+**Closed issues:**
+
+- Missing downloads when using different languages than English [\#27](https://github.com/OpenVoiceOS/ovos-classifiers/issues/27)
+
+## [V0.0.0a40](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a40) (2023-12-31)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a39...V0.0.0a40)
 
 **Implemented enhancements:**
 
