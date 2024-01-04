@@ -143,6 +143,9 @@ class NltkPostag:
     def __init__(self, config=None):
         # TODO - lang support
         self.config = config or {}
+        nltk.download('punkt')
+        nltk.download('averaged_perceptron_tagger')
+        nltk.download('universal_tagset')
 
     def tag(self, sentence):
         if isinstance(sentence, str):
