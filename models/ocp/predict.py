@@ -3,10 +3,7 @@ from os.path import dirname
 from ovos_classifiers.skovos.classifier import SklearnOVOSClassifier
 
 # tiny
-path = f"{dirname(__file__)}/classifiers/binary_ocp/perceptron/tfidf_lemma_1704442719.clf"
-# small
-path = f"{dirname(__file__)}/classifiers/binary_ocp/perceptron/cv2_lemma_1704442563.clf"
-
+path = f"{dirname(__file__)}/classifiers/binary_ocp_cv2_small.clf"
 
 utterances = ["play a song", "play my morning jams",
               "i want to watch the matrix",
@@ -27,8 +24,7 @@ for preds in clf.predict_labels(utterances):
     # {'OCP': 0.00012829987903095752, 'other': 0.9998717001209692}
     # {'OCP': 0.036421046297418026, 'other': 0.9635789537025821}
 
-
-path = f"{dirname(__file__)}/classifiers/media_ocp/perceptron/cv2_lemma_1704443382.clf"
+path = f"{dirname(__file__)}/classifiers/media_ocp_cv2_medium.clf"
 
 utterances = [
     "play metallica", "play internet radio", "watch kill bill", "turn on the radio"
@@ -40,7 +36,7 @@ print(preds)
 # ['music' 'radio' 'movie' 'radio']
 
 
-path = f"{dirname(__file__)}/classifiers/playback_ocp/perceptron/cv2_lemma_1704442616.clf"
+path = f"{dirname(__file__)}/classifiers/playback_ocp_cv2_small.clf"
 clf = SklearnOVOSClassifier.from_file(path)
 for preds in clf.predict_labels(utterances):
     print(preds)

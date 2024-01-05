@@ -1,0 +1,33 @@
+Balanced Accuracy: 0.8136730385986041
+              precision    recall  f1-score   support
+
+          ad       1.00      0.48      0.65      1200
+       adult       0.70      0.82      0.76       666
+  adult_asmr       1.00      0.82      0.90      1148
+       anime       0.97      0.71      0.82       950
+        asmr       0.99      0.87      0.92       771
+       audio       0.94      0.89      0.91      1036
+   audiobook       0.99      0.96      0.97      1168
+         bts       0.99      0.91      0.95       758
+    bw_movie       0.93      0.91      0.92       842
+     cartoon       0.82      0.81      0.82       909
+       comic       0.96      0.85      0.90       630
+ documentary       0.89      0.79      0.84      1004
+        game       0.98      0.86      0.91      1192
+      hentai       0.94      0.91      0.92       912
+       movie       0.42      0.94      0.58      1200
+       music       0.52      0.92      0.66      1200
+        news       0.94      0.97      0.95       881
+     podcast       0.86      0.87      0.87      1197
+       radio       0.96      0.91      0.94       586
+ radio_drama       0.92      0.93      0.93      1150
+      series       0.75      0.86      0.80      1186
+  short_film       0.85      0.29      0.44       356
+silent_movie       0.95      0.74      0.83       933
+     trailer       0.99      0.68      0.80       501
+  tv_channel       1.00      0.79      0.88      1172
+       video       0.78      0.67      0.72      1094
+
+    accuracy                           0.83     24642
+   macro avg       0.89      0.81      0.83     24642
+weighted avg       0.88      0.83      0.83     24642

@@ -1,0 +1,6 @@
+| pipeline              | language | accuracy           | params                                                                                                                                                  | size (MB) |
+|-----------------------|----------|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| media_ocp_kw_small    | all      | 0.8558702042868357 | {'solver': 'adam', 'learning_rate': 'constant', 'hidden_layer_sizes': (63, 38), 'early_stopping': False, 'alpha': 0.006, 'activation': 'relu'}          | 1.468     |
+| playback_ocp_kw_small | all      | 0.9017183438359262 | {'solver': 'adam', 'learning_rate': 'invscaling', 'hidden_layer_sizes': (114, 101, 36), 'early_stopping': False, 'alpha': 0.0485, 'activation': 'tanh'} | 3.904     |
+| binary_ocp_kw_small   | all      | 0.9326234280627232 | {'solver': 'adam', 'learning_rate': 'invscaling', 'hidden_layer_sizes': (120, 20, 80), 'early_stopping': True, 'alpha': 0.006, 'activation': 'tanh'}    | 2.373     |
+| binary_ocp_cv2_small  | en       | 0.9888979130544839 | {'penalty': None, 'l1_ratio': 0.9, 'early_stopping': False, 'alpha': 0.005}                                                                             | 2.166     |

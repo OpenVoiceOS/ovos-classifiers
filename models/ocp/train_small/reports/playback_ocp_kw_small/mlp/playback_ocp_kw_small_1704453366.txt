@@ -1,0 +1,10 @@
+Balanced Accuracy: 0.9017183438359262
+              precision    recall  f1-score   support
+
+       audio       0.93      0.92      0.92      2593
+    external       0.94      0.83      0.88       240
+       video       0.94      0.95      0.94      3333
+
+    accuracy                           0.93      6166
+   macro avg       0.93      0.90      0.92      6166
+weighted avg       0.93      0.93      0.93      6166

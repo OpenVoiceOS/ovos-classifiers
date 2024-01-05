@@ -1,9 +1,0 @@
-Balanced Accuracy: 0.987043861192594
-              precision    recall  f1-score   support
-
-         OCP       0.99      0.98      0.98      4839
-       other       0.99      0.99      0.99      8657
-
-    accuracy                           0.99     13496
-   macro avg       0.99      0.99      0.99     13496
-weighted avg       0.99      0.99      0.99     13496
