@@ -27,8 +27,9 @@ class TrainingRun:
 
 class BaseTrainer:
 
-    def __init__(self, pipeline_id="cv2"):
+    def __init__(self, pipeline_id="raw", featurizer=None):
         self.pipeline_id = pipeline_id
+        self.featurizer = featurizer
 
     def split_train_test(self, csv_path, test_size=0.6):
         X, y = self.read_csv(csv_path)
@@ -50,7 +51,7 @@ class BaseTrainer:
         return X, y
 
     @abc.abstractmethod
-    def hyperparam_search(self, csv_path, test_csv_path=None, max_iter=200, parameter_space=None) -> TrainingRun:
+    def hyperparam_search(self, csv_path, test_csv_path=None, parameter_space=None) -> TrainingRun:
         raise NotImplemented
 
     @abc.abstractmethod
@@ -142,8 +143,7 @@ class MLPTrainer(BaseTrainer):
         return run
 
     def hyperparam_search(self, csv_path, test_csv_path=None, max_iter=100,
-                          parameter_space=None, n_jobs=3, calibrate=False,
-                          test_size=0.6) -> TrainingRun:
+                          parameter_space=None, n_jobs=3, test_size=0.6) -> TrainingRun:
 
         start_ts = time.time()
         if test_csv_path:
@@ -152,8 +152,11 @@ class MLPTrainer(BaseTrainer):
         else:
             X_train, X_test, y_train, y_test = self.split_train_test(csv_path, test_size=test_size)
 
-        pipeline = get_features_pipeline(self.pipeline_id)
-        pipeline.fit(X_train, y_train)  # train/prepare feature extractors
+        if self.pipeline_id == "raw":
+            pipeline = self.featurizer
+        else:
+            pipeline = get_features_pipeline(self.pipeline_id)
+            pipeline.fit(X_train, y_train)  # train/prepare feature extractors
 
         # define random search params
         parameter_space = parameter_space or {
@@ -181,24 +184,29 @@ class MLPTrainer(BaseTrainer):
         # do a random search
         c = RandomizedSearchCV(mlp_gs, parameter_space, n_jobs=n_jobs, cv=5)
         feats = pipeline.transform(X_train)  # run trough pipeline feature extractor
+
         c.fit(feats, y_train)
+
         LOG.info(f'Best parameters found:\n {c.best_params_}')
 
         # calibrate the classifier
         # we want the output to be directly interpretable as a probability
-        if calibrate:
-            LOG.info("Calibrating classifier")
-            calibrated = CalibratedClassifierCV(c.best_estimator_)
-            clf = SklearnOVOSClassifier(self.pipeline_id, calibrated)
-            clf.train(X_train, y_train)
+        LOG.info("Calibrating classifier")
+        calibrated = CalibratedClassifierCV(c.best_estimator_)
+        clf = SklearnOVOSClassifier(self.pipeline_id, calibrated)
+        if self.pipeline_id == "raw":
+            clf.train(feats, y_train)
+            feats = pipeline.transform(X_test)
+            y_pred = clf.predict(feats)
         else:
-            clf = SklearnOVOSClassifier(self.pipeline_id, c.best_estimator_)
+            clf.train(X_train, y_train)
+            y_pred = clf.predict(X_test)
 
         # test the classifier
         # Note that we dont feed features here,
         # the calibrated classifier uses the pipeline_id internally
-        y_pred = clf.predict(X_test)
         acc = balanced_accuracy_score(y_test, y_pred)
+
         report = f"Balanced Accuracy: {acc}\n" + \
                  classification_report(y_test, y_pred, target_names=c.classes_)
         LOG.info(f"{self.pipeline_id} Accuracy: {acc}")
@@ -226,17 +234,30 @@ class PerceptronTrainer(BaseTrainer):
         else:
             X_train, X_test, y_train, y_test = self.split_train_test(csv_path, test_size=0.6)
 
+        if self.pipeline_id == "raw":
+            pipeline = self.featurizer
+        else:
+            pipeline = get_features_pipeline(self.pipeline_id)
+            pipeline.fit(X_train, y_train)  # train/prepare feature extractors
+
         c = Perceptron( verbose=True)
         if calibrate:
             c = CalibratedClassifierCV(c)
 
         clf = SklearnOVOSClassifier(self.pipeline_id, c)
-        clf.train(X_train, y_train)
+
+        if self.pipeline_id == "raw":
+            feats = pipeline.transform(X_train)  # run trough pipeline feature extractor
+            clf.train(feats, y_train)
+            feats = pipeline.transform(X_test)
+            y_pred = clf.predict(feats)
+        else:
+            clf.train(X_train, y_train)
+            y_pred = clf.predict(X_test)
 
         # test the classifier
         # Note that we dont feed features here,
         # the calibrated classifier uses the pipeline_id internally
-        y_pred = clf.predict(X_test)
         acc = balanced_accuracy_score(y_test, y_pred)
         report = f"Balanced Accuracy: {acc}\n" + \
                  classification_report(y_test, y_pred, target_names=c.classes_)
@@ -255,7 +276,7 @@ class PerceptronTrainer(BaseTrainer):
         return run
 
     def hyperparam_search(self, csv_path, test_csv_path=None,
-                          parameter_space=None, n_jobs=3, calibrate=False,
+                          parameter_space=None, n_jobs=3,
                           test_size=0.6) -> TrainingRun:
 
         start_ts = time.time()
@@ -265,8 +286,11 @@ class PerceptronTrainer(BaseTrainer):
         else:
             X_train, X_test, y_train, y_test = self.split_train_test(csv_path, test_size=test_size)
 
-        pipeline = get_features_pipeline(self.pipeline_id)
-        pipeline.fit(X_train, y_train)  # train/prepare feature extractors
+        if self.pipeline_id == "raw":
+            pipeline = self.featurizer
+        else:
+            pipeline = get_features_pipeline(self.pipeline_id)
+            pipeline.fit(X_train, y_train)  # train/prepare feature extractors
 
         # define random search params
         parameter_space = parameter_space or {
@@ -280,24 +304,29 @@ class PerceptronTrainer(BaseTrainer):
         # do a random search
         c = RandomizedSearchCV(mlp_gs, parameter_space, n_jobs=n_jobs, cv=5)
         feats = pipeline.transform(X_train)  # run trough pipeline feature extractor
+
         c.fit(feats, y_train)
+
         LOG.info(f'Best parameters found:\n {c.best_params_}')
 
         # calibrate the classifier
         # we want the output to be directly interpretable as a probability
-        if calibrate:
-            LOG.info("Calibrating classifier")
-            calibrated = CalibratedClassifierCV(c.best_estimator_)
-            clf = SklearnOVOSClassifier(self.pipeline_id, calibrated)
-            clf.train(X_train, y_train)
+        LOG.info("Calibrating classifier")
+        calibrated = CalibratedClassifierCV(c.best_estimator_)
+        clf = SklearnOVOSClassifier(self.pipeline_id, calibrated)
+        if self.pipeline_id == "raw":
+            clf.train(feats, y_train)
+            feats = pipeline.transform(X_test)
+            y_pred = clf.predict(feats)
         else:
-            clf = SklearnOVOSClassifier(self.pipeline_id, c.best_estimator_)
+            clf.train(X_train, y_train)
+            y_pred = clf.predict(X_test)
 
         # test the classifier
         # Note that we dont feed features here,
         # the calibrated classifier uses the pipeline_id internally
-        y_pred = clf.predict(X_test)
         acc = balanced_accuracy_score(y_test, y_pred)
+
         report = f"Balanced Accuracy: {acc}\n" + \
                  classification_report(y_test, y_pred, target_names=c.classes_)
         LOG.info(f"{self.pipeline_id} Accuracy: {acc}")
