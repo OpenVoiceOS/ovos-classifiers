@@ -2,11 +2,22 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a40...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a41...HEAD)
+
+**Implemented enhancements:**
+
+- feat/nn\_module + OCP classifiers [\#31](https://github.com/OpenVoiceOS/ovos-classifiers/pull/31) ([NeonJarbas](https://github.com/NeonJarbas))
 
 **Fixed bugs:**
 
 - Resource punkt not found. [\#32](https://github.com/OpenVoiceOS/ovos-classifiers/issues/32)
+
+## [V0.0.0a41](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a41) (2024-01-04)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a40...V0.0.0a41)
+
+**Fixed bugs:**
+
 - download postagger resources automatically [\#33](https://github.com/OpenVoiceOS/ovos-classifiers/pull/33) ([JarbasAl](https://github.com/JarbasAl))
 
 **Closed issues:**
