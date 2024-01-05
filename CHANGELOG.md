@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+## [V0.0.0a43](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a43) (2024-01-05)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a42...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a42...V0.0.0a43)
 
 **Merged pull requests:**
 
