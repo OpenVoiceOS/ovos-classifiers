@@ -7,16 +7,20 @@ import nltk
 import numpy as np
 from nltk.util import skipgrams
 from normality.transliteration import latinize_text
-from ovos_classifiers.corefiob import OVOSCorefIOBTagger
-from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
-from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.postag import OVOSPostag
-from ovos_classifiers.utils import extract_postag_features, \
-    extract_word_features, normalize, get_stemmer, extract_single_word_features
 from ovos_config import Configuration
+from ovos_utils.xdg_utils import xdg_data_home
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import Perceptron
+
+from ovos_classifiers.corefiob import OVOSCorefIOBTagger
+from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
+from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_classifiers.datasets import get_ocp_entities_dataset
+from ovos_classifiers.postag import OVOSPostag
+from ovos_classifiers.utils import extract_postag_features, \
+    extract_word_features, normalize, get_stemmer, extract_single_word_features
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -465,14 +469,23 @@ class SkipGramTransformer(BaseEstimator, TransformerMixin):
 
 
 class KeywordFeatures:
-    def __init__(self, lang="en", ignore_list=None):
+    def __init__(self, csv_path=None, ignore_list=None):
         ignore_list = ignore_list or []
-        self.lang = lang.split("-")[0]
         self.ignore_list = ignore_list
         self.bias = {}  # just for logging
         self.automatons = {}
         self._needs_building = []
         self.entities = {}
+        if csv_path:
+            self.load_entities(csv_path)
+
+    def reset_automatons(self):
+        # "untrain" the automatons
+        self._needs_building = [name for name in self.automatons]
+        self.automatons = {name: ahocorasick.Automaton() for name in self.automatons.keys()}
+        for name, samples in self.entities.items():
+            for s in samples:
+                self.automatons[name].add_word(s.lower(), s)
 
     def register_entity(self, name, samples):
         """ register runtime entity samples,
@@ -505,9 +518,15 @@ class KeywordFeatures:
 
     def load_entities(self, csv_path):
         ents = {}
-        with open(csv_path) as f:
-            lines = f.read().split("\n")[1:]
-            data = [l.split(",", 1) for l in lines if "," in l]
+        if isinstance(csv_path, str):
+            files = [csv_path]
+        else:
+            files = csv_path
+        data = []
+        for csv_path in files:
+            with open(csv_path) as f:
+                lines = f.read().split("\n")[1:]
+                data += [l.split(",", 1) for l in lines if "," in l]
 
         for n, s in data:
             if n not in ents:
@@ -575,8 +594,8 @@ class KeywordFeatures:
 
 class KeywordFeaturesTransformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, lang="en", **kwargs):
-        self.wordlist = KeywordFeatures(lang)
+    def __init__(self, csv_path=None, ignore_list=None, **kwargs):
+        self.wordlist = KeywordFeatures(csv_path, ignore_list)
         super().__init__(**kwargs)
 
     @property
@@ -610,9 +629,9 @@ class KeywordFeaturesTransformer(BaseEstimator, TransformerMixin):
 
 
 class KeywordFeaturesVectorizer(BaseEstimator, TransformerMixin):
-    def __init__(self, lang="en", **kwargs):
+    def __init__(self, csv_path=None, ignore_list=None, **kwargs):
         super().__init__(**kwargs)
-        self._transformer = KeywordFeaturesTransformer(lang)
+        self._transformer = KeywordFeaturesTransformer(csv_path, ignore_list, **kwargs)
         # NOTE: changing this list requires retraining the classifier
         self.labels_index = []
 
@@ -648,7 +667,39 @@ class KeywordFeaturesVectorizer(BaseEstimator, TransformerMixin):
         return np.array(X2)
 
 
+class OCPKeywordFeaturesVectorizer(KeywordFeaturesVectorizer):
+    def __init__(self, ignore_list=None, **kwargs):
+        get_ocp_entities_dataset()  # ensure file exists
+        csv_path = f"{xdg_data_home()}/OpenVoiceOS/datasets/ocp_entities_v0.csv"
+        super().__init__(csv_path, ignore_list, **kwargs)
+
+
+class ClassifierProbaVectorizer(BaseEstimator, TransformerMixin):
+    def __init__(self, base_clf=None, prefit=True, **kwargs):
+        super().__init__(**kwargs)
+        if base_clf is None:
+            prefit = False
+            base_clf = Perceptron()
+        self.clf = base_clf
+        self.prefit = prefit
+
+    def fit(self, *args, **kwargs):
+        if not self.prefit:
+            self.clf.fit(*args, **kwargs)
+            self.prefit = True
+        return self
+
+    def transform(self, X, **transform_params):
+        # provide a vector of probabilities per class
+        return self.clf.clf.predict_proba(X)
+
+
 if __name__ == '__main__':
+    f = OCPKeywordFeaturesVectorizer()
+    f.fit()
+    t = f.transform(["play metallica", "play a horror movie", "watch netflix"])
+    print(t)
+    exit()
     s = SkipGramTransformer(2, 2)
     text = ['Insurgents killed in ongoing fighting.', "i love apple", "i love watermelon"]
     s.fit(text)

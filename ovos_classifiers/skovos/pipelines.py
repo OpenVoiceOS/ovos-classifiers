@@ -3,7 +3,8 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 
 from ovos_classifiers.skovos.features import WordFeaturesVectorizer, POSTaggerVectorizer, \
     PronounTaggerVectorizer, CorefIOBTaggerVectorizer, SingleWordFeaturesVectorizer, TokenizerTransformer, \
-    SkipGramVectorizer, SkipGramTransformer, LangFeaturesVectorizer
+    SkipGramVectorizer, LangFeaturesVectorizer, OCPKeywordFeaturesVectorizer, \
+    ClassifierProbaVectorizer
 from ovos_classifiers.skovos.features.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
 
 """
@@ -125,6 +126,7 @@ def get_features_pipeline(pipeline_id="default"):
             ("lemma", WordNetLemmatizerTransformer()),
             ("cv2", CountVectorizer(ngram_range=(1, 2)))
         ]),
+        # pipelines for question classification
         "questions_en": FeatureUnion([
             ("question_feats", QuestionFeaturesVectorizerEN()),
             ("cv2", CountVectorizer(ngram_range=(1, 2))),
@@ -133,6 +135,35 @@ def get_features_pipeline(pipeline_id="default"):
                 ('tfidf', TfidfVectorizer(min_df=.05, max_df=.4))
             ])),
             ("postag", POSTaggerVectorizer(lang="en"))
+        ]),
+
+        # pipelines for OCP classification
+        "ocp_kw": Pipeline([
+            ("kw", OCPKeywordFeaturesVectorizer())
+        ]),
+        "ocp_kw_cv2": FeatureUnion([
+            ("kw", OCPKeywordFeaturesVectorizer()),
+            ("cv2", CountVectorizer(ngram_range=(1, 2)) )
+        ]),
+        "ocp_kw_tfidf": FeatureUnion([
+            ("kw", OCPKeywordFeaturesVectorizer()),
+            ('tfidf', TfidfVectorizer(min_df=.05, max_df=.4))
+        ]),
+        "ocp_kw_cv2_lemma": FeatureUnion([
+            ("kw", OCPKeywordFeaturesVectorizer()),
+            ("cv2_lemma", Pipeline([
+                ("lemma", WordNetLemmatizerTransformer()),
+                ("cv2", CountVectorizer(ngram_range=(1, 2)))
+            ])
+             )
+        ]),
+        "ocp_kw_tfidf_lemma": FeatureUnion([
+            ("kw", OCPKeywordFeaturesVectorizer()),
+            ("tfidf_lemma", Pipeline([
+                ("lemma", WordNetLemmatizerTransformer()),
+                ('tfidf', TfidfVectorizer(min_df=.05, max_df=.4))
+            ])
+             )
         ])
     }
 

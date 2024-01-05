@@ -175,3 +175,25 @@ def get_brown_trainset(udep=False):
     X, y = _tagged_to_dataset(train_data)
     X_test, y_test = _tagged_to_dataset(test_data)
     return (X, y), (X_test, y_test)
+
+
+# ocp_entities_v0.1
+def get_ocp_entities_dataset():
+    base_path = f"{xdg_data_home()}/OpenVoiceOS/datasets"
+    makedirs(base_path, exist_ok=True)
+    path = f"{base_path}/ocp_entities_v0.csv"
+    url = "https://github.com/OpenVoiceOS/ovos-datasets/raw/master/text/ocp_entities_v0.csv"
+    if not isfile(path):
+        data = requests.get(url).text
+        with open(path, "w") as f:
+            f.write(data)
+
+    corpus = []
+    with open(path) as f:
+        for l in f.read().split("\n")[1:]:
+            if not l.strip():
+                continue
+            tag, ent = l.split(",", 1)
+            corpus.append((ent, tag))
+
+    return corpus
