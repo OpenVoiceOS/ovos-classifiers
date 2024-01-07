@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a44...HEAD)
+
+**Fixed bugs:**
+
+- ordinal check is\_number\_de [\#25](https://github.com/OpenVoiceOS/ovos-classifiers/pull/25) ([emphasize](https://github.com/emphasize))
+
+## [V0.0.0a44](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a44) (2024-01-05)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a43...V0.0.0a44)
+
 ## [V0.0.0a43](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a43) (2024-01-05)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a42...V0.0.0a43)
