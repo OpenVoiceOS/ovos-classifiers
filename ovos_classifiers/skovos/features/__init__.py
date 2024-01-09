@@ -533,6 +533,7 @@ class KeywordFeatures:
                 ents[n] = []
             s = latinize_text(s)
             ents[n].append(s)
+            self._needs_building.append(n)
 
         for k, samples in ents.items():
             self._needs_building.append(k)
@@ -540,7 +541,7 @@ class KeywordFeatures:
                 self.automatons[k] = ahocorasick.Automaton()
             for s in samples:
                 self.automatons[k].add_word(s.lower(), s)
-        self.entities = ents
+        self.entities.update(ents)
         return ents
 
     def match(self, utt):
@@ -602,6 +603,9 @@ class KeywordFeaturesTransformer(BaseEstimator, TransformerMixin):
     def labels(self):
         return sorted(list(self.wordlist.entities.keys()))
 
+    def ignore(self, samples):
+        self.wordlist.ignore_list += samples
+
     def load_entities(self, csv_path):
         self.wordlist.load_entities(csv_path)
 
@@ -635,6 +639,13 @@ class KeywordFeaturesVectorizer(BaseEstimator, TransformerMixin):
         # NOTE: changing this list requires retraining the classifier
         self.labels_index = []
 
+    @property
+    def labels(self):
+        return self._transformer.labels
+
+    def ignore(self, samples):
+        self._transformer.ignore(samples)
+
     def load_entities(self, csv_path):
         self._transformer.load_entities(csv_path)
         self.fit()
@@ -643,14 +654,16 @@ class KeywordFeaturesVectorizer(BaseEstimator, TransformerMixin):
         """ register runtime entity samples,
             eg from skills"""
         self._transformer.register_entity(name, samples)
+        self.fit()
 
     def deregister_entity(self, name):
         """ register runtime entity samples,
             eg from skills"""
         self._transformer.deregister_entity(name)
+        self.fit()
 
     def fit(self, *args, **kwargs):
-        self.labels_index = sorted(self._transformer.labels)
+        self.labels_index = sorted(self.labels)
         return self
 
     def transform(self, X, **transform_params):

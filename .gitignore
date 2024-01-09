@@ -18,3 +18,8 @@ dist
 
 # Created by unit tests
 .pytest_cache/
+!/models/ocp/ocp_binary_clf_report.py
+
+!/models/ocp/ocp_media_clf_report.py
+
+!/models/ocp/ocp_playback_clf_report.py
