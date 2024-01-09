@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a45...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a46...HEAD)
+
+**Fixed bugs:**
+
+- fix/keyword\_feats\_entity\_loading [\#35](https://github.com/OpenVoiceOS/ovos-classifiers/pull/35) ([NeonJarbas](https://github.com/NeonJarbas))
+
+## [V0.0.0a46](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a46) (2024-01-07)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a45...V0.0.0a46)
 
 **Merged pull requests:**
 
