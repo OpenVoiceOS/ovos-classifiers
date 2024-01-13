@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a46...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a47...HEAD)
+
+**Implemented enhancements:**
+
+- feat/baseline\_multiple\_choice\_solver [\#36](https://github.com/OpenVoiceOS/ovos-classifiers/pull/36) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.0.0a47](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a47) (2024-01-09)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a46...V0.0.0a47)
 
 **Fixed bugs:**
 
