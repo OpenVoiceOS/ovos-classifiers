@@ -1,14 +1,12 @@
-from ovos_classifiers.heuristics.tokenize import word_tokenize
-from quebra_frases import sentence_tokenize, paragraph_tokenize
 from heapq import nlargest
-from nltk.corpus import stopwords
-import nltk
+from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_classifiers.utils import get_stopwords
+from quebra_frases import sentence_tokenize
 from string import punctuation
 
 
 class WordFrequencySummarizer:
     def __init__(self):
-        nltk.download("stopwords")
         self.langs = {
             "en": "english",
             "ar": "arabic",
@@ -31,10 +29,7 @@ class WordFrequencySummarizer:
         }
 
     def summarize(self, document, lang="en"):
-        lang = lang.split("-")[0].lower()
-        lang = self.langs.get(lang) or lang
-
-        stop_words = stopwords.words(lang)
+        stop_words = get_stopwords(lang)
 
         tokens = word_tokenize(document, lang)
 
@@ -72,5 +67,3 @@ class WordFrequencySummarizer:
         summary = nlargest(select_length, sentence_scores, key=sentence_scores.get)
         final_summary = [word for word in summary]
         return '\n'.join(final_summary) or document
-
-

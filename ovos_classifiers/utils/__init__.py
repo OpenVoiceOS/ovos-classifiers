@@ -1,7 +1,35 @@
-import re
-
 import nltk
+import re
 from nltk.stem.snowball import SnowballStemmer
+
+
+def get_stopwords(lang):
+    nltk.download("stopwords")
+    langmap = {
+        "en": "english",
+        "ar": "arabic",
+        "az": "azerbaijani",
+        "ca": "catalan",
+        "eu": "basque",
+        "da": "danish",
+        "de": "german",
+        "nl": "dutch",
+        "fi": "finnish",
+        "fr": "french",
+        "hu": "hungarian",
+        "it": "italian",
+        "no": "norwegian",
+        "pt": "portuguese",
+        "ru": "russian",
+        "es": "spanish",
+        "sw": "swedish",
+        "ro": "romanian"
+    }
+    lang = langmap.get(lang.lower().split("-")[0])
+    if not lang:
+        return []
+    stopwords = nltk.corpus.stopwords.words(lang)
+    return stopwords
 
 
 def load_tagger(data, model_path):

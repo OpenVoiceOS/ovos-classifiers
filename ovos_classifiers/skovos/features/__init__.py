@@ -1,26 +1,24 @@
 # feature extraction utils
 
-import functools
-
 import ahocorasick
-import nltk
+import functools
 import numpy as np
 from nltk.util import skipgrams
 from normality.transliteration import latinize_text
+from ovos_classifiers.corefiob import OVOSCorefIOBTagger
+from ovos_classifiers.datasets import get_ocp_entities_dataset
+from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
+from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_classifiers.postag import OVOSPostag
+from ovos_classifiers.utils import extract_postag_features, \
+    extract_word_features, normalize, get_stemmer, extract_single_word_features
+from ovos_classifiers.utils import get_stopwords
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import Perceptron
-
-from ovos_classifiers.corefiob import OVOSCorefIOBTagger
-from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
-from ovos_classifiers.heuristics.tokenize import word_tokenize
-from ovos_classifiers.datasets import get_ocp_entities_dataset
-from ovos_classifiers.postag import OVOSPostag
-from ovos_classifiers.utils import extract_postag_features, \
-    extract_word_features, normalize, get_stemmer, extract_single_word_features
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -152,9 +150,8 @@ class LangFeaturesTransformer(BaseEstimator, TransformerMixin):
         return feats
 
     def fit(self, *args, **kwargs):
-        nltk.download("stopwords")
         for l, lang in self.langs.items():
-            self.stopwords[l] = nltk.corpus.stopwords.words(lang)
+            self.stopwords[l] = get_stopwords(lang)
         self.clf = LMLangClassifier()
         return self
 

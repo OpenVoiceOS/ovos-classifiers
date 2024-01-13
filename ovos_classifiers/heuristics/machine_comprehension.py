@@ -1,4 +1,5 @@
 import math
+from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
 class BM25:
@@ -111,3 +112,99 @@ class BM25:
 
         return score
 
+
+def rank_answers(question, evidence, stopwords=None):
+    stopwords = stopwords or []
+    bm25 = BM25()
+    corpus = [[w.lower() for w in word_tokenize(s) if w.lower() not in stopwords]
+              for s in evidence]
+    bm25.fit(corpus)
+    scores = bm25.search(word_tokenize(question.lower()))
+    return {k: v for (k, v) in zip(evidence, scores)}
+
+
+def get_best_answer(question, evidence, stopwords=None):
+    scores = rank_answers(question, evidence, stopwords)
+    best = max(scores, key=scores.get)
+    ties = [t for t, s in scores.items() if s >= scores[best]]
+    return min(ties, key=len)
+
+
+if __name__ == "__main__":
+    from ovos_classifiers.utils import get_stopwords
+
+    stopwords = get_stopwords("en")
+
+    q = "who is Einstein"
+    ans = [
+        "Albert Einstein was a German–born theoretical physicist who is widely held to be one of the greatest and most influential scientists of all time.",
+        "The Einstein family is the family of physicist Albert Einstein (1879–1955)."
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    #  {'Albert Einstein was a German–born theoretical physicist who is widely held to be one of the greatest and most influential scientists of all time.': 0.17298060416883737,
+    #  'The Einstein family is the family of physicist Albert Einstein (1879–1955).': 0.27090870251702015}
+    print(get_best_answer(q, ans, stopwords))
+    # The Einstein family is the family of physicist Albert Einstein (1879–1955).
+
+    q = "what is the speed of light"
+    ans = [
+        "The speed of light in vacuum, commonly denoted c, is a universal physical constant that is exactly equal to 299,792,458 metres per second (approximately 300,000 kilometres per second; 186,000 miles per second; 671 million miles per hour).",
+        "The speed of light in vacuum, commonly denoted c, is a universal physical constant that is exactly equal to 299,792,458 metres per second.",
+        "The speed of light has a value of about 300 million meters per second"
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    # {'The speed of light in vacuum, commonly denoted c, is a universal physical constant that is exactly equal to 299,792,458 metres per second (approximately 300,000 kilometres per second; 186,000 miles per second; 671 million miles per hour).': 0.19742903205224116,
+    # 'The speed of light in vacuum, commonly denoted c, is a universal physical constant that is exactly equal to 299,792,458 metres per second.': 0.28071940494928044,
+    # 'The speed of light has a value of about 300 million meters per second': 0.3837407011345503}
+    print(get_best_answer(q, ans, stopwords))
+    # The speed of light has a value of about 300 million meters per second
+
+    q = "who is Isaac Newton"
+    ans = [
+        "Sir Isaac Newton was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, and author who was described in his time as a natural philosopher.",
+        "Sir Isaac Newton (25 December 1642 – 20 March 1726/27) was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, and author who was described in his time as a natural philosopher."
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    # {'Sir Isaac Newton was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, and author who was described in his time as a natural philosopher.': 0.3977924875504463,
+    # 'Sir Isaac Newton (25 December 1642 – 20 March 1726/27) was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, and author who was described in his time as a natural philosopher.': 0.3365936433119162}
+    print(get_best_answer(q, ans, stopwords))
+    # Sir Isaac Newton was an English polymath active as a mathematician, physicist, astronomer, alchemist, theologian, and author who was described in his time as a natural philosopher.
+
+    q = "who invented the telephone"
+    ans = [
+        "A telephone is a telecommunications device that permits two or more users to conduct a conversation when they are too far apart to be easily heard directly.",
+        "The telephone was invented by Alexander Graham Bell and Antonio Meucci"
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    # {'A telephone is a telecommunications device that permits two or more users to conduct a conversation when they are too far apart to be easily heard directly.': 0.15854048416865615,
+    # 'The telephone was invented by Alexander Graham Bell and Antonio Meucci': 1.0299632204163527}
+    print(get_best_answer(q, ans, stopwords))
+    # The telephone was invented by Alexander Graham Bell and Antonio Meucci
+
+    q = "who invented the internet"
+    ans = [
+        "Al Gore is a United States politician who served successively in the House of Representatives, the Senate, and as the Vice President from 1993 to 2001.",
+        "The answer is Advanced Research Projects Agency (ARPA), Tom Truscott, Jim Ellis, and 4 more"
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    #  {'Al Gore is a United States politician who served successively in the House of Representatives, the Senate, and as the Vice President from 1993 to 2001.': 0.0,
+    #  'The answer is Advanced Research Projects Agency (ARPA), Tom Truscott, Jim Ellis, and 4 more': 0.0}
+    print(get_best_answer(q, ans, stopwords))
+    # The answer is Advanced Research Projects Agency (ARPA), Tom Truscott, Jim Ellis, and 4 more
+
+    q = "when will the world end"
+    ans = [
+        "The world will effectively end 5 billion years from now when the Sun becomes a red giant star",
+        "Predictions of apocalyptic events that would result in the extinction of humanity, a collapse of civilization, or the destruction of the planet have been made since at least the beginning of the Common Era."
+    ]
+
+    print(rank_answers(q, ans, stopwords))
+    # {'The world will effectively end 5 billion years from now when the Sun becomes a red giant star': 1.5946243114922676,
+    # 'Predictions of apocalyptic events that would result in the extinction of humanity, a collapse of civilization, or the destruction of the planet have been made since at least the beginning of the Common Era.': 0.0}
+    print(get_best_answer(q, ans, stopwords))
+    # The world will effectively end 5 billion years from now when the Sun becomes a red giant star

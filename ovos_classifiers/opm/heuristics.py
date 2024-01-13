@@ -1,17 +1,6 @@
 # these plugins do not have external dependencies and do not download any data
 # they should be available in all platforms
 import string
-from typing import Optional, List
-
-from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
-from ovos_plugin_manager.templates.g2p import Grapheme2PhonemePlugin
-from ovos_plugin_manager.templates.keywords import KeywordExtractor
-from ovos_plugin_manager.templates.postag import PosTagger
-from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver
-from ovos_plugin_manager.templates.transformers import UtteranceTransformer
-from ovos_utils.lang.visimes import VISIMES
-from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
-
 from ovos_classifiers.heuristics.corefiob import CorefIOBHeuristicTagger
 from ovos_classifiers.heuristics.keyword_extraction import HeuristicExtractor
 from ovos_classifiers.heuristics.machine_comprehension import BM25
@@ -21,6 +10,16 @@ from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer,
 from ovos_classifiers.heuristics.phonemizer import EnglishARPAHeuristicPhonemizer
 from ovos_classifiers.heuristics.postag import RegexPostag
 from ovos_classifiers.heuristics.summarization import WordFrequencySummarizer
+from ovos_classifiers.utils import get_stopwords
+from ovos_plugin_manager.templates.coreference import CoreferenceSolverEngine
+from ovos_plugin_manager.templates.g2p import Grapheme2PhonemePlugin
+from ovos_plugin_manager.templates.keywords import KeywordExtractor
+from ovos_plugin_manager.templates.postag import PosTagger
+from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver, MultipleChoiceSolver
+from ovos_plugin_manager.templates.transformers import UtteranceTransformer
+from ovos_utils.lang.visimes import VISIMES
+from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
+from typing import Optional, List
 
 
 class RegexPostagPlugin(PosTagger):
@@ -93,6 +92,24 @@ class HeuristicSummarizerPlugin(TldrSolver):
         context = context or {}
         lang = context.get("lang") or "en"
         return WordFrequencySummarizer().summarize(document, lang)
+
+
+class BM25MultipleChoiceSolver(MultipleChoiceSolver):
+    """select best answer to a question from a list of options """
+
+    # plugin methods to override
+    def select_answer(self, query, options, context):
+        """
+        query and options assured to be in self.default_lang
+        return best answer from options list
+        """
+        try:
+            from ovos_classifiers.heuristics.machine_comprehension import get_best_answer
+            lang = context.get("lang")
+            stopwords = get_stopwords(lang)
+        except: # in case nltk is not available or stopwords dataset download fails for any reason
+            stopwords = []
+        return get_best_answer(query, options, stopwords)
 
 
 class BM25SolverPlugin(EvidenceSolver):
