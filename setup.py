@@ -68,6 +68,9 @@ SUMMARIZER_ENTRY_POINT = (
 QA_ENTRY_POINT = (
     'ovos-evidence-solver-bm25=ovos_classifiers.opm.heuristics:BM25SolverPlugin'
 )
+MCHOICE_ENTRY_POINT = (
+    'ovos-choice-solver-bm25=ovos_classifiers.opm.heuristics:BM25MultipleChoiceSolver'
+)
 KW_ENTRY_POINT = (
     'ovos-keyword-extractor-heuristic=ovos_classifiers.opm.heuristics:HeuristicKeywordExtractorPlugin',
     # nltk data dependent (stopwords)
@@ -128,6 +131,7 @@ setup(
         'neon.plugin.lang.detect': LANG_DETECT_ENTRY,
         'opm.solver.summarization': SUMMARIZER_ENTRY_POINT,
         "opm.solver.reading_comprehension": QA_ENTRY_POINT,
+        "opm.solver.multiple_choice": MCHOICE_ENTRY_POINT,
         "intentbox.keywords": KW_ENTRY_POINT,
         "intentbox.coreference": COREF_ENTRY,
         "intentbox.postag": POSTAG_ENTRY,
