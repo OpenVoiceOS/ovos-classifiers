@@ -552,7 +552,7 @@ class KeywordFeatures:
 
         for k, automaton in self.automatons.items():
             for idx, v in automaton.iter(utt):
-                if len(v) <= 3:
+                if len(v) < 3:
                     continue
 
                 if "_name" in k and v.lower() in self.ignore_list:
