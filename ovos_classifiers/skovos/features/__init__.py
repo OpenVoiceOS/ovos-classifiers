@@ -1,10 +1,18 @@
 # feature extraction utils
 
-import ahocorasick
 import functools
+
+import ahocorasick
 import numpy as np
 from nltk.util import skipgrams
 from normality.transliteration import latinize_text
+from ovos_config import Configuration
+from ovos_utils.xdg_utils import xdg_data_home
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import Perceptron
+
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets import get_ocp_entities_dataset
 from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
@@ -13,12 +21,6 @@ from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
 from ovos_classifiers.utils import get_stopwords
-from ovos_config import Configuration
-from ovos_utils.xdg_utils import xdg_data_home
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction import DictVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.linear_model import Perceptron
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -551,6 +553,10 @@ class KeywordFeatures:
         utt = utt.lower().strip(".!?,;:")
 
         for k, automaton in self.automatons.items():
+            # skip automatons without registered samples
+            if not self.entities.get(k):
+                continue
+
             for idx, v in automaton.iter(utt):
                 if len(v) < 3:
                     continue
