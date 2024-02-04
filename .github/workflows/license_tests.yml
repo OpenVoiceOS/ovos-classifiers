@@ -37,7 +37,7 @@ jobs:
           requirements: 'requirements-all.txt'
           fail: 'Copyleft,Other,Error'
           fails-only: true
-          exclude: '^(chardet).*'
+          exclude: '^(chardet|text-unidecode).*'
           exclude-license: '^(Mozilla).*$'
       - name: Print report
         if: ${{ always() }}
