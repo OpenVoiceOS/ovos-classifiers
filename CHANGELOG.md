@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a49...HEAD)
+
+**Fixed bugs:**
+
+- fix/empty\_automatons [\#37](https://github.com/OpenVoiceOS/ovos-classifiers/pull/37) ([NeonJarbas](https://github.com/NeonJarbas))
+
+## [V0.0.0a49](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a49) (2024-01-22)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a48...V0.0.0a49)
+
 ## [V0.0.0a48](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a48) (2024-01-13)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a47...V0.0.0a48)
