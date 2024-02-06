@@ -7,4 +7,3 @@ pyahocorasick
 normality
 ovos-config
 quebra-frases
-PyICU
