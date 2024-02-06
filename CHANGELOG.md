@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a50...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a51...HEAD)
+
+**Fixed bugs:**
+
+- drop PyICU [\#39](https://github.com/OpenVoiceOS/ovos-classifiers/pull/39) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.0.0a51](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a51) (2024-02-04)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a50...V0.0.0a51)
 
 **Merged pull requests:**
 
