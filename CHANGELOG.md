@@ -2,7 +2,15 @@
 
 ## [Unreleased](https://github.com/OpenVoiceOS/ovos-classifiers/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a51...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a52...HEAD)
+
+**Merged pull requests:**
+
+- replace normality with anyascii [\#40](https://github.com/OpenVoiceOS/ovos-classifiers/pull/40) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.0.0a52](https://github.com/OpenVoiceOS/ovos-classifiers/tree/V0.0.0a52) (2024-02-06)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-classifiers/compare/V0.0.0a51...V0.0.0a52)
 
 **Fixed bugs:**
 
