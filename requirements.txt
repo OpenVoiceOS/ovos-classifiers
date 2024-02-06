@@ -4,6 +4,6 @@ joblib
 ovos-utils
 python-dateutil>=2.8.2
 pyahocorasick
-normality
+anyascii
 ovos-config
 quebra-frases

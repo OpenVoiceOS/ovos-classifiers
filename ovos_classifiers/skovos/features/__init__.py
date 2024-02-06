@@ -5,7 +5,7 @@ import functools
 import ahocorasick
 import numpy as np
 from nltk.util import skipgrams
-from normality.transliteration import latinize_text
+from anyascii import anyascii as latinize_text
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
 from sklearn.base import BaseEstimator, TransformerMixin
