@@ -4,7 +4,7 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 from ovos_classifiers.skovos.features import WordFeaturesVectorizer, POSTaggerVectorizer, \
     PronounTaggerVectorizer, CorefIOBTaggerVectorizer, SingleWordFeaturesVectorizer, TokenizerTransformer, \
     SkipGramVectorizer, LangFeaturesVectorizer, OCPKeywordFeaturesVectorizer, \
-    ClassifierProbaVectorizer
+    ClassifierProbaVectorizer, AllMiniLMVectorizer
 from ovos_classifiers.skovos.features.en import QuestionFeaturesVectorizerEN, WordNetLemmatizerTransformer
 
 """
@@ -125,6 +125,9 @@ def get_features_pipeline(pipeline_id="default"):
             ("tokenize", TokenizerTransformer()),
             ("lemma", WordNetLemmatizerTransformer()),
             ("cv2", CountVectorizer(ngram_range=(1, 2)))
+        ]),
+        "AllMiniLM": FeatureUnion([
+            ("sentence_feats", AllMiniLMVectorizer())
         ]),
         # pipelines for question classification
         "questions_en": FeatureUnion([

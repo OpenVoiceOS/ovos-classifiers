@@ -4,8 +4,8 @@ import functools
 
 import ahocorasick
 import numpy as np
-from nltk.util import skipgrams
 from anyascii import anyascii as latinize_text
+from nltk.util import skipgrams
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -710,7 +710,38 @@ class ClassifierProbaVectorizer(BaseEstimator, TransformerMixin):
         return self.clf.clf.predict_proba(X)
 
 
+class AllMiniLMVectorizer(BaseEstimator, TransformerMixin):
+    model = None
+
+    def get_embeddings(self, sentence: str):
+        if self.model is None:
+            import llama_cpp
+            from os.path import dirname
+            mdl = f"{dirname(dirname(dirname(__file__)))}/res/all-MiniLM-L6-v2.Q4_K_M.gguf"
+            self.model = llama_cpp.Llama(
+                model_path=mdl,
+                embedding=True)
+        embeddings = self.model.create_embedding(sentence)
+        return embeddings["data"][0]['embedding']
+
+    def fit(self, *args, **kwargs):
+        return self
+
+    def transform(self, X, **kwargs):
+        if isinstance(X, str):
+            return self.get_embeddings(X)
+        return [self.get_embeddings(s) for s in X]
+
+
 if __name__ == '__main__':
+    f = AllMiniLMVectorizer()
+    f.fit()
+    t = f.transform(["play metallica",
+                     "play a horror movie",
+                     "watch netflix"])
+    assert len(t) == 3
+    assert len(t[0]) == 384
+    exit()
     f = OCPKeywordFeaturesVectorizer()
     f.fit()
     t = f.transform(["play metallica", "play a horror movie", "watch netflix"])
