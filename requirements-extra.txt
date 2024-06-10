@@ -1,2 +1,3 @@
 pyahocorasick
 llama-cpp-python
+sklearn-genetic-opt

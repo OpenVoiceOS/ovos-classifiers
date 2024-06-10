@@ -742,6 +742,7 @@ class AllMiniLMVectorizer(BaseEstimator, TransformerMixin):
             mdl = f"{dirname(dirname(dirname(__file__)))}/res/all-MiniLM-L6-v2.Q4_K_M.gguf"
             self.model = llama_cpp.Llama(
                 model_path=mdl,
+                verbose=False,
                 embedding=True)
         embeddings = self.model.create_embedding(sentence)
         return embeddings["data"][0]['embedding']
