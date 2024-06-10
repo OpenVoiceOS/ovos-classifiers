@@ -3,8 +3,6 @@ scikit-learn
 joblib
 ovos-utils
 python-dateutil>=2.8.2
-pyahocorasick
-anyascii
 ovos-config
 quebra-frases
 numpy<=1.26.4

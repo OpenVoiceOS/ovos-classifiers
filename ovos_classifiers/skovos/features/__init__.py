@@ -1,10 +1,10 @@
 # feature extraction utils
 
 import functools
+import re
+import unicodedata
 
-import ahocorasick
 import numpy as np
-from anyascii import anyascii as latinize_text
 from nltk.util import skipgrams
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
@@ -21,6 +21,25 @@ from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features
 from ovos_classifiers.utils import get_stopwords
+
+
+def latinize_text(text):
+    # Normalize text to NFD (Normalization Form Decomposition)
+    normalized_text = unicodedata.normalize('NFD', text)
+
+    # Filter out combining characters (accents)
+    latinized_text = ''.join(
+        char for char in normalized_text
+        if unicodedata.category(char) != 'Mn'
+    )
+
+    # Convert to lowercase for normalization
+    latinized_text = latinized_text.lower()
+
+    # Optionally remove non-Latin characters
+    latinized_text = re.sub(r'[^a-zA-Z\s]', '', latinized_text)
+
+    return latinized_text
 
 
 class TokenizerTransformer(BaseEstimator, TransformerMixin):
@@ -469,6 +488,9 @@ class SkipGramTransformer(BaseEstimator, TransformerMixin):
 
 class KeywordFeatures:
     def __init__(self, csv_path=None, ignore_list=None):
+        # TODO - alternative slower pure python implementation
+        import ahocorasick
+        self.acs = ahocorasick
         ignore_list = ignore_list or []
         self.ignore_list = ignore_list
         self.bias = {}  # just for logging
@@ -481,7 +503,7 @@ class KeywordFeatures:
     def reset_automatons(self):
         # "untrain" the automatons
         self._needs_building = [name for name in self.automatons]
-        self.automatons = {name: ahocorasick.Automaton() for name in self.automatons.keys()}
+        self.automatons = {name: self.acs.Automaton() for name in self.automatons.keys()}
         for name, samples in self.entities.items():
             for s in samples:
                 self.automatons[name].add_word(s.lower(), s)
@@ -497,7 +519,7 @@ class KeywordFeatures:
         self.bias[name] += samples
 
         if name not in self.automatons:
-            self.automatons[name] = ahocorasick.Automaton()
+            self.automatons[name] = self.acs.Automaton()
         for s in samples:
             self.automatons[name].add_word(s.lower(), s)
 
@@ -537,7 +559,7 @@ class KeywordFeatures:
         for k, samples in ents.items():
             self._needs_building.append(k)
             if k not in self.automatons:
-                self.automatons[k] = ahocorasick.Automaton()
+                self.automatons[k] = self.acs.Automaton()
             for s in samples:
                 self.automatons[k].add_word(s.lower(), s)
         self.entities.update(ents)

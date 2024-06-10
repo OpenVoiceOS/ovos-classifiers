@@ -126,7 +126,7 @@ def get_features_pipeline(pipeline_id="default"):
             ("lemma", WordNetLemmatizerTransformer()),
             ("cv2", CountVectorizer(ngram_range=(1, 2)))
         ]),
-        "AllMiniLM": FeatureUnion([
+        "allminilm": FeatureUnion([
             ("sentence_feats", AllMiniLMVectorizer())
         ]),
         # pipelines for question classification
