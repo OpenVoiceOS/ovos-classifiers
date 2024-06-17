@@ -7,4 +7,4 @@ pyahocorasick
 anyascii
 ovos-config
 quebra-frases
-numpy<=1.26.4
+numpy<=2.0.0
