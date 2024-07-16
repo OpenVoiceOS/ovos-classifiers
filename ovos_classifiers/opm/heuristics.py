@@ -80,7 +80,8 @@ class UtteranceNormalizerPlugin(UtteranceTransformer):
             norm.append(u)
             norm.append(normalizer.normalize(u))
             norm.append(normalizer.normalize(u, remove_articles=True))
-        norm = [self.strip_punctuation(u) for u in norm]
+        if self.config.get("strip_punctuation", True):
+            norm = [self.strip_punctuation(u) for u in norm]
         # this deduplicates the list while keeping order
         return list(dict.fromkeys(norm)), context
 
