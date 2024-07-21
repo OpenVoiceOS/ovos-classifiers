@@ -111,8 +111,8 @@ class BM25MultipleChoiceSolver(MultipleChoiceSolver):
             stopwords = get_stopwords(lang)
         except: # in case nltk is not available or stopwords dataset download fails for any reason
             stopwords = []
-        return sorted([(a, s) for a, s in rank_answers(query, options, stopwords).items()],
-                      key=lambda k: k[1], reverse=True)
+        return sorted([(s, a) for a, s in rank_answers(query, options, stopwords).items()],
+                      key=lambda k: k[0], reverse=True)
 
     def select_answer(self, query, options, context=None):
         """
