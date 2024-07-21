@@ -19,7 +19,7 @@ from ovos_plugin_manager.templates.solvers import TldrSolver, EvidenceSolver, Mu
 from ovos_plugin_manager.templates.transformers import UtteranceTransformer
 from ovos_utils.lang.visimes import VISIMES
 from quebra_frases import sentence_tokenize, word_tokenize, span_indexed_word_tokenize
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 
 class RegexPostagPlugin(PosTagger):
@@ -99,11 +99,27 @@ class BM25MultipleChoiceSolver(MultipleChoiceSolver):
     """select best answer to a question from a list of options """
 
     # plugin methods to override
-    def select_answer(self, query, options, context):
+    def rerank(self, query: str, options: List[str],
+               context: Optional[dict] = None) -> List[Tuple[float, str]]:
+        """
+        rank options list, returning a list of tuples (score, text)
+        """
+        from ovos_classifiers.heuristics.machine_comprehension import rank_answers
+        context = context or {}
+        try:
+            lang = context.get("lang")
+            stopwords = get_stopwords(lang)
+        except: # in case nltk is not available or stopwords dataset download fails for any reason
+            stopwords = []
+        return sorted([(a, s) for a, s in rank_answers(query, options, stopwords).items()],
+                      key=lambda k: k[1], reverse=True)
+
+    def select_answer(self, query, options, context=None):
         """
         query and options assured to be in self.default_lang
         return best answer from options list
         """
+        context = context or {}
         try:
             from ovos_classifiers.heuristics.machine_comprehension import get_best_answer
             lang = context.get("lang")
@@ -200,6 +216,17 @@ class ARPAHeuristicPhonemizerPlugin(Grapheme2PhonemePlugin):
 
 
 if __name__ == "__main__":
+    p = BM25MultipleChoiceSolver()
+    a = p.rerank("what is the speed of light", [
+        "very fast", "10m/s", "the speed of light is C"
+    ])
+    print(a)
+
+    a = p.select_answer("what is the speed of light", [
+        "very fast", "10m/s", "the speed of light is C"
+    ])
+    print(a)
+
     pho = ARPAHeuristicPhonemizerPlugin()
     pho.utterance2visemes("hello world")
     # ['HH', 'EH', 'L', 'L', 'OW', '.', 'W', 'OW', 'R', 'L', 'D']
