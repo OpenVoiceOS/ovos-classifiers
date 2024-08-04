@@ -1,12 +1,13 @@
 # these plugins require nltk and may download external data/models at runtime
 import random
+from typing import Optional, Tuple, Dict
 
 from nltk import pos_tag as _pt
 from nltk.corpus import wordnet as wn
+from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from ovos_plugin_manager.templates.language import LanguageDetector
 from ovos_plugin_manager.templates.postag import PosTagger
 from ovos_plugin_manager.templates.solvers import QuestionSolver
-from ovos_plugin_manager.templates.keywords import KeywordExtractor
 from quebra_frases import span_indexed_word_tokenize
 
 from ovos_classifiers.datasets.wordnet import Wordnet
@@ -15,16 +16,32 @@ from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
 
 
 class WordnetSolverPlugin(QuestionSolver):
-    """ question answerer that uses wordnet for definitions synonyms and antonyms"""
+    """A question answerer that uses WordNet for definitions, synonyms, and antonyms."""
     enable_tx = True
     priority = 80
 
-    def __init__(self, config=None):
+    def __init__(self, config: Optional[Dict] = None):
+        """
+        Initializes the WordnetSolverPlugin with a given configuration.
+
+        Args:
+            config (Optional[Dict]): Configuration dictionary. Defaults to None.
+        """
         config = config or {}
-        config["lang"] = "en"  # only english supported
+        config["lang"] = "en"  # Only English supported
         super().__init__(config)
 
-    def get_data_key(self, query, lang="en"):
+    def get_data_key(self, query: str, lang: str = "en") -> Tuple[Optional[str], str]:
+        """
+        Determines the type of data (definition, synonyms, antonyms) requested by the query.
+
+        Args:
+            query (str): The query string.
+            lang (str): The language of the query. Defaults to "en".
+
+        Returns:
+            Tuple[Optional[str], str]: A tuple containing the data type key and the processed query.
+        """
         query = HeuristicExtractor.extract_subject(query, lang) or query
 
         # TODO localization
@@ -53,29 +70,51 @@ class WordnetSolverPlugin(QuestionSolver):
         return None, query
 
     # officially exported Solver methods
-    def get_data(self, query, context=None):
-        pos = wn.NOUN  # TODO check context for postag
+    def get_data(self, query: str, lang: Optional[str] = None) -> Dict[str, str]:
+        """
+        Retrieves WordNet data for the given query.
+
+        Args:
+            query (str): The query string.
+            lang (Optional[str]): The language of the query. Defaults to None.
+
+        Returns:
+            Dict[str, str]: A dictionary containing WordNet data such as lemmas, antonyms, definitions, etc.
+        """
+        pos = wn.NOUN  # TODO: Check context for part of speech
         synsets = wn.synsets(query, pos=pos)
         if not len(synsets):
             return {}
         synset = synsets[0]
-        res = {"lemmas": Wordnet.get_lemmas(query, pos=pos, synset=synset),
-               "antonyms": Wordnet.get_antonyms(query, pos=pos, synset=synset),
-               "holonyms": Wordnet.get_holonyms(query, pos=pos, synset=synset),
-               "hyponyms": Wordnet.get_hyponyms(query, pos=pos, synset=synset),
-               "hypernyms": Wordnet.get_hypernyms(query, pos=pos, synset=synset),
-               "root_hypernyms": Wordnet.get_root_hypernyms(query, pos=pos, synset=synset),
-               "definition": Wordnet.get_definition(query, pos=pos, synset=synset)}
+        res = {
+            "lemmas": Wordnet.get_lemmas(query, pos=pos, synset=synset),
+            "antonyms": Wordnet.get_antonyms(query, pos=pos, synset=synset),
+            "holonyms": Wordnet.get_holonyms(query, pos=pos, synset=synset),
+            "hyponyms": Wordnet.get_hyponyms(query, pos=pos, synset=synset),
+            "hypernyms": Wordnet.get_hypernyms(query, pos=pos, synset=synset),
+            "root_hypernyms": Wordnet.get_root_hypernyms(query, pos=pos, synset=synset),
+            "definition": Wordnet.get_definition(query, pos=pos, synset=synset)
+        }
         return res
 
-    def get_spoken_answer(self, query, context=None):
-        lang = context.get("lang") or self.default_lang
+    def get_spoken_answer(self, query: str, lang: Optional[str] = None) -> Optional[str]:
+        """
+        Generates a spoken answer for the given query.
+
+        Args:
+            query (str): The query string.
+            lang (Optional[str]): The language of the query. Defaults to None.
+
+        Returns:
+            Optional[str]: The spoken answer, if available.
+        """
+        lang = lang or self.default_lang
         lang = lang.split("-")[0]
         # extract the best keyword with some regexes or fallback to RAKE
         k, query = self.get_data_key(query, lang)
         if not query:
             query = HeuristicExtractor.extract_subject(query, lang) or query
-        data = self.search(query, context)
+        data = self.search(query, lang=lang)
         if k and k in data:
             v = data[k]
             if k in ["lemmas", "antonyms"] and len(v):
