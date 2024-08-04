@@ -87,41 +87,64 @@ class UtteranceNormalizerPlugin(UtteranceTransformer):
 
 
 class HeuristicSummarizerPlugin(TldrSolver):
-    """heuristic summarizer, picks best sentences based on word frequencies"""
+    """Heuristic summarizer that picks the best sentences based on word frequencies."""
 
-    def get_tldr(self, document, lang: Optional[str] = None):
+    def get_tldr(self, document: str, lang: Optional[str] = None) -> str:
+        """
+        Summarizes the given document using word frequencies.
+
+        Args:
+            document (str): The document to summarize.
+            lang (Optional[str]): The language of the document. Defaults to "en".
+
+        Returns:
+            str: The summarized text.
+        """
         lang = lang or "en"
         return WordFrequencySummarizer().summarize(document, lang)
 
 
 class BM25MultipleChoiceSolver(MultipleChoiceSolver):
-    """select best answer to a question from a list of options """
+    """Selects the best answer to a question from a list of options using the BM25 algorithm."""
 
-    # plugin methods to override
-    def rerank(self, query: str, options: List[str],
-               lang: Optional[str] = None) -> List[Tuple[float, str]]:
+    def rerank(self, query: str, options: List[str], lang: Optional[str] = None) -> List[Tuple[float, str]]:
         """
-        rank options list, returning a list of tuples (score, text)
+        Ranks the options list, returning a list of tuples (score, text).
+
+        Args:
+            query (str): The query string.
+            options (List[str]): The list of options to rank.
+            lang (Optional[str]): The language of the query and options. Defaults to None.
+
+        Returns:
+            List[Tuple[float, str]]: A list of tuples containing the score and the option text.
         """
         from ovos_classifiers.heuristics.machine_comprehension import rank_answers
         stopwords = []
         if lang:
             try:
                 stopwords = get_stopwords(lang)
-            except:  # in case nltk is not available or stopwords dataset download fails for any reason
+            except Exception:  # In case nltk is not available or stopwords dataset download fails for any reason
                 pass
-        return sorted([(s, a) for a, s in rank_answers(query, options, stopwords).items()],
-                      key=lambda k: k[0], reverse=True)
+
+        ranked_answers = rank_answers(query, options, stopwords)
+        return sorted([(s, a) for a, s in ranked_answers.items()], key=lambda k: k[0], reverse=True)
 
 
 class BM25SolverPlugin(EvidenceSolver):
-    """extract best sentence from text that answers the question, using BM25 algorithm"""
+    """Extracts the best sentence from text that answers the question using the BM25 algorithm."""
 
-    def get_best_passage(self, evidence, question,
-                         lang: Optional[str] = None):
+    def get_best_passage(self, evidence: str, question: str, lang: Optional[str] = None) -> str:
         """
-        evidence and question assured to be in self.default_lang
-         returns summary of provided document
+        Extracts the best passage from the evidence that answers the question.
+
+        Args:
+            evidence (str): The evidence text to search within.
+            question (str): The question to answer.
+            lang (Optional[str]): The language of the evidence and question. Defaults to None.
+
+        Returns:
+            str: The best passage that answers the question.
         """
         bm25 = BM25()
 
@@ -131,9 +154,8 @@ class BM25SolverPlugin(EvidenceSolver):
         corpus = [word_tokenize(s) for s in sents]
         bm25.fit(corpus)
         scores = bm25.search(word_tokenize(question))
-        ans = max([s for s in zip(scores, corpus)],
-                  key=lambda k: k[0])[1]
-        return " ".join(ans)
+        best_sentence = max(zip(scores, corpus), key=lambda k: k[0])[1]
+        return " ".join(best_sentence)
 
 
 class HeuristicKeywordExtractorPlugin(KeywordExtractor):
