@@ -89,9 +89,8 @@ class UtteranceNormalizerPlugin(UtteranceTransformer):
 class HeuristicSummarizerPlugin(TldrSolver):
     """heuristic summarizer, picks best sentences based on word frequencies"""
 
-    def get_tldr(self, document, context=None):
-        context = context or {}
-        lang = context.get("lang") or "en"
+    def get_tldr(self, document, lang: Optional[str] = None):
+        lang = lang or "en"
         return WordFrequencySummarizer().summarize(document, lang)
 
 
@@ -100,39 +99,26 @@ class BM25MultipleChoiceSolver(MultipleChoiceSolver):
 
     # plugin methods to override
     def rerank(self, query: str, options: List[str],
-               context: Optional[dict] = None) -> List[Tuple[float, str]]:
+               lang: Optional[str] = None) -> List[Tuple[float, str]]:
         """
         rank options list, returning a list of tuples (score, text)
         """
         from ovos_classifiers.heuristics.machine_comprehension import rank_answers
-        context = context or {}
-        try:
-            lang = context.get("lang")
-            stopwords = get_stopwords(lang)
-        except: # in case nltk is not available or stopwords dataset download fails for any reason
-            stopwords = []
+        stopwords = []
+        if lang:
+            try:
+                stopwords = get_stopwords(lang)
+            except:  # in case nltk is not available or stopwords dataset download fails for any reason
+                pass
         return sorted([(s, a) for a, s in rank_answers(query, options, stopwords).items()],
                       key=lambda k: k[0], reverse=True)
-
-    def select_answer(self, query, options, context=None):
-        """
-        query and options assured to be in self.default_lang
-        return best answer from options list
-        """
-        context = context or {}
-        try:
-            from ovos_classifiers.heuristics.machine_comprehension import get_best_answer
-            lang = context.get("lang")
-            stopwords = get_stopwords(lang)
-        except: # in case nltk is not available or stopwords dataset download fails for any reason
-            stopwords = []
-        return get_best_answer(query, options, stopwords)
 
 
 class BM25SolverPlugin(EvidenceSolver):
     """extract best sentence from text that answers the question, using BM25 algorithm"""
 
-    def get_best_passage(self, evidence, question, context=None):
+    def get_best_passage(self, evidence, question,
+                         lang: Optional[str] = None):
         """
         evidence and question assured to be in self.default_lang
          returns summary of provided document
