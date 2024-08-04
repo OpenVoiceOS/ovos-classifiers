@@ -3,7 +3,6 @@ from collections import namedtuple
 from datetime import datetime, date, timedelta, time
 from typing import List, Any
 
-from ovos_utils import flatten_list
 from quebra_frases import word_tokenize as _wtok, sentence_tokenize as _stok
 
 # Token is intended to be used in the number processing functions in
@@ -154,6 +153,7 @@ def partition_list(items, split_on):
 
 def sentence_tokenize(text):
     sents = [_stok(s) for s in text.split("\n")]
+    from ovos_utils import flatten_list
     return flatten_list(sents)
 
 

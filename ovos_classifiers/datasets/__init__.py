@@ -2,10 +2,23 @@ import random
 from os import makedirs
 from os.path import isfile
 
-import nltk
 import requests
-from nltk.corpus import treebank
 from ovos_utils.xdg_utils import xdg_data_home
+
+
+def download_nltk_resource(res: str, res_type: str = "taggers"):
+    """
+    Download necessary NLTK resource if not already downloaded.
+    """
+    import nltk
+    from nltk.data import find
+
+    resource_name = f'{res_type}/{res}.zip'
+    try:
+        find(resource_name)
+    except LookupError:
+        # Download resource if not already present
+        nltk.download(res)
 
 
 def _tagged_to_dataset(tagged_sentences):
@@ -91,7 +104,6 @@ def get_world_names_trainset():
     return (X, y), (X_test, y_test)
 
 
-
 # utterance_tags_v0.1
 def get_utterance_tags_tagged_sents():
     base_path = f"{xdg_data_home()}/OpenVoiceOS/datasets"
@@ -129,7 +141,8 @@ def get_utterance_tags_trainset():
 
 # Treebank
 def get_treebank_tagged_sents(udep=False):
-    nltk.download('treebank')
+    from nltk.corpus import treebank
+    download_nltk_resource("treebank", res_type="corpora")
     if udep:
         corpus = list(treebank.tagged_sents(tagset="universal"))
     else:
@@ -154,7 +167,8 @@ def get_treebank_trainset(udep=False):
 
 # Brown
 def get_brown_tagged_sents(udep=False):
-    nltk.download('treebank')
+    from nltk.corpus import treebank
+    download_nltk_resource("treebank", res_type="corpora")
     if udep:
         corpus = list(treebank.tagged_sents(tagset="universal"))
     else:

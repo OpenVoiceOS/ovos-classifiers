@@ -1,10 +1,10 @@
-import nltk
 from nltk.corpus import wordnet as wn
+from ovos_classifiers.datasets import download_nltk_resource
 
 
 class Wordnet:
-    nltk.download("wordnet")
-    nltk.download('omw-1.4')
+    download_nltk_resource("wordnet", "corpora")
+    download_nltk_resource("omw-1.4", "corpora")
 
     @staticmethod
     def get_synsets(word, pos=wn.NOUN):

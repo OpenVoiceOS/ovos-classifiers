@@ -3,6 +3,7 @@ import re
 import nltk
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from ovos_classifiers.datasets import download_nltk_resource
 from ovos_classifiers.utils import normalize
 
 
@@ -25,7 +26,7 @@ def word_tokenize_pt(sentence):
 class RSLPStemmerTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        nltk.download('rslp')
+        download_nltk_resource('rslp', "stemmers")
 
     def fit(self, *args, **kwargs):
         return self

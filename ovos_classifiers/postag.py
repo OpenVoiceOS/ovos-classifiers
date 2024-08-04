@@ -6,6 +6,7 @@ import requests
 from ovos_config import Configuration
 from ovos_utils.xdg_utils import xdg_data_home
 
+from ovos_classifiers.datasets import download_nltk_resource
 from ovos_classifiers.heuristics.postag import NltkPostag, RegexPostag
 from ovos_classifiers.utils import load_tagger
 
@@ -75,10 +76,11 @@ class OVOSPostag:
         return meta, model_path
 
     def load_model(self, model_id):
+
         if model_id == "nltk":
-            nltk.download("punkt")
-            nltk.download('averaged_perceptron_tagger')
-            nltk.download('universal_tagset')
+            download_nltk_resource("punkt", "tokenizers")
+            download_nltk_resource("averaged_perceptron_tagger", "taggers")
+            download_nltk_resource("universal_tagset", "taggers")
         data, model_path = self.get_model(model_id)
         return load_tagger(data, model_path)
 

@@ -1,10 +1,11 @@
 import nltk
 import re
 from nltk.stem.snowball import SnowballStemmer
+from ovos_classifiers.datasets import download_nltk_resource
 
 
 def get_stopwords(lang):
-    nltk.download("stopwords")
+    download_nltk_resource("stopwords", "corpora")
     langmap = {
         "en": "english",
         "ar": "arabic",

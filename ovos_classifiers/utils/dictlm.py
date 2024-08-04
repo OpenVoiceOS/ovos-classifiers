@@ -51,7 +51,9 @@ if __name__ == "__main__":
     import nltk
     from nltk.corpus import reuters
 
-    nltk.download('reuters')
+    from ovos_classifiers.datasets import download_nltk_resource
+
+    download_nltk_resource('reuters', "corpora")
     lm = DictLM()
     lm.train(reuters.sents())
     for i in range(20):

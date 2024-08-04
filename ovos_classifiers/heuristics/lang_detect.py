@@ -4,9 +4,9 @@ import os
 import pickle
 import typing
 
-import nltk
-from nltk.corpus import udhr
+
 from ovos_utils.xdg_utils import xdg_data_home
+from ovos_classifiers.datasets import download_nltk_resource
 
 
 class LMLangClassifier:
@@ -19,6 +19,7 @@ class LMLangClassifier:
             self.fit()
 
     def fit(self, save=True):
+        from nltk.corpus import udhr
         model = f"{xdg_data_home()}/ovos-classifiers/lang_lms.pkl"
         os.makedirs(os.path.dirname(model), exist_ok=True)
         if os.path.isfile(model):
@@ -27,7 +28,7 @@ class LMLangClassifier:
             print(f"lang models loaded from {model}")
             return model
 
-        nltk.download('udhr')  # udhr = Universal Declaration of Human Rights
+        download_nltk_resource('udhr', "corpora")  # udhr = Universal Declaration of Human Rights
         languages = ['en', 'de', 'nl', 'fr', 'it', 'es', "pt", "no", "ca", "da", "fi", "sw"]
         language_ids = ['English-Latin1', 'German_Deutsch-Latin1', 'Dutch_Nederlands-Latin1', 'French_Francais-Latin1',
                         'Italian_Italiano-Latin1', 'Spanish_Espanol-Latin1', 'Portuguese_Portugues-Latin1',

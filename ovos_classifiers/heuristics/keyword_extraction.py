@@ -7,6 +7,7 @@ from typing import Callable, DefaultDict, Dict, List, Optional, Set, Tuple
 
 import nltk
 
+from ovos_classifiers.datasets import download_nltk_resource
 from ovos_classifiers.heuristics.postag import NltkPostag
 
 
@@ -151,8 +152,7 @@ class Rake:
         :param sentence_tokenizer: Tokenizer used to tokenize the text string into sentences.
         :param word_tokenizer: Tokenizer used to tokenize the sentence string into words.
         """
-
-        nltk.download("stopwords")
+        download_nltk_resource("stopwords", "corpora")
         self.langs = {
             "en": "english",
             "ar": "arabic",

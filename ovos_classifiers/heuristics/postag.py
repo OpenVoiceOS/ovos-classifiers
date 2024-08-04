@@ -1,6 +1,8 @@
 import re
 
 import nltk
+
+from ovos_classifiers.datasets import download_nltk_resource
 from ovos_classifiers.heuristics.tokenize import word_tokenize
 
 
@@ -143,9 +145,9 @@ class NltkPostag:
     def __init__(self, config=None):
         # TODO - lang support
         self.config = config or {}
-        nltk.download('punkt')
-        nltk.download('averaged_perceptron_tagger')
-        nltk.download('universal_tagset')
+        download_nltk_resource('punkt', "tokenizers")
+        download_nltk_resource('averaged_perceptron_tagger', "taggers")
+        download_nltk_resource('universal_tagset', "taggers")
 
     def tag(self, sentence):
         if isinstance(sentence, str):
