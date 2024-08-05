@@ -16,7 +16,7 @@ from sklearn.linear_model import Perceptron
 from ovos_classifiers.corefiob import OVOSCorefIOBTagger
 from ovos_classifiers.datasets import get_ocp_entities_dataset
 from ovos_classifiers.heuristics.lang_detect import LMLangClassifier
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.tokenization import word_tokenize
 from ovos_classifiers.postag import OVOSPostag
 from ovos_classifiers.utils import extract_postag_features, \
     extract_word_features, normalize, get_stemmer, extract_single_word_features

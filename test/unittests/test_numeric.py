@@ -1,7 +1,7 @@
 import unittest
 
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.numeric import EnglishNumberParser
+from ovos_utterance_normalizer.tokenization import word_tokenize
 
 
 class TestEnglish(unittest.TestCase):

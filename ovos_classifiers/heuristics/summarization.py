@@ -1,5 +1,5 @@
 from heapq import nlargest
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.tokenization import word_tokenize
 from ovos_classifiers.utils import get_stopwords
 from quebra_frases import sentence_tokenize
 from string import punctuation

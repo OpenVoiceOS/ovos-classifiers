@@ -9,3 +9,4 @@ ovos-config
 quebra-frases
 numpy<=1.26.4
 ovos-plugin-manager>=0.0.26a38
+ovos-utterance-normalizer

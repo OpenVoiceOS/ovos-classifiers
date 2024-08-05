@@ -1,5 +1,5 @@
 import math
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.tokenization import word_tokenize
 
 
 class BM25:

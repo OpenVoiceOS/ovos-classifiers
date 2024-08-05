@@ -3,7 +3,7 @@ from nltk import AffixTagger
 from nltk.tag import UnigramTagger, BigramTagger, TrigramTagger, DefaultTagger, RegexpTagger
 
 from ovos_classifiers.tasks.classifier import OVOSAbstractClassifier
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.tokenization import word_tokenize
 
 
 class OVOSAbstractClassifierTagger(OVOSAbstractClassifier):

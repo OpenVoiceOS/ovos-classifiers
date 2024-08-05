@@ -54,8 +54,6 @@ extra_files = package_files('ovos_classifiers/res')
 
 
 UTTERANCE_ENTRY_POINT = (
-    'ovos-utterance-normalizer=ovos_classifiers.opm.heuristics:UtteranceNormalizerPlugin',
-    # ovos-classifiers models
     'ovos-utterance-coref-normalizer=ovos_classifiers.opm:CoreferenceNormalizerPlugin'
 )
 SOLVER_ENTRY_POINT = (

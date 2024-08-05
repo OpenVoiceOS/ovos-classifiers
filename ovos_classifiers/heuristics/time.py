@@ -2,8 +2,8 @@ import re
 from datetime import datetime, timedelta
 from typing import List, Dict, Union, Any, Optional
 
-from ovos_classifiers.heuristics.numeric import EnglishNumberParser, GermanNumberParser
-from ovos_classifiers.heuristics.tokenize import ReplaceableNumber, ReplaceableTimedelta, \
+from ovos_utterance_normalizer.numeric import EnglishNumberParser, GermanNumberParser
+from ovos_utterance_normalizer.tokenization import ReplaceableNumber, ReplaceableTimedelta, \
     ReplaceableTime, ReplaceableDate, Token, word_tokenize
 from ovos_utils.time import DAYS_IN_1_MONTH, DAYS_IN_1_YEAR
 

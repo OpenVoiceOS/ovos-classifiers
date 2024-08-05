@@ -4,7 +4,7 @@ import string
 from ovos_classifiers.heuristics.corefiob import CorefIOBHeuristicTagger
 from ovos_classifiers.heuristics.keyword_extraction import HeuristicExtractor
 from ovos_classifiers.heuristics.machine_comprehension import BM25
-from ovos_classifiers.heuristics.normalize import Normalizer, CatalanNormalizer, CzechNormalizer, \
+from ovos_utterance_normalizer.normalizer import Normalizer, CatalanNormalizer, CzechNormalizer, \
     PortugueseNormalizer, AzerbaijaniNormalizer, RussianNormalizer, EnglishNormalizer, UkrainianNormalizer, \
     GermanNormalizer
 from ovos_classifiers.heuristics.phonemizer import EnglishARPAHeuristicPhonemizer

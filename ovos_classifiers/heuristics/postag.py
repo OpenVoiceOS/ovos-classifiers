@@ -3,7 +3,7 @@ import re
 import nltk
 
 from ovos_classifiers.datasets import download_nltk_resource
-from ovos_classifiers.heuristics.tokenize import word_tokenize
+from ovos_utterance_normalizer.tokenization import word_tokenize
 
 
 class RegexPostag:
